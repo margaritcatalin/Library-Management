@@ -42,7 +42,7 @@ namespace PublicLibraryTests
             };
             _category = new Category
             {
-                Name = "Drama",
+                Name = "Drama"
             };
             _libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
             EntityFrameworkMock.PrepareMock(_libraryDbMock);

@@ -13,6 +13,7 @@ namespace PublicLibraryTests
     public class CategoriesUnitTests
     {
         private CategoriesService _categoriesService;
+        private BookService _bookService;
         private LibraryDb _libraryDbMock;
 
         [SetUp]
@@ -21,6 +22,8 @@ namespace PublicLibraryTests
             _libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
 
             _categoriesService = new CategoriesService(new CategoriesRepository(_libraryDbMock));
+            _bookService = new BookService(new BookRepository(_libraryDbMock), _categoriesService,
+                new ReaderRepository(_libraryDbMock));
         }
 
         [Test]
@@ -95,13 +98,13 @@ namespace PublicLibraryTests
         [Test]
         public void AddCategoryNameLengthMoreThanLimitEighty()
         {
-            Category c = new Category { Name = "DraDraDraDraDraDraDraDraDraDraDraDraDraDraDraDr" +
-                                               "DraDraDraDraDraDraDraDra" +
-                                               "DraDraDraDraDraDra" +
-                                               "DraDraDraDraDra" +
-                                               "DraDraDraDraDraDraDraaDraDr" +
-                                               "DraDraDraDraDraDraDraDraDra" +
-                                               "aDraDraDraDraDraDraDraDraDraDraDra"
+            Category c = new Category { Name = "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
+                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
+                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
+                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
+                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
+                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
+                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength"
             };
             var result = _categoriesService.AddCategory(c);
             Assert.False(result);
@@ -110,7 +113,7 @@ namespace PublicLibraryTests
         [Test]
         public void AddCategoryNameWithDigit()
         {
-            Category c = new Category { Name = "2425" };
+            Category c = new Category { Name = "2326546" };
             var result = _categoriesService.AddCategory(c);
             Assert.False(result);
             Assert.True(_libraryDbMock.Categories.Count() == 0);
@@ -119,7 +122,7 @@ namespace PublicLibraryTests
         [Test]
         public void AddCategoryNameWithSymbol()
         {
-            Category c = new Category { Name = "@&kfgdg" };
+            Category c = new Category { Name = "@&abcd" };
             var result = _categoriesService.AddCategory(c);
             Assert.False(result);
             Assert.True(_libraryDbMock.Categories.Count() == 0);
@@ -138,6 +141,194 @@ namespace PublicLibraryTests
             Category c = new Category{Name = "Science"};
             var result = _categoriesService.AddCategory(c);
             Assert.True(_libraryDbMock.Categories.Count()==1);
+        }
+        [Test]
+        public void AddSubCateory()
+        {
+            Category c = new Category { Name = "Science" };
+            Category c2 = new Category { Name = "Test", ParentCategory=c };
+            var result = _categoriesService.AddCategory(c);
+            var result2 = _categoriesService.AddCategory(c2);
+            Assert.True(c2.ParentCategory != null);
+            Assert.True(_libraryDbMock.Categories.Count() == 2);
+        }
+        [Test]
+        public void AddSubCateoryWithNoParentCategory()
+        {
+            Category c = new Category { Name = "Science" };
+            Category c2 = new Category { Name = "Test"};
+            var result = _categoriesService.AddCategory(c);
+            var result2 = _categoriesService.AddCategory(c2);
+            Assert.False(c2.ParentCategory != null);
+            Assert.True(_libraryDbMock.Categories.Count() == 2);
+        }
+
+        [Test]
+        public void IsPartOfCategory()
+        {
+            Category c = new Category { Name = "Science" };
+            var result = _categoriesService.AddCategory(c);
+
+            Book book = new Book
+            {
+                Name = "Moara cu Noroc",
+                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
+                Editions = new List<Edition> { new Edition
+            {
+                Name = "Teora",
+                BookType = "Hardcover",
+                Pages = 256,
+                BookStock = new BookStock
+            {
+                Amount = 100,
+                LectureRoomAmount = 10
+            }
+            } },
+                Categories = new List<Category> { c }
+            };
+            var resultB = _bookService.CreateBook(book);
+            Assert.True(_categoriesService.IsPartOfCategory(book,c));
+            Assert.True(_libraryDbMock.Categories.Count() == 1 && _libraryDbMock.Books.Count()==1);
+        }
+
+        [Test]
+        public void IsNotPartOfCategory()
+        {
+            Category c = new Category { Name = "Science" };
+            var result = _categoriesService.AddCategory(c);
+            Category c2 = new Category { Name = "Test" };
+            var result2 = _categoriesService.AddCategory(c2);
+            Book book = new Book
+            {
+                Name = "Moara cu Noroc",
+                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
+                Editions = new List<Edition> { new Edition
+            {
+                Name = "Teora",
+                BookType = "Hardcover",
+                Pages = 256,
+                BookStock = new BookStock
+            {
+                Amount = 100,
+                LectureRoomAmount = 10
+            }
+            } },
+                Categories = new List<Category> { c }
+            };
+            var resultB = _bookService.CreateBook(book);
+            Assert.False(_categoriesService.IsPartOfCategory(book, c2));
+            Assert.True(_libraryDbMock.Categories.Count() == 2 && _libraryDbMock.Books.Count() == 1);
+        }
+        [Test]
+        public void IsNotPartOfParentCategory()
+        {
+            Category c = new Category { Name = "Science" };
+            var result = _categoriesService.AddCategory(c);
+            Category c1 = new Category { Name = "Science2" };
+            var result1 = _categoriesService.AddCategory(c1);
+            Category c2 = new Category { Name = "Test", ParentCategory=c };
+            var result2 = _categoriesService.AddCategory(c2);
+            Book book = new Book
+            {
+                Name = "Moara cu Noroc",
+                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
+                Editions = new List<Edition> { new Edition
+            {
+                Name = "Teora",
+                BookType = "Hardcover",
+                Pages = 256,
+                BookStock = new BookStock
+            {
+                Amount = 100,
+                LectureRoomAmount = 10
+            }
+            } },
+                Categories = new List<Category> { c1 }
+            };
+            var resultB = _bookService.CreateBook(book);
+            Assert.False(_categoriesService.IsPartOfCategory(book, c));
+            Assert.True(_libraryDbMock.Categories.Count() == 2 && _libraryDbMock.Books.Count() == 1);
+        }
+        [Test]
+        public void IsPartOfParentCategory()
+        {
+            Category c = new Category { Name = "Science" };
+            var result = _categoriesService.AddCategory(c);
+            Category c2 = new Category { Name = "Test",ParentCategory=c };
+            var result2 = _categoriesService.AddCategory(c2);
+            Book book = new Book
+            {
+                Name = "Moara cu Noroc",
+                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
+                Editions = new List<Edition> { new Edition
+            {
+                Name = "Teora",
+                BookType = "Hardcover",
+                Pages = 256,
+                BookStock = new BookStock
+            {
+                Amount = 100,
+                LectureRoomAmount = 10
+            }
+            } },
+                Categories = new List<Category> { c2 }
+            };
+            var resultB = _bookService.CreateBook(book);
+            Assert.True(_categoriesService.IsPartOfCategory(book, c));
+            Assert.True(_libraryDbMock.Categories.Count() == 2 && _libraryDbMock.Books.Count() == 1);
+        }
+        [Test]
+        public void IsPartOfCategoryNullCategory()
+        {
+            Category c = new Category { Name = "Science" };
+            var result = _categoriesService.AddCategory(c);
+
+            Book book = new Book
+            {
+                Name = "Moara cu Noroc",
+                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
+                Editions = new List<Edition> { new Edition
+            {
+                Name = "Teora",
+                BookType = "Hardcover",
+                Pages = 256,
+                BookStock = new BookStock
+            {
+                Amount = 100,
+                LectureRoomAmount = 10
+            }
+            } },
+                Categories = new List<Category> { c }
+            };
+            var resultB = _bookService.CreateBook(book);
+            Assert.False(_categoriesService.IsPartOfCategory(book, null));
+            Assert.True(_libraryDbMock.Categories.Count() == 1 && _libraryDbMock.Books.Count() == 1);
+        }
+        [Test]
+        public void CategoryIsPartOfCategoriesNotNullCategory()
+        {
+            Category c = new Category { Name = "Science" };
+            Category c2 = new Category { Name = "Test", ParentCategory = c };
+            var result = _categoriesService.AddCategory(c);
+            var result2 = _categoriesService.AddCategory(c2);
+            List<Category> categories = new List<Category>();
+            categories.Add(c);
+            categories.Add(c2);
+            Assert.True(_categoriesService.CategoryIsPartOfCategories(c, categories));
+            Assert.True(_libraryDbMock.Categories.Count() == 2);
+        }
+        [Test]
+        public void CategoryIsPartOfCategoriesNullCategory()
+        {
+            Category c = new Category { Name = "Science" };
+            Category c2 = new Category { Name = "Test", ParentCategory = c };
+            var result = _categoriesService.AddCategory(c);
+            var result2 = _categoriesService.AddCategory(c2);
+            List<Category> categories = new List<Category>();
+            categories.Add(c);
+            categories.Add(c2);
+            Assert.False(_categoriesService.CategoryIsPartOfCategories(null, categories));
+            Assert.True(_libraryDbMock.Categories.Count() == 2);
         }
     }
 }
