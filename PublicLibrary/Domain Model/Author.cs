@@ -30,7 +30,6 @@ namespace PublicLibrary.Data_Mapper
         /// </summary>
         public ICollection<Book> Books { get; set; }
 
-
         /// <inheritdoc/>
         public override string ToString()
         {

@@ -30,6 +30,5 @@ namespace PublicLibrary.Domain_Model
         /// Gets or sets bookwithdrawl.
         /// </summary>
         public BookWithdrawal BookWithdrawal { get; set; }
-
     }
 }

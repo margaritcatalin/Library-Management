@@ -107,7 +107,7 @@ namespace PublicLibrary.Data_Mapper
         /// <param name="reader">The reader.</param>
         /// <param name="employee">The employee.</param>
         /// <returns>The bookwithdrawl.</returns>
-        public BookWithdrawal BorrowBooks(List<Borrowing> editionsList,Reader reader, Employee employee)
+        public BookWithdrawal BorrowBooks(List<Borrowing> editionsList, Reader reader, Employee employee)
         {
             List<Edition> editions = this.GetEditions(editionsList);
 

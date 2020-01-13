@@ -23,6 +23,5 @@ namespace PublicLibrary.Domain_Model
         /// Gets or sets lecture room amount.
         /// </summary>
         public int LectureRoomAmount { get; set; }
-
     }
 }

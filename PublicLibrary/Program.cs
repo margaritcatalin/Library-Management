@@ -4,13 +4,11 @@
 
 namespace PublicLibrary
 {
-
     /// <summary>
     /// Program starter.
     /// </summary>
     internal class Program
     {
-
         /// <summary>
         /// The start method.
         /// </summary>

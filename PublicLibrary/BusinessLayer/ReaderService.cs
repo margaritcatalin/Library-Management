@@ -135,7 +135,7 @@ namespace PublicLibrary.BusinessLayer
                     return false;
                 }
 
-                if (reader.Email.Any(c => !(char.IsLetterOrDigit(c) || c == '@' || c == '.' || c == '_' || c == '-' )))
+                if (reader.Email.Any(c => !(char.IsLetterOrDigit(c) || c == '@' || c == '.' || c == '_' || c == '-')))
                 {
                     LoggerUtil.LogInfo($"The reader email is invalid.");
                     return false;
@@ -236,7 +236,7 @@ namespace PublicLibrary.BusinessLayer
                 return false;
             }
 
-            return this.readerRepository.AddExtension(reader,bookWithdrawal);
+            return this.readerRepository.AddExtension(reader, bookWithdrawal);
         }
 
         /// <summary>
@@ -315,6 +315,7 @@ namespace PublicLibrary.BusinessLayer
             var numberOfLendedBooks = bookWithdrawalsForToday.SelectMany(bw => bw.BorrowedBooks).Count();
             return numberOfLendedBooks + currentWithdrawBooks <= pERSIMP;
         }
+
         private bool CheckBooksDifferentCategories(List<Book> books, bool isEmployee)
         {
             int c = int.Parse(ConfigurationManager.AppSettings["C"]);
@@ -343,7 +344,6 @@ namespace PublicLibrary.BusinessLayer
 
         private bool CheckBooksForSameCategories(IEnumerable<Book> books, Reader reader, bool isEmployee, DateTime dateTime)
         {
-
             int d = int.Parse(ConfigurationManager.AppSettings["D"]);
             int l = int.Parse(ConfigurationManager.AppSettings["L"]);
             if (isEmployee)

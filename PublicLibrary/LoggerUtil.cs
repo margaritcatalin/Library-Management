@@ -4,7 +4,6 @@
 
 namespace PublicLibrary
 {
-
     /// <summary>
     /// Logging helper.
     /// </summary>

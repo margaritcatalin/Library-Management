@@ -7,14 +7,20 @@ namespace PublicLibrary.Data_Mapper
     using System.Data.Entity;
     using PublicLibrary.Domain_Model;
 
+    /// <summary>
+    /// Library database.
+    /// </summary>
     public class LibraryDb : DbContext
     {
-        // Your context has been configured to use a 'LibraryDb' connection string from your application's 
-        // configuration file (App.config or Web.config). By default, this connection string targets the 
-        // 'PublicLibrary.Data_Mapper.LibraryDb' database on your LocalDb instance. 
-        // 
-        // If you wish to target a different database and/or database provider, modify the 'LibraryDb' 
+        // Your context has been configured to use a 'LibraryDb' connection string from your application's
+        // configuration file (App.config or Web.config). By default, this connection string targets the
+        // 'PublicLibrary.Data_Mapper.LibraryDb' database on your LocalDb instance.
+        // If you wish to target a different database and/or database provider, modify the 'LibraryDb'
         // connection string in the application configuration file.
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LibraryDb"/> class.
+        /// </summary>
         public LibraryDb()
             : base("name=LibraryDB")
         {
@@ -22,58 +28,57 @@ namespace PublicLibrary.Data_Mapper
         }
 
         /// <summary>
-        /// The books.
+        /// Gets or sets books.
         /// </summary>
         public DbSet<Book> Books { get; set; }
 
         /// <summary>
-        /// The authors.
+        /// Gets or sets authors.
         /// </summary>
         public DbSet<Author> Authors { get; set; }
 
         /// <summary>
-        /// The bookwitdrawls.
+        /// Gets or sets bookwithdrawls.
         /// </summary>
         public DbSet<BookWithdrawal> BookWithdrawals { get; set; }
 
         /// <summary>
-        /// The borrowed books.
+        /// Gets or sets borrowedbooks.
         /// </summary>
         public DbSet<BorrowedBook> BorrowedBooks { get; set; }
 
         /// <summary>
-        /// The categories.
+        /// Gets or sets categories.
         /// </summary>
         public DbSet<Category> Categories { get; set; }
 
         /// <summary>
-        /// The editions.
+        /// Gets or sets editions.
         /// </summary>
         public DbSet<Edition> Editions { get; set; }
 
         /// <summary>
-        /// The readers.
+        /// Gets or sets readers.
         /// </summary>
         public DbSet<Reader> Readers { get; set; }
 
         /// <summary>
-        /// The employees.
+        /// Gets or sets employees.
         /// </summary>
         public DbSet<Employee> Employees { get; set; }
 
         /// <summary>
-        /// The books.
+        /// Gets or sets bookStocks.
         /// </summary>
         public DbSet<BookStock> BookStocks { get; set; }
 
         /// <summary>
-        /// The extensions.
+        /// Gets or sets extensions.
         /// </summary>
         public DbSet<Extension> Extensions { get; set; }
 
-        // Add a DbSet for each entity type that you want to include in your model. For more information 
+        // Add a DbSet for each entity type that you want to include in your model. For more information
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
-
         // public virtual DbSet<MyEntity> MyEntities { get; set; }
     }
 }

@@ -57,7 +57,6 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>The books list.</returns>
         public List<Book> GetBooksWithdrawalWithinPeriod(int days, Reader reader, DateTime dateTime)
         {
-
             return this.libraryDb.BookWithdrawals.Include(bw => bw.BorrowedBooks)
                 .Include(bw => bw.BorrowedBooks.Select(bb => bb.Book)).Where(bw =>
                     bw.Reader.Id.Equals(reader.Id) &&
@@ -68,8 +67,6 @@ namespace PublicLibrary.Data_Mapper
                 .SelectMany(bw => bw.BorrowedBooks).Include(bb => bb.Book)
                 .Select(bb => bb.Book)
                 .ToList();
-
-
         }
 
         /// <summary>
@@ -78,9 +75,9 @@ namespace PublicLibrary.Data_Mapper
         /// <param name="reader">The reader.</param>
         /// <param name="bookWithdrawal">The bookWihdrawl.</param>
         /// <returns>If extension was added.</returns>
-        public bool AddExtension(Reader reader,BookWithdrawal bookWithdrawal)
+        public bool AddExtension(Reader reader, BookWithdrawal bookWithdrawal)
         {
-            bookWithdrawal.Extensions.Add(new Extension { Date = DateTime.Now,Reader = reader});
+            bookWithdrawal.Extensions.Add(new Extension { Date = DateTime.Now, Reader = reader });
             return this.libraryDb.SaveChanges() != 0;
         }
 

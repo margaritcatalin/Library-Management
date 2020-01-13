@@ -117,6 +117,12 @@ namespace PublicLibrary.BusinessLayer
             return addBook;
         }
 
+        /// <summary>
+        /// Add a new edition.
+        /// </summary>
+        /// <param name="book">The book.</param>
+        /// <param name="edition">The edition.</param>
+        /// <returns>If edition was added.</returns>
         public bool AddEdition(Book book, Edition edition)
         {
             if (book == null)
@@ -249,7 +255,6 @@ namespace PublicLibrary.BusinessLayer
             float leftovers = bookStock.Amount - amountOfBorrowedBooks - bookStock.LectureRoomAmount - 1;
 
             return leftovers / bookStock.Amount > 0.1f;
-
         }
 
         /// <summary>
