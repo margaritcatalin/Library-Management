@@ -330,5 +330,20 @@ namespace PublicLibraryTests
             Assert.False(_categoriesService.CategoryIsPartOfCategories(null, categories));
             Assert.True(_libraryDbMock.Categories.Count() == 2);
         }
+        [Test]
+        public void CategoryIsNotPartOfCategories()
+        {
+            Category c = new Category { Name = "Science" };
+            Category c2 = new Category { Name = "Test", ParentCategory = c };
+            Category c1 = new Category { Name = "Science" };
+            var result = _categoriesService.AddCategory(c);
+            var result1 = _categoriesService.AddCategory(c1);
+            var result2 = _categoriesService.AddCategory(c2);
+            List<Category> categories = new List<Category>();
+            categories.Add(c);
+            categories.Add(c2);
+            Assert.False(_categoriesService.CategoryIsPartOfCategories(c1, categories));
+            Assert.True(_libraryDbMock.Categories.Count() == 2);
+        }
     }
 }
