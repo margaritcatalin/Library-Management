@@ -13,35 +13,34 @@ namespace PublicLibraryDbTests
     public class BookBorrowingTests
     {
 
-        private LibraryDb _libraryDb;
-        private BookService _bookService;
-        private Author _author;
-        private Edition _edition;
-        private BookStock _bookStock;
-        private Category _category;
-        private Employee _employee;
-        private Reader _reader;
-        private Book _book;
-        private List<Book> _booksList;
-        private ReaderService _readerService;
+        private LibraryDb libraryDb;
+        private BookService bookService;
+        private Author author;
+        private Edition edition;
+        private BookStock bookStock;
+        private Category category;
+        private Employee employee;
+        private Reader reader;
+        private Book book;
+        private ReaderService readerService;
 
         [SetUp]
         public void SetUp()
         {
-            _libraryDb = new LibraryDb();
-            ReaderRepository readerRepository = new ReaderRepository(_libraryDb);
-            EmployeeService employeeService = new EmployeeService(new EmployeeRepository(_libraryDb));
-            _readerService = new ReaderService(readerRepository);
-            _bookService = new BookService(new BookRepository(_libraryDb),new CategoriesService(new CategoriesRepository(_libraryDb)),readerRepository  );
-            _author =new Author{Name = "Ioan Slavici"};
-            _bookStock = new BookStock{Amount = 14,LectureRoomAmount = 10};
+            libraryDb = new LibraryDb();
+            ReaderRepository readerRepository = new ReaderRepository(libraryDb);
+            EmployeeService employeeService = new EmployeeService(new EmployeeRepository(libraryDb));
+            readerService = new ReaderService(readerRepository);
+            bookService = new BookService(new BookRepository(libraryDb),new CategoriesService(new CategoriesRepository(libraryDb)),readerRepository  );
+            author =new Author{Name = "Ioan Slavici"};
+            bookStock = new BookStock{Amount = 14,LectureRoomAmount = 10};
             var bookStock2 = new BookStock { Amount = 1000, LectureRoomAmount = 0 };
             var bookstock3 = new BookStock { Amount = 12,LectureRoomAmount = 10};
-            _edition = new Edition { Name = "Teora", BookType = "Hardcover", Pages = 320, BookStock = _bookStock };
+            edition = new Edition { Name = "Teora", BookType = "Hardcover", Pages = 320, BookStock = bookStock };
             var edition2 = new Edition { Name = "First Edition", BookType = "Hardcover", Pages = 320, BookStock = bookstock3 };
-            _category = new Category{Name = "Nuvela"};
+            category = new Category{Name = "Nuvela"};
 
-            _employee = new Employee()
+            employee = new Employee()
             {
                 FirstName = "Catalin",
                 LastName = "Vola",
@@ -49,7 +48,7 @@ namespace PublicLibraryDbTests
                 Phone = "7345345568",
                 Address = "Florii nr.15",
             };
-             _reader = new Reader
+             reader = new Reader
             {
                 FirstName = "Al Alekku",
                 LastName = "Alexandru",
@@ -58,23 +57,23 @@ namespace PublicLibraryDbTests
                 Address = "Str.Memorandului nr.4",
                 Extensions = new List<Extension>()
             };
-             _book = new Book
+             book = new Book
             {
                 Name = "Moara cu noroc",
-                Authors = new[] { _author },
-                Editions = new[] { _edition },
-                Categories = new[] { _category }
+                Authors = new[] { author },
+                Editions = new[] { edition },
+                Categories = new[] { category }
             };
              
-             _readerService.AddReader(_reader);
-             employeeService.AddEmployee(_employee);
-             _bookService.CreateBook(_book);
+             readerService.AddReader(reader);
+             employeeService.AddEmployee(employee);
+             bookService.CreateBook(book);
              for (int i = 0; i < 25; i++)
              {
-                 _bookService.CreateBook(new Book
+                 bookService.CreateBook(new Book
                  {
                      Name = $"Moara cu noroc{(char) ('a' + i)}",
-                     Authors = new[] {_author},
+                     Authors = new[] {author},
                      Editions = new[]
                          {new Edition {Name = $"Teora{(char) ('a' + i)}", BookType = "Hardcover", Pages = 320, BookStock = bookStock2},},
                      Categories = new[] {new Category{Name = $"noroc{(char) ('a' + i)}"}, }
@@ -82,46 +81,46 @@ namespace PublicLibraryDbTests
              }
              for (int i = 0; i < 25; i++)
              {
-                 _bookService.CreateBook(new Book
+                 bookService.CreateBook(new Book
                  {
                      Name = $"Mara{(char)('a' + i)}",
-                     Authors = new[] { _author },
+                     Authors = new[] { author },
                      Editions = new[]
                          {new Edition {Name = $"Teora{(char) ('a' + i)}", BookType = "Hardcover", Pages = 320, BookStock = bookStock2},},
-                     Categories = new[] { _category }, 
+                     Categories = new[] { category }, 
                  });
              }
 
-             _bookService.CreateBook(new Book
+             bookService.CreateBook(new Book
              {
                  Name = "Zana Zorilor",
-                 Authors = new[] {_author},
+                 Authors = new[] {author},
                  Editions = new[] {edition2},
-                 Categories = new[] {_category}
+                 Categories = new[] {category}
              });
         }
 
         [TearDown]
         public void Cleanup()
         {
-            _libraryDb.Database.Delete();
+            libraryDb.Database.Delete();
         }
 
         [Test]
         public void TestBorrowOneBook()
         {
-            var result = _bookService.BorrowBooks(
-                new List<Borrowing> {new Borrowing{BookName = "Moara cu noroc",EditionName = "Teora"} }, _reader,
-                _employee,DateTime.Now);
+            var result = bookService.BorrowBooks(
+                new List<Borrowing> {new Borrowing{BookName = "Moara cu noroc",EditionName = "Teora"} }, reader,
+                employee,DateTime.Now);
 
             Assert.True(result!=null);
         }
         [Test]
         public void TestBorrowOneBookNotInStock()
         {
-            var result = _bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Zana Zorilor", EditionName = "First Edition" } }, _reader,
-                _employee, DateTime.Now);
+            var result = bookService.BorrowBooks(
+                new List<Borrowing> { new Borrowing { BookName = "Zana Zorilor", EditionName = "First Edition" } }, reader,
+                employee, DateTime.Now);
 
             Assert.False(result != null);
         }
@@ -130,12 +129,12 @@ namespace PublicLibraryDbTests
         {
             var delta = int.Parse(ConfigurationManager.AppSettings["DELTA"]);
 
-            var result1 = _bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, _reader,
-                _employee, DateTime.Now);
-            var result2 = _bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, _reader,
-                _employee,DateTime.Now.AddDays(delta-1));
+            var result1 = bookService.BorrowBooks(
+                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, reader,
+                employee, DateTime.Now);
+            var result2 = bookService.BorrowBooks(
+                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, reader,
+                employee,DateTime.Now.AddDays(delta-1));
 
             Assert.True(result1!=null);
             Assert.False(result2 != null);
@@ -145,12 +144,12 @@ namespace PublicLibraryDbTests
         {
             var delta = int.Parse(ConfigurationManager.AppSettings["DELTA"]);
 
-            var result1 = _bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, _reader,
-                _employee, DateTime.Now);
-            var result2 = _bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, _reader,
-                _employee, DateTime.Now.AddDays(delta+1));
+            var result1 = bookService.BorrowBooks(
+                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, reader,
+                employee, DateTime.Now);
+            var result2 = bookService.BorrowBooks(
+                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, reader,
+                employee, DateTime.Now.AddDays(delta+1));
 
             Assert.True(result1 != null);
             Assert.True(result2 != null);
@@ -163,9 +162,9 @@ namespace PublicLibraryDbTests
 
             for (int i = 0; i < nmc-1; i++)
             {
-                var result = _bookService.BorrowBooks(
-                    new List<Borrowing> { new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, _reader,
-                    _employee, DateTime.Now.AddDays(i));
+                var result = bookService.BorrowBooks(
+                    new List<Borrowing> { new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, reader,
+                    employee, DateTime.Now.AddDays(i));
                 Assert.True(result != null);
             }
         }
@@ -177,9 +176,9 @@ namespace PublicLibraryDbTests
 
             for (int i = 0; i < nmc+1; i++)
             {
-                var result = _bookService.BorrowBooks(
-                    new List<Borrowing> { new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, _reader,
-                    _employee, DateTime.Now.AddDays(i));
+                var result = bookService.BorrowBooks(
+                    new List<Borrowing> { new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, reader,
+                    employee, DateTime.Now.AddDays(i));
                 if (i != nmc)
                 {
                     Assert.True(result != null);
@@ -197,9 +196,9 @@ namespace PublicLibraryDbTests
 
             for (int i = 0; i < ncz - 1; i++)
             {
-                var result = _bookService.BorrowBooks(
-                    new List<Borrowing> { new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, _reader,
-                    _employee, DateTime.Now);
+                var result = bookService.BorrowBooks(
+                    new List<Borrowing> { new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, reader,
+                    employee, DateTime.Now);
                 Assert.True(result != null);
             }
         }
@@ -210,9 +209,9 @@ namespace PublicLibraryDbTests
 
             for (int i = 0; i < ncz + 1; i++)
             {
-                var result = _bookService.BorrowBooks(
-                    new List<Borrowing> { new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, _reader,
-                    _employee, DateTime.Now);
+                var result = bookService.BorrowBooks(
+                    new List<Borrowing> { new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, reader,
+                    employee, DateTime.Now);
                 if (i != ncz)
                 {
                     Assert.True(result != null);
@@ -234,9 +233,9 @@ namespace PublicLibraryDbTests
             {
                 borrowList.Add(new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" });
             }
-            var result = _bookService.BorrowBooks(
-                borrowList, _reader,
-                _employee, DateTime.Now);
+            var result = bookService.BorrowBooks(
+                borrowList, reader,
+                employee, DateTime.Now);
             Assert.True(result != null);
         }
         [Test]
@@ -249,9 +248,9 @@ namespace PublicLibraryDbTests
             {
                 borrowList.Add(new Borrowing { BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" });
             }
-            var result = _bookService.BorrowBooks(
-                borrowList, _reader,
-                _employee, DateTime.Now);
+            var result = bookService.BorrowBooks(
+                borrowList, reader,
+                employee, DateTime.Now);
             Assert.False(result != null);
         }
         [Test]
@@ -262,9 +261,9 @@ namespace PublicLibraryDbTests
 
             for (int i = 0; i < d - 1; i++)
             {
-                var result = _bookService.BorrowBooks(
-                    new List<Borrowing> { new Borrowing { BookName = $"Mara{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, _reader,
-                    _employee, DateTime.Now.AddDays(i*7));
+                var result = bookService.BorrowBooks(
+                    new List<Borrowing> { new Borrowing { BookName = $"Mara{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, reader,
+                    employee, DateTime.Now.AddDays(i*7));
                 Assert.True(result != null);
             }
         }
@@ -276,9 +275,9 @@ namespace PublicLibraryDbTests
 
             for (int i = 0; i < d + 1; i++)
             {
-                var result = _bookService.BorrowBooks(
-                    new List<Borrowing> { new Borrowing { BookName = $"Mara{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, _reader,
-                    _employee, DateTime.Now.AddDays(i * 7));
+                var result = bookService.BorrowBooks(
+                    new List<Borrowing> { new Borrowing { BookName = $"Mara{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}" } }, reader,
+                    employee, DateTime.Now.AddDays(i * 7));
                 if (i != d)
                 {
                     Assert.True(result != null);
@@ -295,13 +294,13 @@ namespace PublicLibraryDbTests
         {
             var lim = int.Parse(ConfigurationManager.AppSettings["LIM"]);
 
-            var bw = _bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, _reader,
-                _employee, DateTime.Now);
+            var bw = bookService.BorrowBooks(
+                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, reader,
+                employee, DateTime.Now);
 
             for(int i = 0; i <= lim; i++)
             {
-                var result = _readerService.AddExtension(_reader, bw);
+                var result = readerService.AddExtension(reader, bw);
                 Assert.True(result);
             }
         }
@@ -310,13 +309,13 @@ namespace PublicLibraryDbTests
         {
             var lim = int.Parse(ConfigurationManager.AppSettings["LIM"]);
 
-            var bw = _bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, _reader,
-                _employee, DateTime.Now);
+            var bw = bookService.BorrowBooks(
+                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } }, reader,
+                employee, DateTime.Now);
 
             for (int i = 0; i <= lim+1; i++)
             {
-                var result = _readerService.AddExtension(_reader, bw);
+                var result = readerService.AddExtension(reader, bw);
                 if (i != lim+1)
                 {
                     Assert.True(result);

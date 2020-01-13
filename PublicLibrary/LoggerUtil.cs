@@ -1,18 +1,21 @@
-﻿using System;
+﻿// <copyright file="LoggerUtil.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace PublicLibrary
 {
 
-    
-
+    /// <summary>
+    /// Logging helper.
+    /// </summary>
     public class LoggerUtil
     {
-        /*static LoggerUtil()
-        {
-            log4net.Config.XmlConfigurator.Configure();
-        }*/
-    private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// Log a new message.
+        /// </summary>
+        /// <param name="message">The message.</param>
         public static void LogInfo(string message)
         {
             if (Log.IsInfoEnabled)
@@ -20,6 +23,11 @@ namespace PublicLibrary
                 Log.Info(message);
             }
         }
+
+        /// <summary>
+        /// Log a new error.
+        /// </summary>
+        /// <param name="message">The message.</param>
         public static void LogError(string message)
         {
             if (Log.IsInfoEnabled)
@@ -27,6 +35,11 @@ namespace PublicLibrary
                 Log.Error(message);
             }
         }
+
+        /// <summary>
+        /// Log a new warning.
+        /// </summary>
+        /// <param name="message">The message.</param>
         public static void LogWarning(string message)
         {
             if (Log.IsInfoEnabled)

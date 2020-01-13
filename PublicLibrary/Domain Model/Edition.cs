@@ -1,28 +1,56 @@
-using System.Collections.Generic;
-using NUnit.Framework.Constraints;
-using PublicLibrary.Data_Mapper;
+// <copyright file="Edition.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace PublicLibrary.Domain_Model
 {
+    using System.Collections.Generic;
+    using PublicLibrary.Data_Mapper;
+
+    /// <summary>
+    /// Edition entity.
+    /// </summary>
     public class Edition
     {
+        /// <summary>
+        /// Gets or sets id.
+        /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        /// Gets or sets name.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets or sets pages.
+        /// </summary>
         public int Pages { get; set; }
 
+        /// <summary>
+        /// Gets or sets book type.
+        /// </summary>
         public string BookType { get; set; }
 
+        /// <summary>
+        /// Gets or sets book.
+        /// </summary>
         public Book Book { get; set; }
 
+        /// <summary>
+        /// Gets or sets borrowed books.
+        /// </summary>
         public virtual ICollection<BorrowedBook> BorrowedBooks { get; set; }
 
+        /// <summary>
+        /// Gets or sets book stock.
+        /// </summary>
         public BookStock BookStock { get; set; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
     }
 }

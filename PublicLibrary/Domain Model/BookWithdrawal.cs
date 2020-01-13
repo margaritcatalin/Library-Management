@@ -1,20 +1,46 @@
-using System;
-using System.Collections.Generic;
-using PublicLibrary.Data_Mapper;
+// <copyright file="BookWithdrawal.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace PublicLibrary.Domain_Model
 {
+    using System;
+    using System.Collections.Generic;
+    using PublicLibrary.Data_Mapper;
+
+    /// <summary>
+    /// The bookWihdrawl entity.
+    /// </summary>
     public class BookWithdrawal
     {
+        /// <summary>
+        /// Gets or sets id.
+        /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        /// Gets or sets date.
+        /// </summary>
         public DateTime Date { get; set; }
 
+        /// <summary>
+        /// Gets or sets reader.
+        /// </summary>
         public Reader Reader { get; set; }
 
+        /// <summary>
+        /// Gets or sets borrowed books.
+        /// </summary>
         public ICollection<BorrowedBook> BorrowedBooks { get; set; }
+
+        /// <summary>
+        /// Gets or sets extensions.
+        /// </summary>
         public ICollection<Extension> Extensions { get; set; }
 
+        /// <summary>
+        /// Gets or sets employee.
+        /// </summary>
         public Employee Employee { get; set; }
     }
 }
