@@ -15,7 +15,7 @@ namespace PublicLibrary.BusinessLayer
     /// </summary>
     public class CategoriesService
     {
-        private CategoriesRepository categoryRepository;
+        private readonly CategoriesRepository categoryRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoriesService"/> class.
