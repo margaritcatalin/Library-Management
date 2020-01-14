@@ -37,8 +37,6 @@ namespace PublicLibraryDbTests
 
         private Book book;
 
-        private List<Book> booksList;
-
         private ReaderService readerService;
 
         /// <summary>
@@ -55,42 +53,42 @@ namespace PublicLibraryDbTests
                 new BookRepository(this.libraryDb),
                 new CategoriesService(new CategoriesRepository(this.libraryDb)),
                 readerRepository);
-            this.author = new Author { FirstName = "Ioan", LastName = "Slavici" };
+            this.author = new Author { FirstName = "Estera", LastName = "Balas" };
             this.bookStock = new BookStock { Amount = 14, LectureRoomAmount = 10 };
             var bookStock2 = new BookStock { Amount = 1000, LectureRoomAmount = 0 };
             var bookstock3 = new BookStock { Amount = 12, LectureRoomAmount = 10 };
             this.edition = new Edition
                             {
-                                Name = "Teora", BookType = "Hardcover", Pages = 320, BookStock = this.bookStock,
+                                Name = "Corint", BookType = "Plasticcover", Pages = 320, BookStock = this.bookStock,
                             };
             var edition2 = new Edition
                            {
-                               Name = "First Edition", BookType = "Hardcover", Pages = 320, BookStock = bookstock3,
+                               Name = "Ultimate Edition", BookType = "Plasticcover", Pages = 320, BookStock = bookstock3,
                            };
-            this.category = new Category { Name = "Nuvela" };
+            this.category = new Category { Name = "Novel" };
 
             this.employee = new Employee()
                              {
                                  FirstName = "Catalin",
-                                 LastName = "Vola",
+                                 LastName = "Marcus",
                                  Email = "catalin.V@yahoo.com",
-                                 Phone = "7345345568",
+                                 Phone = "0765477898",
                                  Address = "Florii nr.15",
                                  Gender = "M",
                              };
             this.reader = new Reader
                            {
-                               FirstName = "Al Alekku",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
+                               FirstName = "Aly Baba",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
                                Phone = "1234567890",
-                               Address = "Str.Memorandului nr.4",
+                               Address = "Str.Camil Petrescu nr.23",
                                Extensions = new List<Extension>(),
                                Gender = "M",
                            };
             this.book = new Book
                          {
-                             Name = "Moara cu noroc",
+                             Name = "Java for junior",
                              Authors = new[] { this.author },
                              Editions = new[] { this.edition },
                              Categories = new[] { this.category },
@@ -104,14 +102,14 @@ namespace PublicLibraryDbTests
                 this.bookService.CreateBook(
                     new Book
                     {
-                        Name = $"Moara cu noroc{(char)('a' + i)}",
+                        Name = $"Java for junior{(char)('a' + i)}",
                         Authors = new[] { this.author },
                         Editions = new[]
                                    {
                                        new Edition
                                        {
-                                           Name = $"Teora{(char)('a' + i)}",
-                                           BookType = "Hardcover",
+                                           Name = $"Corint{(char)('a' + i)}",
+                                           BookType = "Plasticcover",
                                            Pages = 320,
                                            BookStock = bookStock2,
                                        },
@@ -125,14 +123,14 @@ namespace PublicLibraryDbTests
                 this.bookService.CreateBook(
                     new Book
                     {
-                        Name = $"Mara{(char)('a' + i)}",
+                        Name = $"SQL Server{(char)('a' + i)}",
                         Authors = new[] { this.author },
                         Editions = new[]
                                    {
                                        new Edition
                                        {
-                                           Name = $"Teora{(char)('a' + i)}",
-                                           BookType = "Hardcover",
+                                           Name = $"Corint{(char)('a' + i)}",
+                                           BookType = "Plasticcover",
                                            Pages = 320,
                                            BookStock = bookStock2,
                                        },
@@ -144,7 +142,7 @@ namespace PublicLibraryDbTests
             this.bookService.CreateBook(
                 new Book
                 {
-                    Name = "Zana Zorilor",
+                    Name = "Testing is important",
                     Authors = new[] { this.author },
                     Editions = new[] { edition2 },
                     Categories = new[] { this.category },
@@ -167,7 +165,7 @@ namespace PublicLibraryDbTests
         public void TestBorrowOneBook()
         {
             var result = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } },
+                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
                 this.employee,
                 DateTime.Now);
@@ -182,7 +180,7 @@ namespace PublicLibraryDbTests
         public void TestBorrowOneBookNotInStock()
         {
             var result = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Zana Zorilor", EditionName = "First Edition" } },
+                new List<Borrowing> { new Borrowing { BookName = "Testing is important", EditionName = "Ultimate Edition" } },
                 this.reader,
                 this.employee,
                 DateTime.Now);
@@ -199,12 +197,12 @@ namespace PublicLibraryDbTests
             var delta = int.Parse(ConfigurationManager.AppSettings["DELTA"]);
 
             var result1 = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } },
+                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
                 this.employee,
                 DateTime.Now);
             var result2 = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } },
+                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
                 this.employee,
                 DateTime.Now.AddDays(delta - 1));
@@ -222,12 +220,12 @@ namespace PublicLibraryDbTests
             var delta = int.Parse(ConfigurationManager.AppSettings["DELTA"]);
 
             var result1 = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } },
+                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
                 this.employee,
                 DateTime.Now);
             var result2 = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } },
+                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
                 this.employee,
                 DateTime.Now.AddDays(delta + 1));
@@ -251,7 +249,7 @@ namespace PublicLibraryDbTests
                     {
                         new Borrowing
                         {
-                            BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}",
+                            BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                         },
                     },
                     this.reader,
@@ -276,7 +274,7 @@ namespace PublicLibraryDbTests
                     {
                         new Borrowing
                         {
-                            BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}",
+                            BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                         },
                     },
                     this.reader,
@@ -308,7 +306,7 @@ namespace PublicLibraryDbTests
                     {
                         new Borrowing
                         {
-                            BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}",
+                            BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                         },
                     },
                     this.reader,
@@ -333,7 +331,7 @@ namespace PublicLibraryDbTests
                     {
                         new Borrowing
                         {
-                            BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}",
+                            BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                         },
                     },
                     this.reader,
@@ -364,7 +362,7 @@ namespace PublicLibraryDbTests
                 borrowList.Add(
                     new Borrowing
                     {
-                        BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}",
+                        BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                     });
             }
 
@@ -386,7 +384,7 @@ namespace PublicLibraryDbTests
                 borrowList.Add(
                     new Borrowing
                     {
-                        BookName = $"Moara cu noroc{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}",
+                        BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                     });
             }
 
@@ -407,7 +405,7 @@ namespace PublicLibraryDbTests
                 var result = this.bookService.BorrowBooks(
                     new List<Borrowing>
                     {
-                        new Borrowing { BookName = $"Mara{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}", },
+                        new Borrowing { BookName = $"SQL Server{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}", },
                     },
                     this.reader,
                     this.employee,
@@ -429,7 +427,7 @@ namespace PublicLibraryDbTests
                 var result = this.bookService.BorrowBooks(
                     new List<Borrowing>
                     {
-                        new Borrowing { BookName = $"Mara{(char)('a' + i)}", EditionName = $"Teora{(char)('a' + i)}", },
+                        new Borrowing { BookName = $"SQL Server{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}", },
                     },
                     this.reader,
                     this.employee,
@@ -454,7 +452,7 @@ namespace PublicLibraryDbTests
             var lim = int.Parse(ConfigurationManager.AppSettings["LIM"]);
 
             var bw = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } },
+                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
                 this.employee,
                 DateTime.Now);
@@ -475,7 +473,7 @@ namespace PublicLibraryDbTests
             var lim = int.Parse(ConfigurationManager.AppSettings["LIM"]);
 
             var bw = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Moara cu noroc", EditionName = "Teora" } },
+                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
                 this.employee,
                 DateTime.Now);

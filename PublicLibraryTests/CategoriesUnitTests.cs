@@ -177,7 +177,7 @@ namespace PublicLibraryTests
         [Test]
         public void AddCategoryNameWithWhiteSpace()
         {
-            var c = new Category { Name = "Drama and thriller" };
+            var c = new Category { Name = "Action and Drama" };
             var result = this.categoriesService.AddCategory(c);
             Assert.False(this.libraryDbMock.Categories.Count() == 0);
         }
@@ -188,7 +188,7 @@ namespace PublicLibraryTests
         [Test]
         public void AddCategory()
         {
-            var c = new Category { Name = "Science" };
+            var c = new Category { Name = "Fiction" };
             var result = this.categoriesService.AddCategory(c);
             Assert.True(this.libraryDbMock.Categories.Count() == 1);
         }
@@ -199,7 +199,7 @@ namespace PublicLibraryTests
         [Test]
         public void GetCategory()
         {
-            var c = new Category { Name = "Science" };
+            var c = new Category { Name = "Fiction" };
             var result = this.categoriesService.AddCategory(c);
 
             c = this.categoriesService.GetCategory(c.Name);
@@ -232,7 +232,7 @@ namespace PublicLibraryTests
         [Test]
         public void GetUnknownCategory()
         {
-            var c = new Category { Name = "Science" };
+            var c = new Category { Name = "Fiction" };
             var result = this.categoriesService.AddCategory(c);
 
             c = this.categoriesService.GetCategory("Philosophy");
@@ -245,8 +245,8 @@ namespace PublicLibraryTests
         [Test]
         public void AddSubCateory()
         {
-            Category c = new Category { Name = "Science" };
-            Category c2 = new Category { Name = "Test", ParentCategory = c };
+            Category c = new Category { Name = "Fiction" };
+            Category c2 = new Category { Name = "C2", ParentCategory = c };
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
             Assert.True(c2.ParentCategory != null);
@@ -259,8 +259,8 @@ namespace PublicLibraryTests
         [Test]
         public void AddSubCateoryWithNoParentCategory()
         {
-            Category c = new Category { Name = "Science" };
-            Category c2 = new Category { Name = "Test" };
+            Category c = new Category { Name = "Fiction" };
+            Category c2 = new Category { Name = "C3" };
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
             Assert.False(c2.ParentCategory != null);
@@ -273,19 +273,19 @@ namespace PublicLibraryTests
         [Test]
         public void IsPartOfCategory()
         {
-            Category c = new Category { Name = "Science" };
+            Category c = new Category { Name = "Fiction" };
             var result = this.categoriesService.AddCategory(c);
 
             Book book = new Book
             {
-                Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Name = "Testing is important",
+                Authors = new List<Author> { new Author { FirstName = "Estera", LastName = "Balas" } },
                 Editions = new List<Edition>
                 {
                     new Edition
             {
-                Name = "Teora",
-                BookType = "Hardcover",
+                Name = "Corint",
+                BookType = "Plasticcover",
                 Pages = 256,
                 BookStock = new BookStock
             {
@@ -307,20 +307,20 @@ namespace PublicLibraryTests
         [Test]
         public void IsNotPartOfCategory()
         {
-            Category c = new Category { Name = "Science" };
+            Category c = new Category { Name = "Fiction" };
             var result = this.categoriesService.AddCategory(c);
             Category c2 = new Category { Name = "Test" };
             var result2 = this.categoriesService.AddCategory(c2);
             Book book = new Book
             {
-                Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Name = "Testing is important",
+                Authors = new List<Author> { new Author { FirstName = "Estera", LastName = "Balas" } },
                 Editions = new List<Edition>
                 {
                     new Edition
             {
-                Name = "Teora",
-                BookType = "Hardcover",
+                Name = "Corint",
+                BookType = "Plasticcover",
                 Pages = 256,
                 BookStock = new BookStock
             {
@@ -342,7 +342,7 @@ namespace PublicLibraryTests
         [Test]
         public void IsNotPartOfParentCategory()
         {
-            Category c = new Category { Name = "Science" };
+            Category c = new Category { Name = "Fiction" };
             var result = this.categoriesService.AddCategory(c);
             Category c1 = new Category { Name = "Science2" };
             var result1 = this.categoriesService.AddCategory(c1);
@@ -350,14 +350,14 @@ namespace PublicLibraryTests
             var result2 = this.categoriesService.AddCategory(c2);
             Book book = new Book
             {
-                Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Name = "Testing is important",
+                Authors = new List<Author> { new Author { FirstName = "Estera", LastName = "Balas" } },
                 Editions = new List<Edition>
                 {
                     new Edition
             {
-                Name = "Teora",
-                BookType = "Hardcover",
+                Name = "Corint",
+                BookType = "Plasticcover",
                 Pages = 256,
                 BookStock = new BookStock
             {
@@ -379,20 +379,20 @@ namespace PublicLibraryTests
         [Test]
         public void IsPartOfParentCategory()
         {
-            Category c = new Category { Name = "Science" };
+            Category c = new Category { Name = "Fiction" };
             var result = this.categoriesService.AddCategory(c);
             Category c2 = new Category { Name = "Test", ParentCategory = c };
             var result2 = this.categoriesService.AddCategory(c2);
             Book book = new Book
             {
-                Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Name = "Testing is important",
+                Authors = new List<Author> { new Author { FirstName = "Estera", LastName = "Balas" } },
                 Editions = new List<Edition>
                 {
                     new Edition
             {
-                Name = "Teora",
-                BookType = "Hardcover",
+                Name = "Corint",
+                BookType = "Plasticcover",
                 Pages = 256,
                 BookStock = new BookStock
             {
@@ -414,19 +414,19 @@ namespace PublicLibraryTests
         [Test]
         public void IsPartOfCategoryNullCategory()
         {
-            Category c = new Category { Name = "Science" };
+            Category c = new Category { Name = "Fiction" };
             var result = this.categoriesService.AddCategory(c);
 
             Book book = new Book
             {
-                Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Name = "Testing is important",
+                Authors = new List<Author> { new Author { FirstName = "Estera", LastName = "Balas" } },
                 Editions = new List<Edition>
                 {
                     new Edition
             {
-                Name = "Teora",
-                BookType = "Hardcover",
+                Name = "Corint",
+                BookType = "Plasticcover",
                 Pages = 256,
                 BookStock = new BookStock
             {
@@ -448,7 +448,7 @@ namespace PublicLibraryTests
         [Test]
         public void CategoryIsPartOfCategoriesNotNullCategory()
         {
-            Category c = new Category { Name = "Science" };
+            Category c = new Category { Name = "Fiction" };
             Category c2 = new Category { Name = "Test", ParentCategory = c };
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
@@ -465,7 +465,7 @@ namespace PublicLibraryTests
         [Test]
         public void CategoryIsPartOfCategoriesNullCategory()
         {
-            Category c = new Category { Name = "Science" };
+            Category c = new Category { Name = "Fiction" };
             Category c2 = new Category { Name = "Test", ParentCategory = c };
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
@@ -482,7 +482,7 @@ namespace PublicLibraryTests
         [Test]
         public void CategoryIsNotPartOfCategories()
         {
-            Category c = new Category { Name = "Science" };
+            Category c = new Category { Name = "Fiction" };
             Category c2 = new Category { Name = "Test", ParentCategory = c };
             Category c1 = new Category { Name = "Glob" };
             var result = this.categoriesService.AddCategory(c);

@@ -36,9 +36,9 @@ namespace PublicLibraryTests
         public void SetUp()
         {
             var bookStock = new BookStock { Amount = 100, LectureRoomAmount = 10 };
-            this.edition = new Edition { Name = "Teora", BookType = "Hardcover", Pages = 256, BookStock = bookStock };
-            this.author = new Author { FirstName = "Ioan", LastName = "Slavici" };
-            this.category = new Category { Name = "Drama", };
+            this.edition = new Edition { Name = "Corint", BookType = "Plasticcover", Pages = 256, BookStock = bookStock };
+            this.author = new Author { FirstName = "Estera", LastName = "Balas" };
+            this.category = new Category { Name = "Action", };
             this.libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
             EntityFrameworkMock.PrepareMock(this.libraryDbMock);
             this.bookService = new BookService(
@@ -67,7 +67,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu Noroc",
+                Name = "Testing is important",
                 Authors = new List<Author> { this.author },
                 Editions = new List<Edition> { this.edition },
                 Categories = null,
@@ -85,7 +85,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu noroc",
+                Name = "Java for junior",
                 Authors = new List<Author> { this.author },
                 Editions = new List<Edition> { this.edition },
                 Categories = new List<Category>(),
@@ -102,7 +102,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu noroc",
+                Name = "Java for junior",
                 Authors = new List<Author> { this.author },
                 Editions = new List<Edition> { this.edition },
                 Categories = new List<Category> { this.category },
@@ -127,7 +127,7 @@ namespace PublicLibraryTests
 
             var book = new Book
             {
-                Name = "Moara cu noroc",
+                Name = "Java for junior",
                 Authors = new List<Author> { this.author },
                 Editions = new List<Edition> { this.edition },
                 Categories = categoriesList,
@@ -270,11 +270,11 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu Noroc",
+                Name = "Testing is important",
                 Authors =
                                new List<Author>
                                {
-                                   this.author, new Author { FirstName = "Mihail", LastName = "Scladoveanu", },
+                                   this.author, new Author { FirstName = "Robert", LastName = "German", },
                                },
                 Editions = new List<Edition> { this.edition },
                 Categories = new List<Category> { this.category },
@@ -291,7 +291,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu Noroc",
+                Name = "Testing is important",
                 Authors = new List<Author> { },
                 Editions = new List<Edition> { this.edition },
                 Categories = new List<Category> { this.category },
@@ -309,7 +309,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu Noroc",
+                Name = "Testing is important",
                 Authors = null,
                 Editions = new List<Edition> { this.edition },
                 Categories = new List<Category> { this.category },
@@ -327,7 +327,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu Noroc",
+                Name = "Testing is important",
                 Authors = new List<Author> { this.author },
                 Editions = new List<Edition> { },
                 Categories = new List<Category> { this.category },
@@ -345,7 +345,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu Noroc",
+                Name = "Testing is important",
                 Authors = new List<Author> { this.author },
                 Editions = null,
                 Categories = new List<Category> { this.category },
@@ -363,9 +363,9 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu Noroc",
+                Name = "Testing is important",
                 Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition, new Edition { Name = "Marta" } },
+                Editions = new List<Edition> { this.edition, new Edition { Name = "Girofar" } },
                 Categories = new List<Category> { this.category },
             };
             var result = this.bookService.CreateBook(book);
@@ -380,13 +380,13 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu Noroc",
+                Name = "Testing is important",
                 Authors = new List<Author> { this.author },
                 Editions = new List<Edition> { this.edition },
                 Categories = new List<Category>
                                         {
                                             this.category,
-                                            new Category { Name = "Romance", ParentCategory = this.category, },
+                                            new Category { Name = "Science", ParentCategory = this.category, },
                                         },
             };
             var result = this.bookService.CreateBook(book);
@@ -402,7 +402,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu Noroc",
+                Name = "Testing is important",
                 Authors = new List<Author> { this.author },
                 Editions = new List<Edition> { this.edition },
                 Categories = new List<Category>
@@ -410,9 +410,9 @@ namespace PublicLibraryTests
                                             this.category,
                                             new Category
                                             {
-                                                Name = "Romance",
+                                                Name = "Science",
                                                 ParentCategory =
-                                                    new Category { ParentCategory = this.category, Name = "Horror", },
+                                                    new Category { ParentCategory = this.category, Name = "Comedy", },
                                             },
                                         },
             };
@@ -429,7 +429,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu noroc",
+                Name = "Java for junior",
                 Authors = new List<Author> { this.author },
                 Editions = new List<Edition> { this.edition },
                 Categories = new List<Category> { this.category },
@@ -467,7 +467,7 @@ namespace PublicLibraryTests
         {
             var book = new Book
             {
-                Name = "Moara cu noroc",
+                Name = "Java for junior",
                 Authors = new List<Author> { this.author },
                 Editions = new List<Edition> { this.edition },
                 Categories = new List<Category> { this.category },

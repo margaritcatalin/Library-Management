@@ -36,7 +36,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 1);
         }
@@ -57,7 +57,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddNullFirstNameAuthor()
         {
-            var author = new Author { FirstName = null, LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = null, LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 0);
         }
@@ -68,7 +68,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddEmptyFirstNameAuthor()
         {
-            var author = new Author { FirstName = string.Empty, LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = string.Empty, LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 0);
         }
@@ -79,7 +79,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddSmallerFirstNameAuthor()
         {
-            var author = new Author { FirstName = "Aa", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Aa", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 0);
         }
@@ -94,7 +94,7 @@ namespace PublicLibraryTests
                          {
                              FirstName =
                                  "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong",
-                             LastName = "Slavici",
+                             LastName = "Balas",
                              Gender = "M",
                          };
             var result = this.authorService.AddAuthor(author);
@@ -245,7 +245,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddWhiteSpaceLastNameAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Al Alekku", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Aly Baba", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 1);
         }
@@ -267,7 +267,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddNullGenderAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = null };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = null };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 0);
         }
@@ -278,7 +278,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddEmptyGenderAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = string.Empty };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = string.Empty };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 0);
         }
@@ -289,7 +289,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddMGenderAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 1);
         }
@@ -300,7 +300,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddFGenderAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "F" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "F" };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 1);
         }
@@ -311,7 +311,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestAddBadGenderAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "C" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "C" };
             var result = this.authorService.AddAuthor(author);
             Assert.True(this.libraryDbMock.Authors.Count() == 0);
         }
@@ -322,7 +322,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestGetAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             author = this.authorService.GetAuthor(author.FirstName, author.LastName);
             Assert.NotNull(author);
@@ -334,7 +334,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestGetNullFirstNameAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             author = this.authorService.GetAuthor(null, author.LastName);
             Assert.Null(author);
@@ -346,7 +346,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestGetNullLastNameAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             author = this.authorService.GetAuthor(author.FirstName, null);
             Assert.Null(author);
@@ -358,7 +358,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestGetEmptyFirstNameAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             author = this.authorService.GetAuthor(string.Empty, author.LastName);
             Assert.Null(author);
@@ -370,7 +370,7 @@ namespace PublicLibraryTests
         [Test]
         public void TestGetEmptyLastNameAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
             author = this.authorService.GetAuthor(author.FirstName, string.Empty);
             Assert.Null(author);
@@ -382,9 +382,9 @@ namespace PublicLibraryTests
         [Test]
         public void TestGetBadNameAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            author = this.authorService.GetAuthor("Liviu", "Rebreanu");
+            author = this.authorService.GetAuthor("Estera", "Rebreanu");
             Assert.Null(author);
         }
     }

@@ -53,10 +53,10 @@ namespace PublicLibraryTests
             var reader = new Reader
                          {
                              FirstName = string.Empty,
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -75,10 +75,10 @@ namespace PublicLibraryTests
             var reader = new Reader
                          {
                              FirstName = null,
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -97,10 +97,10 @@ namespace PublicLibraryTests
             var reader = new Reader
                          {
                              FirstName = "Aa",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -119,11 +119,11 @@ namespace PublicLibraryTests
             var reader = new Reader
                          {
                              FirstName =
-                                 "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                                 "LongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstNameLongFirstName",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -141,11 +141,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "123",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "547",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -163,11 +163,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "@#Ana",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "@#Ion",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -185,11 +185,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "ana",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "horatiu",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -207,11 +207,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -227,11 +227,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
+                             FirstName = "Al Marcus",
                              LastName = null,
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -248,11 +248,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
+                             FirstName = "Aly Baba",
                              LastName = string.Empty,
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -269,11 +269,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Ak",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Ab",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -290,12 +290,12 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
+                             FirstName = "Aly Baba",
                              LastName =
-                                 "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                                 "LongLongLOngggggsaasfsssssssssssssssssssssaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaffffffffffsfsssssssssssaaaaaaaaaassssf",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -312,11 +312,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Ak467",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Ay5477",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -333,11 +333,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Ak@",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Al@",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -354,11 +354,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "alexandrescu",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -375,11 +375,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Sad Huseiim",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Joge Virtual",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -395,10 +395,10 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
                              Address = null,
                              Extensions = new List<Extension>(),
                              Gender = "M",
@@ -417,10 +417,10 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
                              Address = string.Empty,
                              Extensions = new List<Extension>(),
                              Gender = "M",
@@ -439,10 +439,10 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
                              Address = "aa",
                              Extensions = new List<Extension>(),
                              Gender = "M",
@@ -461,12 +461,12 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
                              Address =
-                                 "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                                 "gfgk",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -484,11 +484,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str. Memorandului nr4$@",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str. Camil Petrescu nr66$@",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -506,11 +506,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
                              Email = null,
                              Phone = null,
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -528,11 +528,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
                              Email = string.Empty,
                              Phone = null,
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -550,11 +550,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = "@yahoo.co",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "@google.co",
                              Phone = null,
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -572,12 +572,12 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
                              Email =
-                                 "@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                                 "longemail@gooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogggggggggggggggggggggggggggggggggggglllllllllllleeeeeeeeee.ro",
                              Phone = null,
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -595,11 +595,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v###@gmail.com",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "minodor.ionesc###@gmail.com",
                              Phone = null,
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -617,11 +617,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = "alexandru v@gmail.com",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "minu ionel@gmail.com",
                              Phone = null,
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -639,11 +639,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = "alexandrugmail.com",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "minorogmail.com",
                              Phone = null,
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -661,11 +661,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = null,
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "emaildetest@email.com",
                              Phone = null,
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -683,11 +683,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = null,
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "emaildetest@email.com",
                              Phone = string.Empty,
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -705,11 +705,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = null,
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "emaildetest@email.com",
                              Phone = "12345",
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -727,11 +727,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = null,
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "emaildetest@email.com",
                              Phone = "123456789123456789",
-                             Address = "Str. Memorandului nr4",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -749,11 +749,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Valentin",
-                             LastName = "Alexandru",
-                             Email = null,
-                             Phone = "123456Vali",
-                             Address = "Str. Memorandului nr4",
+                             FirstName = "Minodor",
+                             LastName = "Ionescu",
+                             Email = "emaildetest@email.com",
+                             Phone = "123456Cargus",
+                             Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -771,11 +771,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Sad Huseiim",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Sandu Ionel",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = null,
                              Gender = "M",
                          };
@@ -791,11 +791,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = null,
                          };
@@ -811,11 +811,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = string.Empty,
                          };
@@ -831,11 +831,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -851,11 +851,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "F",
                          };
@@ -871,11 +871,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Alexandru",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Ionescu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "C",
                          };
@@ -891,11 +891,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Sad Huseiim",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Sandu Gaga",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -912,11 +912,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Sad Huseiim",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Sandu Gaga",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -933,11 +933,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Sad Huseiim",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Sandu Gaga",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -954,11 +954,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Sad Huseiim",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Sandu Gaga",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -975,11 +975,11 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Sad Huseiim",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Sandu Gaga",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -996,16 +996,16 @@ namespace PublicLibraryTests
         {
             var reader = new Reader
                          {
-                             FirstName = "Al Alekku",
-                             LastName = "Sad Huseiim",
-                             Email = "alexandru.v@yahoo.com",
-                             Phone = "7345345568",
-                             Address = "Str.Memorandului nr.4",
+                             FirstName = "Aly Baba",
+                             LastName = "Sandu",
+                             Email = "marcu.ionel@gmail.com",
+                             Phone = "0765477898",
+                             Address = "Str.Camil Petrescu nr.23",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
             var result = this.readerService.AddReader(reader);
-            reader = this.readerService.GetReader("NicuRata@gmail.com", "0738489489");
+            reader = this.readerService.GetReader("gaga@gmail.com", "0738483459");
             Assert.Null(reader);
         }
     }

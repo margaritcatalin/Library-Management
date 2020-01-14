@@ -50,10 +50,10 @@ namespace PublicLibraryTests
             var employee = new Employee()
                            {
                                FirstName = null,
-                               LastName = "alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               LastName = "Valeriu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -71,10 +71,10 @@ namespace PublicLibraryTests
             var employee = new Employee()
                            {
                                FirstName = string.Empty,
-                               LastName = "alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               LastName = "Valeriu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -92,10 +92,10 @@ namespace PublicLibraryTests
             var employee = new Employee()
                            {
                                FirstName = "aa",
-                               LastName = "alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               LastName = "Valeriu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -114,10 +114,10 @@ namespace PublicLibraryTests
                            {
                                FirstName =
                                    "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong",
-                               LastName = "alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               LastName = "Valeriu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -134,11 +134,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali5",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               FirstName = "Marcu78",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -155,11 +155,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali@@##$@#",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               FirstName = "Marian@@##$@#",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -176,11 +176,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "vali",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               FirstName = "marcu",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -197,11 +197,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali Al Alekku",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               FirstName = "Marian Al Alekku",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -217,11 +217,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
+                               FirstName = "Marian",
                                LastName = null,
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -238,11 +238,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
+                               FirstName = "Marian",
                                LastName = string.Empty,
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -259,11 +259,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
+                               FirstName = "Marian",
                                LastName = "Al",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -280,12 +280,12 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
+                               FirstName = "Marian",
                                LastName =
                                    "LongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLastLongLast",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -302,11 +302,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
+                               FirstName = "Marian",
                                LastName = "Alexandru@@#@$%",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -323,11 +323,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
+                               FirstName = "Marian",
                                LastName = "Alexandru12",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -344,11 +344,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
-                               LastName = "alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               FirstName = "Marian",
+                               LastName = "Valeriu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -365,11 +365,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
+                               FirstName = "Marian",
                                LastName = "Alexandru Al Alehu",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -385,10 +385,10 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
                                Address = null,
                                Gender = "M",
                            };
@@ -406,10 +406,10 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
                                Address = string.Empty,
                                Gender = "M",
                            };
@@ -427,10 +427,10 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
                                Address = "aa",
                                Gender = "M",
                            };
@@ -448,10 +448,10 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
                                Address =
                                    "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong",
                                Gender = "M",
@@ -470,11 +470,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str. Memorandului nr4$%",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str. Camil Petrescu nr66$%",
                                Gender = "M",
                            };
 
@@ -491,11 +491,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
                                Email = null,
-                               Phone = "7345345568",
-                               Address = "Str. Memorandului nr4",
+                               Phone = "0765477898",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -512,11 +512,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
                                Email = string.Empty,
-                               Phone = "7345345568",
-                               Address = "Str. Memorandului nr4",
+                               Phone = "0765477898",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -533,11 +533,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "@yahoo.co",
-                               Phone = "7345345568",
-                               Address = "Str. Memorandului nr4",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "@google.co",
+                               Phone = "0765477898",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -554,12 +554,12 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
                                Email =
                                    "@LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong.ro",
-                               Phone = "7345345568",
-                               Address = "Str. Memorandului nr4",
+                               Phone = "0765477898",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -576,11 +576,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru.v$#%%#@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str. Memorandului nr4",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "ionescu.minu$#%%#@mailinator.com",
+                               Phone = "0765477898",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -597,11 +597,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str. Memorandului nr4",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "ionescu minu@google.com",
+                               Phone = "0765477898",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -618,11 +618,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandruyahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str. Memorandului nr4",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "invalidemailgmail.com",
+                               Phone = "0765477898",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -639,11 +639,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = null,
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -660,11 +660,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = string.Empty,
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -681,11 +681,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = "12345",
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -702,11 +702,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = "123456789123456789",
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -723,11 +723,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = "123456Vali",
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -744,11 +744,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = "1234567890",
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = null,
                            };
 
@@ -764,11 +764,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = "1234567890",
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = string.Empty,
                            };
 
@@ -784,11 +784,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = "1234567890",
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
                            };
 
@@ -804,11 +804,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = "1234567890",
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "F",
                            };
 
@@ -824,11 +824,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee
                            {
-                               FirstName = "Valentin",
-                               LastName = "Alexandru",
-                               Email = "alexandru@yahoo.com",
+                               FirstName = "Minodor",
+                               LastName = "Ionescu",
+                               Email = "manolescu@gmail.com",
                                Phone = "1234567890",
-                               Address = "Str. Memorandului nr4",
+                               Address = "Str. Camil Petrescu nr66",
                                Gender = "C",
                            };
 
@@ -844,11 +844,11 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
-                               LastName = "Alexandru Al Alehu",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               FirstName = "Marian",
+                               LastName = "Marcus Al Alehu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
@@ -885,16 +885,16 @@ namespace PublicLibraryTests
         {
             var employee = new Employee()
                            {
-                               FirstName = "Vali",
-                               LastName = "Alexandru Al Alehu",
-                               Email = "alexandru.v@yahoo.com",
-                               Phone = "7345345568",
-                               Address = "Str.Memorandului nr.4",
+                               FirstName = "Marian",
+                               LastName = "Marcus Al Alehu",
+                               Email = "marcu.ionel@gmail.com",
+                               Phone = "0765477898",
+                               Address = "Str.Camil Petrescu nr.23",
                                Gender = "M",
                            };
 
             var result = this.employeeService.AddEmployee(employee);
-            employee = this.employeeService.GetEmployee("rata@gmail.com");
+            employee = this.employeeService.GetEmployee("glorios@mailinator.com");
             Assert.False(employee != null);
         }
     }

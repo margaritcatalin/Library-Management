@@ -42,7 +42,7 @@ namespace PublicLibraryDbTests
         [Test]
         public void TestAddCategoryToDb()
         {
-            var category = new Category { Name = "Science", };
+            var category = new Category { Name = "Fiction", };
             var categoriesService = new CategoriesService(new CategoriesRepository(this.libraryDb));
             var result = categoriesService.AddCategory(category);
             Assert.True(result);
@@ -58,7 +58,7 @@ namespace PublicLibraryDbTests
                            {
                                FirstName = "Margarit",
                                LastName = "Marian",
-                               Email = "test@test.com",
+                               Email = "testemail@test.com",
                                Phone = "0734445567",
                                Address = "Str. Egretei nr31",
                                Gender = "M",
@@ -78,7 +78,7 @@ namespace PublicLibraryDbTests
                          {
                              FirstName = "Test",
                              LastName = "User",
-                             Email = "test@test.com",
+                             Email = "testemail@test.com",
                              Phone = "0754356789",
                              Address = "Str.Egretei nr.22",
                              Extensions = new List<Extension>(),
@@ -95,7 +95,7 @@ namespace PublicLibraryDbTests
         [Test]
         public void TestAddAuthor()
         {
-            var author = new Author { FirstName = "Ioan", LastName = "Slavici", Gender = "M" };
+            var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var authorService = new AuthorService(new AuthorRepository(this.libraryDb));
             var result = authorService.AddAuthor(author);
             Assert.True(result);
