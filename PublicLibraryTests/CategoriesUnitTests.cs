@@ -1,5 +1,5 @@
-﻿// <copyright file="CategoriesUnitTests.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="CategoriesUnitTests.cs" company="Transilvania University of Brasov">
+// Margarit Marian Catalin
 // </copyright>
 
 namespace PublicLibraryTests

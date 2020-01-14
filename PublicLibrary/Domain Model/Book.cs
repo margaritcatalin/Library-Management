@@ -1,5 +1,5 @@
-// <copyright file="Book.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="Book.cs" company="Transilvania University of Brasov">
+// Margarit Marian Catalin
 // </copyright>
 
 namespace PublicLibrary.Data_Mapper

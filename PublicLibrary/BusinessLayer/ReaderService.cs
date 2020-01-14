@@ -1,5 +1,5 @@
-﻿// <copyright file="ReaderService.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="ReaderService.cs" company="Transilvania University of Brasov">
+// Margarit Marian Catalin
 // </copyright>
 
 namespace PublicLibrary.BusinessLayer

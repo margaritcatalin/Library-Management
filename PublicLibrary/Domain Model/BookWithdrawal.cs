@@ -1,5 +1,5 @@
-// <copyright file="BookWithdrawal.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="BookWithdrawal.cs" company="Transilvania University of Brasov">
+// Margarit Marian Catalin
 // </copyright>
 
 namespace PublicLibrary.Domain_Model

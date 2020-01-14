@@ -1,5 +1,5 @@
-﻿// <copyright file="AssemblyInfo.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="AssemblyInfo.cs" company="Transilvania University of Brasov">
+// Margarit Marian Catalin
 // </copyright>
 
 using System.Reflection;
