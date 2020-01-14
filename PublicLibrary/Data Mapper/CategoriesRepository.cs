@@ -12,15 +12,15 @@ namespace PublicLibrary.Data_Mapper
     /// </summary>
     public class CategoriesRepository
     {
-        private LibraryDb libraryDb;
+        private readonly LibraryDbContext libraryContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoriesRepository"/> class.
         /// </summary>
-        /// <param name="libraryDb">The library database.</param>
-        public CategoriesRepository(LibraryDb libraryDb)
+        /// <param name="libraryContext">The library database.</param>
+        public CategoriesRepository(LibraryDbContext libraryContext)
         {
-            this.libraryDb = libraryDb;
+            this.libraryContext = libraryContext;
         }
 
         /// <summary>
@@ -30,8 +30,8 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>If category was added.</returns>
         public bool AddCategory(Category category)
         {
-            this.libraryDb.Categories.Add(category);
-            var successful = this.libraryDb.SaveChanges() != 0;
+            this.libraryContext.Categories.Add(category);
+            var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
                 LoggerUtil.LogInfo($"Category added successfully : {category.Name} ");
@@ -51,7 +51,7 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>A category.</returns>
         public Category GetCategory(string name)
         {
-            return this.libraryDb.Categories.FirstOrDefault(c => c.Name.Equals(name));
+            return this.libraryContext.Categories.FirstOrDefault(c => c.Name.Equals(name));
         }
     }
 }

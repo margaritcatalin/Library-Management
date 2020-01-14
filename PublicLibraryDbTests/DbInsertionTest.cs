@@ -2,7 +2,7 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibraryDbTests
+namespace PublicLibraryDbContextTests
 {
     using System.Collections.Generic;
     using NUnit.Framework;
@@ -16,7 +16,7 @@ namespace PublicLibraryDbTests
     [TestFixture]
     public class DbInsertionTest
     {
-        private LibraryDb libraryDb;
+        private LibraryDbContext libraryContext;
 
         /// <summary>
         /// The test setup.
@@ -24,7 +24,7 @@ namespace PublicLibraryDbTests
         [SetUp]
         public void SetUp()
         {
-            this.libraryDb = new LibraryDb();
+            this.libraryContext = new LibraryDbContext();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace PublicLibraryDbTests
         [TearDown]
         public void Cleanup()
         {
-            this.libraryDb.Database.Delete();
+            this.libraryContext.Database.Delete();
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace PublicLibraryDbTests
         public void TestAddCategoryToDb()
         {
             var category = new Category { Name = "Fiction", };
-            var categoriesService = new CategoriesService(new CategoriesRepository(this.libraryDb));
+            var categoriesService = new CategoriesService(new CategoriesRepository(this.libraryContext));
             var result = categoriesService.AddCategory(category);
             Assert.True(result);
         }
@@ -63,7 +63,7 @@ namespace PublicLibraryDbTests
                                Address = "Str. Egretei nr31",
                                Gender = "M",
                            };
-            var employeeService = new EmployeeService(new EmployeeRepository(this.libraryDb));
+            var employeeService = new EmployeeService(new EmployeeRepository(this.libraryContext));
             var result = employeeService.AddEmployee(employee);
             Assert.True(result);
         }
@@ -84,7 +84,7 @@ namespace PublicLibraryDbTests
                              Extensions = new List<Extension>(),
                              Gender = "F",
                          };
-            var readerService = new ReaderService(new ReaderRepository(this.libraryDb));
+            var readerService = new ReaderService(new ReaderRepository(this.libraryContext));
             var result = readerService.AddReader(reader);
             Assert.True(result);
         }
@@ -96,7 +96,7 @@ namespace PublicLibraryDbTests
         public void TestAddAuthor()
         {
             var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
-            var authorService = new AuthorService(new AuthorRepository(this.libraryDb));
+            var authorService = new AuthorService(new AuthorRepository(this.libraryContext));
             var result = authorService.AddAuthor(author);
             Assert.True(result);
         }

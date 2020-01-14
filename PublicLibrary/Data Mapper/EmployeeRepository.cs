@@ -11,15 +11,15 @@ namespace PublicLibrary.Data_Mapper
     /// </summary>
     public class EmployeeRepository
     {
-        private readonly LibraryDb libraryDb;
+        private readonly LibraryDbContext libraryContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeRepository"/> class.
         /// </summary>
-        /// <param name="libraryDb">The library database.</param>
-        public EmployeeRepository(LibraryDb libraryDb)
+        /// <param name="libraryContext">The library database.</param>
+        public EmployeeRepository(LibraryDbContext libraryContext)
         {
-            this.libraryDb = libraryDb;
+            this.libraryContext = libraryContext;
         }
 
         /// <summary>
@@ -29,8 +29,8 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>If employee was added.</returns>
         public bool AddEmployee(Employee employee)
         {
-            this.libraryDb.Employees.Add(employee);
-            var successful = this.libraryDb.SaveChanges() != 0;
+            this.libraryContext.Employees.Add(employee);
+            var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
                 LoggerUtil.LogInfo($"Employee added successfully : {employee.FirstName} {employee.LastName}");
@@ -50,7 +50,7 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>An employee.</returns>
         public Employee GetEmployee(string email)
         {
-            return this.libraryDb.Employees.FirstOrDefault(e => e.Email.Equals(email));
+            return this.libraryContext.Employees.FirstOrDefault(e => e.Email.Equals(email));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace PublicLibraryTests
     [TestFixture]
     public class EmployeeUnitTests
     {
-        private LibraryDb libraryDbMock;
+        private LibraryDbContext libraryContextMock;
 
         private EmployeeService employeeService;
 
@@ -26,9 +26,9 @@ namespace PublicLibraryTests
         [SetUp]
         public void SetUp()
         {
-            this.libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
-            EntityFrameworkMock.PrepareMock(this.libraryDbMock);
-            this.employeeService = new EmployeeService(new EmployeeRepository(this.libraryDbMock));
+            this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
+            EntityFrameworkMock.PrepareMock(this.libraryContextMock);
+            this.employeeService = new EmployeeService(new EmployeeRepository(this.libraryContextMock));
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace PublicLibraryTests
         public void TestAddNullEmployee()
         {
             var result = this.employeeService.AddEmployee(null);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace PublicLibraryTests
                            };
 
             var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryDbMock.Employees.Count() == 1);
+            Assert.True(this.libraryContextMock.Employees.Count() == 1);
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -354,7 +354,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -374,7 +374,7 @@ namespace PublicLibraryTests
                            };
 
             var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryDbMock.Employees.Count() == 1);
+            Assert.True(this.libraryContextMock.Employees.Count() == 1);
         }
 
         /// <summary>
@@ -395,7 +395,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -416,7 +416,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -437,7 +437,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -459,7 +459,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -501,7 +501,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -522,7 +522,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -543,7 +543,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -565,7 +565,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -586,7 +586,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -607,7 +607,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -628,7 +628,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -649,7 +649,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -670,7 +670,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -691,7 +691,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -712,7 +712,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -733,7 +733,7 @@ namespace PublicLibraryTests
 
             var result = this.employeeService.AddEmployee(employee);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -753,7 +753,7 @@ namespace PublicLibraryTests
                            };
 
             var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -773,7 +773,7 @@ namespace PublicLibraryTests
                            };
 
             var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>
@@ -793,7 +793,7 @@ namespace PublicLibraryTests
                            };
 
             var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryDbMock.Employees.Count() == 1);
+            Assert.True(this.libraryContextMock.Employees.Count() == 1);
         }
 
         /// <summary>
@@ -813,7 +813,7 @@ namespace PublicLibraryTests
                            };
 
             var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryDbMock.Employees.Count() == 1);
+            Assert.True(this.libraryContextMock.Employees.Count() == 1);
         }
 
         /// <summary>
@@ -833,7 +833,7 @@ namespace PublicLibraryTests
                            };
 
             var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryDbMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Employees.Count() == 0);
         }
 
         /// <summary>

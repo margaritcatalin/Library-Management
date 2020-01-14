@@ -1,4 +1,4 @@
-// <copyright file="LibraryDb.cs" company="Transilvania University of Brasov">
+// <copyright file="LibraryDbContext.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
 
@@ -10,21 +10,21 @@ namespace PublicLibrary.Data_Mapper
     /// <summary>
     /// The library database manager.
     /// </summary>
-    public class LibraryDb : DbContext
+    public class LibraryDbContext : DbContext
     {
-        // Your context has been configured to use a 'LibraryDb' connection string from your application's
+        // Your context has been configured to use a 'LibraryDbContext' connection string from your application's
         // configuration file (App.config or Web.config). By default, this connection string targets the
-        // 'PublicLibrary.Data_Mapper.LibraryDb' database on your LocalDb instance.
-        // If you wish to target a different database and/or database provider, modify the 'LibraryDb'
+        // 'PublicLibrary.Data_Mapper.LibraryDbContext' database on your LocalDb instance.
+        // If you wish to target a different database and/or database provider, modify the 'LibraryDbContext'
         // connection string in the application configuration file.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LibraryDb"/> class.
+        /// Initializes a new instance of the <see cref="LibraryDbContext"/> class.
         /// </summary>
-        public LibraryDb()
-            : base("name=LibraryDB")
+        public LibraryDbContext()
+            : base("name=LibraryContext")
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<LibraryDb>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<LibraryDbContext>());
         }
 
         /// <summary>

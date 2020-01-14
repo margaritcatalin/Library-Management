@@ -18,7 +18,7 @@ namespace PublicLibrary.BusinessLayer
     /// </summary>
     public class ReaderService
     {
-        private ReaderRepository readerRepository;
+        private readonly ReaderRepository readerRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReaderService"/> class.

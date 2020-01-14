@@ -160,7 +160,7 @@
     <Compile Include="Domain Model\BorrowedBook.cs" />
     <Compile Include="Domain Model\Category.cs" />
     <Compile Include="Domain Model\Edition.cs" />
-    <Compile Include="Data Mapper\LibraryDb.cs" />
+    <Compile Include="Data Mapper\LibraryDbContext.cs" />
     <Compile Include="Domain Model\Extension.cs" />
     <Compile Include="Domain Model\Reader.cs" />
     <Compile Include="Domain Model\Employee.cs" />

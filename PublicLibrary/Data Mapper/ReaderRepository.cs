@@ -15,15 +15,15 @@ namespace PublicLibrary.Data_Mapper
     /// </summary>
     public class ReaderRepository
     {
-        private readonly LibraryDb libraryDb;
+        private readonly LibraryDbContext libraryContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReaderRepository"/> class.
         /// </summary>
-        /// <param name="libraryDb">The library db manager.</param>
-        public ReaderRepository(LibraryDb libraryDb)
+        /// <param name="libraryContext">The library db manager.</param>
+        public ReaderRepository(LibraryDbContext libraryContext)
         {
-            this.libraryDb = libraryDb;
+            this.libraryContext = libraryContext;
         }
 
         /// <summary>
@@ -36,12 +36,12 @@ namespace PublicLibrary.Data_Mapper
         {
             if (!string.IsNullOrEmpty(email))
             {
-                return this.libraryDb.Readers.FirstOrDefault(r => r.Email.Equals(email));
+                return this.libraryContext.Readers.FirstOrDefault(r => r.Email.Equals(email));
             }
 
             if (!string.IsNullOrEmpty(phone))
             {
-                return this.libraryDb.Readers.FirstOrDefault(r => r.Phone.Equals(phone));
+                return this.libraryContext.Readers.FirstOrDefault(r => r.Phone.Equals(phone));
             }
 
             LoggerUtil.LogInfo($"Reader not found in db with email or phone : {email} {phone}");
@@ -57,7 +57,7 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>The books list.</returns>
         public List<Book> GetBooksWithdrawalWithinPeriod(int days, Reader reader, DateTime dateTime)
         {
-            return this.libraryDb.BookWithdrawals.Include(bw => bw.BorrowedBooks)
+            return this.libraryContext.BookWithdrawals.Include(bw => bw.BorrowedBooks)
                 .Include(bw => bw.BorrowedBooks.Select(bb => bb.Book)).Where(
                     bw => bw.Reader.Id.Equals(reader.Id) && (DbFunctions.DiffDays(bw.Date, dateTime) < days))
                 .SelectMany(bw => bw.BorrowedBooks).Include(bb => bb.Book).Select(bb => bb.Book).ToList();
@@ -72,7 +72,7 @@ namespace PublicLibrary.Data_Mapper
         public bool AddExtension(Reader reader, BookWithdrawal bookWithdrawal)
         {
             bookWithdrawal.Extensions.Add(new Extension { Date = DateTime.Now, Reader = reader });
-            return this.libraryDb.SaveChanges() != 0;
+            return this.libraryContext.SaveChanges() != 0;
         }
 
         /// <summary>
@@ -82,8 +82,8 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>If reader was added.</returns>
         public bool AddReader(Reader reader)
         {
-            this.libraryDb.Readers.Add(reader);
-            var successful = this.libraryDb.SaveChanges() != 0;
+            this.libraryContext.Readers.Add(reader);
+            var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
                 LoggerUtil.LogInfo($"Reader added successfully : {reader.FirstName} {reader.LastName}");
@@ -103,7 +103,7 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>An employee.</returns>
         public Employee GetEmployeeFromReader(Reader reader)
         {
-            return this.libraryDb.Employees.FirstOrDefault(e => e.Email.Equals(reader.Email));
+            return this.libraryContext.Employees.FirstOrDefault(e => e.Email.Equals(reader.Email));
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>An employee.</returns>
         public Employee GetEmployee(Employee employee)
         {
-            var employeeFromDefault = this.libraryDb.Employees.FirstOrDefault(e => e.Email.Equals(employee.Email));
+            var employeeFromDefault = this.libraryContext.Employees.FirstOrDefault(e => e.Email.Equals(employee.Email));
             if (employeeFromDefault == null)
             {
                 LoggerUtil.LogInfo($"Employee not found in db with name : {employee.FirstName} {employee.LastName}");

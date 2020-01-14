@@ -22,7 +22,7 @@ namespace PublicLibraryTests
 
         private BookService bookService;
 
-        private LibraryDb libraryDbMock;
+        private LibraryDbContext libraryContextMock;
 
         /// <summary>
         /// Testes setup.
@@ -30,12 +30,12 @@ namespace PublicLibraryTests
         [SetUp]
         public void SetUp()
         {
-            this.libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
-            this.categoriesService = new CategoriesService(new CategoriesRepository(this.libraryDbMock));
+            this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
+            this.categoriesService = new CategoriesService(new CategoriesRepository(this.libraryContextMock));
             this.bookService = new BookService(
-    new BookRepository(this.libraryDbMock),
-    new CategoriesService(new CategoriesRepository(this.libraryDbMock)),
-    new ReaderRepository(this.libraryDbMock));
+    new BookRepository(this.libraryContextMock),
+    new CategoriesService(new CategoriesRepository(this.libraryContextMock)),
+    new ReaderRepository(this.libraryContextMock));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace PublicLibraryTests
         {
             var result = this.categoriesService.AddCategory(null);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace PublicLibraryTests
             var c = new Category { Name = null };
             var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace PublicLibraryTests
             var c = new Category { Name = string.Empty };
             var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace PublicLibraryTests
             var c = new Category { Name = "Mi" };
             var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace PublicLibraryTests
             };
             var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace PublicLibraryTests
             var c = new Category { Name = "2425" };
             var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace PublicLibraryTests
             var c = new Category { Name = "@&abcd" };
             var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace PublicLibraryTests
         {
             var c = new Category { Name = "Action and Drama" };
             var result = this.categoriesService.AddCategory(c);
-            Assert.False(this.libraryDbMock.Categories.Count() == 0);
+            Assert.False(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace PublicLibraryTests
         {
             var c = new Category { Name = "Fiction" };
             var result = this.categoriesService.AddCategory(c);
-            Assert.True(this.libraryDbMock.Categories.Count() == 1);
+            Assert.True(this.libraryContextMock.Categories.Count() == 1);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace PublicLibraryTests
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
             Assert.True(c2.ParentCategory != null);
-            Assert.True(this.libraryDbMock.Categories.Count() == 2);
+            Assert.True(this.libraryContextMock.Categories.Count() == 2);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace PublicLibraryTests
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
             Assert.False(c2.ParentCategory != null);
-            Assert.True(this.libraryDbMock.Categories.Count() == 2);
+            Assert.True(this.libraryContextMock.Categories.Count() == 2);
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace PublicLibraryTests
             };
             var resultB = this.bookService.CreateBook(book);
             Assert.True(this.categoriesService.IsPartOfCategory(book, c));
-            Assert.True(this.libraryDbMock.Categories.Count() == 1 && this.libraryDbMock.Books.Count() == 1);
+            Assert.True(this.libraryContextMock.Categories.Count() == 1 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace PublicLibraryTests
             };
             var resultB = this.bookService.CreateBook(book);
             Assert.False(this.categoriesService.IsPartOfCategory(book, c2));
-            Assert.True(this.libraryDbMock.Categories.Count() == 2 && this.libraryDbMock.Books.Count() == 1);
+            Assert.True(this.libraryContextMock.Categories.Count() == 2 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
@@ -370,7 +370,7 @@ namespace PublicLibraryTests
             };
             var resultB = this.bookService.CreateBook(book);
             Assert.False(this.categoriesService.IsPartOfCategory(book, c));
-            Assert.True(this.libraryDbMock.Categories.Count() == 2 && this.libraryDbMock.Books.Count() == 1);
+            Assert.True(this.libraryContextMock.Categories.Count() == 2 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
@@ -405,7 +405,7 @@ namespace PublicLibraryTests
             };
             var resultB = this.bookService.CreateBook(book);
             Assert.True(this.categoriesService.IsPartOfCategory(book, c));
-            Assert.True(this.libraryDbMock.Categories.Count() == 2 && this.libraryDbMock.Books.Count() == 1);
+            Assert.True(this.libraryContextMock.Categories.Count() == 2 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
@@ -439,7 +439,7 @@ namespace PublicLibraryTests
             };
             var resultB = this.bookService.CreateBook(book);
             Assert.False(this.categoriesService.IsPartOfCategory(book, null));
-            Assert.True(this.libraryDbMock.Categories.Count() == 1 && this.libraryDbMock.Books.Count() == 1);
+            Assert.True(this.libraryContextMock.Categories.Count() == 1 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
@@ -452,11 +452,12 @@ namespace PublicLibraryTests
             Category c2 = new Category { Name = "Test", ParentCategory = c };
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
-            List<Category> categories = new List<Category>();
-            categories.Add(c);
-            categories.Add(c2);
+            List<Category> categories = new List<Category>
+            {
+                c, c2
+            };
             Assert.True(this.categoriesService.CategoryIsPartOfCategories(c, categories));
-            Assert.True(this.libraryDbMock.Categories.Count() == 2);
+            Assert.True(this.libraryContextMock.Categories.Count() == 2);
         }
 
         /// <summary>
@@ -469,11 +470,12 @@ namespace PublicLibraryTests
             Category c2 = new Category { Name = "Test", ParentCategory = c };
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
-            List<Category> categories = new List<Category>();
-            categories.Add(c);
-            categories.Add(c2);
+            List<Category> categories = new List<Category>
+            {
+                c, c2
+            };
             Assert.False(this.categoriesService.CategoryIsPartOfCategories(null, categories));
-            Assert.True(this.libraryDbMock.Categories.Count() == 2);
+            Assert.True(this.libraryContextMock.Categories.Count() == 2);
         }
 
         /// <summary>
@@ -488,11 +490,12 @@ namespace PublicLibraryTests
             var result = this.categoriesService.AddCategory(c);
             var result1 = this.categoriesService.AddCategory(c1);
             var result2 = this.categoriesService.AddCategory(c2);
-            List<Category> categories = new List<Category>();
-            categories.Add(c);
-            categories.Add(c2);
+            List<Category> categories = new List<Category>
+            {
+                c, c2
+            };
             Assert.False(this.categoriesService.CategoryIsPartOfCategories(c1, categories));
-            Assert.True(this.libraryDbMock.Categories.Count() == 3);
+            Assert.True(this.libraryContextMock.Categories.Count() == 3);
         }
     }
 }

@@ -19,15 +19,15 @@ namespace PublicLibraryTests
     [TestFixture]
     public class BookUnitTests
     {
-        private Edition edition;
+        private Edition defaultTestEdition;
 
-        private Author author;
+        private Author defaultTestAuthor;
 
         private BookService bookService;
 
-        private Category category;
+        private Category defaultTestCategory;
 
-        private LibraryDb libraryDbMock;
+        private LibraryDbContext libraryContextMock;
 
         /// <summary>
         /// Tests setup.
@@ -36,15 +36,15 @@ namespace PublicLibraryTests
         public void SetUp()
         {
             var bookStock = new BookStock { Amount = 100, LectureRoomAmount = 10 };
-            this.edition = new Edition { Name = "Corint", BookType = "Plasticcover", Pages = 256, BookStock = bookStock };
-            this.author = new Author { FirstName = "Estera", LastName = "Balas" };
-            this.category = new Category { Name = "Action", };
-            this.libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
-            EntityFrameworkMock.PrepareMock(this.libraryDbMock);
+            this.defaultTestEdition = new Edition { Name = "Corint", BookType = "Plasticcover", Pages = 256, BookStock = bookStock };
+            this.defaultTestAuthor = new Author { FirstName = "Estera", LastName = "Balas" };
+            this.defaultTestCategory = new Category { Name = "Action", };
+            this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
+            EntityFrameworkMock.PrepareMock(this.libraryContextMock);
             this.bookService = new BookService(
-                new BookRepository(this.libraryDbMock),
-                new CategoriesService(new CategoriesRepository(this.libraryDbMock)),
-                new ReaderRepository(this.libraryDbMock));
+                new BookRepository(this.libraryContextMock),
+                new CategoriesService(new CategoriesRepository(this.libraryContextMock)),
+                new ReaderRepository(this.libraryContextMock));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace PublicLibraryTests
             Book book = null;
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -68,13 +68,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Testing is important",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
                 Categories = null,
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Java for junior",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
                 Categories = new List<Category>(),
             };
             var result = this.bookService.CreateBook(book);
@@ -103,12 +103,12 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Java for junior",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             this.bookService.CreateBook(book);
-            Assert.True(this.libraryDbMock.Books.Count() == 1);
+            Assert.True(this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
@@ -128,13 +128,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Java for junior",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
                 Categories = categoriesList,
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -146,13 +146,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = string.Empty,
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -164,13 +164,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = null,
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -182,13 +182,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "ab",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -200,13 +200,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "LongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongName",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -218,13 +218,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "3454",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -236,13 +236,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "*&()_",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -254,12 +254,12 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Fram ursul polar",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
-            Assert.False(this.libraryDbMock.Books.Count() == 0);
+            Assert.False(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -274,13 +274,13 @@ namespace PublicLibraryTests
                 Authors =
                                new List<Author>
                                {
-                                   this.author, new Author { FirstName = "Robert", LastName = "German", },
+                                   this.defaultTestAuthor, new Author { FirstName = "Robert", LastName = "German", },
                                },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
-            Assert.True(this.libraryDbMock.Books.Count() == 1);
+            Assert.True(this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
@@ -293,12 +293,12 @@ namespace PublicLibraryTests
             {
                 Name = "Testing is important",
                 Authors = new List<Author> { },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -311,12 +311,12 @@ namespace PublicLibraryTests
             {
                 Name = "Testing is important",
                 Authors = null,
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -328,13 +328,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Testing is important",
-                Authors = new List<Author> { this.author },
+                Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { },
-                Categories = new List<Category> { this.category },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -346,13 +346,13 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Testing is important",
-                Authors = new List<Author> { this.author },
+                Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = null,
-                Categories = new List<Category> { this.category },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -364,12 +364,12 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Testing is important",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition, new Edition { Name = "Girofar" } },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition, new Edition { Name = "Girofar" } },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             var result = this.bookService.CreateBook(book);
-            Assert.True(this.libraryDbMock.Books.Count() == 1);
+            Assert.True(this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
@@ -381,17 +381,17 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Testing is important",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
                 Categories = new List<Category>
                                         {
-                                            this.category,
-                                            new Category { Name = "Science", ParentCategory = this.category, },
+                                            this.defaultTestCategory,
+                                            new Category { Name = "Science", ParentCategory = this.defaultTestCategory, },
                                         },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -403,22 +403,22 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Testing is important",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
                 Categories = new List<Category>
                                         {
-                                            this.category,
+                                            this.defaultTestCategory,
                                             new Category
                                             {
                                                 Name = "Science",
                                                 ParentCategory =
-                                                    new Category { ParentCategory = this.category, Name = "Comedy", },
+                                                    new Category { ParentCategory = this.defaultTestCategory, Name = "Comedy", },
                                             },
                                         },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Books.Count() == 0);
+            Assert.True(this.libraryContextMock.Books.Count() == 0);
         }
 
         /// <summary>
@@ -430,9 +430,9 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Java for junior",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             this.bookService.CreateBook(book);
             book = this.bookService.GetBook(book.Name);
@@ -468,9 +468,9 @@ namespace PublicLibraryTests
             var book = new Book
             {
                 Name = "Java for junior",
-                Authors = new List<Author> { this.author },
-                Editions = new List<Edition> { this.edition },
-                Categories = new List<Category> { this.category },
+                Authors = new List<Author> { this.defaultTestAuthor },
+                Editions = new List<Edition> { this.defaultTestEdition },
+                Categories = new List<Category> { this.defaultTestCategory },
             };
             this.bookService.CreateBook(book);
             book = this.bookService.GetBook("Fram ursul polar.");

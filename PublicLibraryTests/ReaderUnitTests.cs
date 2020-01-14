@@ -18,7 +18,7 @@ namespace PublicLibraryTests
     [TestFixture]
     public class ReaderUnitTests
     {
-        private LibraryDb libraryDbMock;
+        private LibraryDbContext libraryContextMock;
 
         private ReaderService readerService;
 
@@ -28,9 +28,9 @@ namespace PublicLibraryTests
         [SetUp]
         public void SetUp()
         {
-            this.libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
-            EntityFrameworkMock.PrepareMock(this.libraryDbMock);
-            this.readerService = new ReaderService(new ReaderRepository(this.libraryDbMock));
+            this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
+            EntityFrameworkMock.PrepareMock(this.libraryContextMock);
+            this.readerService = new ReaderService(new ReaderRepository(this.libraryContextMock));
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace PublicLibraryTests
         {
             var result = this.readerService.AddReader(null);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace PublicLibraryTests
                              Gender = "M",
                          };
             var result = this.readerService.AddReader(reader);
-            Assert.True(this.libraryDbMock.Readers.Count() == 1);
+            Assert.True(this.libraryContextMock.Readers.Count() == 1);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace PublicLibraryTests
                          };
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace PublicLibraryTests
                          };
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace PublicLibraryTests
                          };
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace PublicLibraryTests
                          };
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace PublicLibraryTests
                          };
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace PublicLibraryTests
                          };
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace PublicLibraryTests
                          };
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace PublicLibraryTests
                              Gender = "M",
                          };
             var result = this.readerService.AddReader(reader);
-            Assert.True(this.libraryDbMock.Readers.Count() == 1);
+            Assert.True(this.libraryContextMock.Readers.Count() == 1);
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -450,7 +450,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -472,7 +472,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -494,7 +494,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -516,7 +516,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -560,7 +560,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -582,7 +582,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -604,7 +604,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -626,7 +626,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -648,7 +648,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -670,7 +670,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -692,7 +692,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -714,7 +714,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -736,7 +736,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -758,7 +758,7 @@ namespace PublicLibraryTests
 
             var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -778,7 +778,7 @@ namespace PublicLibraryTests
                              Gender = "M",
                          };
             var result = this.readerService.AddReader(reader);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -798,7 +798,7 @@ namespace PublicLibraryTests
                              Gender = null,
                          };
             var result = this.readerService.AddReader(reader);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -818,7 +818,7 @@ namespace PublicLibraryTests
                              Gender = string.Empty,
                          };
             var result = this.readerService.AddReader(reader);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>
@@ -838,7 +838,7 @@ namespace PublicLibraryTests
                              Gender = "M",
                          };
             var result = this.readerService.AddReader(reader);
-            Assert.True(this.libraryDbMock.Readers.Count() == 1);
+            Assert.True(this.libraryContextMock.Readers.Count() == 1);
         }
 
         /// <summary>
@@ -858,7 +858,7 @@ namespace PublicLibraryTests
                              Gender = "F",
                          };
             var result = this.readerService.AddReader(reader);
-            Assert.True(this.libraryDbMock.Readers.Count() == 1);
+            Assert.True(this.libraryContextMock.Readers.Count() == 1);
         }
 
         /// <summary>
@@ -878,7 +878,7 @@ namespace PublicLibraryTests
                              Gender = "C",
                          };
             var result = this.readerService.AddReader(reader);
-            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryContextMock.Readers.Count() == 0);
         }
 
         /// <summary>

@@ -11,15 +11,15 @@ namespace PublicLibrary.Data_Mapper
     /// </summary>
     public class AuthorRepository
     {
-        private LibraryDb libraryDb;
+        private readonly LibraryDbContext libraryContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorRepository"/> class.
         /// </summary>
-        /// <param name="libraryDb">Tha database manager.</param>
-        public AuthorRepository(LibraryDb libraryDb)
+        /// <param name="libraryContext">Tha database manager.</param>
+        public AuthorRepository(LibraryDbContext libraryContext)
         {
-            this.libraryDb = libraryDb;
+            this.libraryContext = libraryContext;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>An author.</returns>
         public Author GetAuthor(string firstName, string lastName)
         {
-            return this.libraryDb.Authors.FirstOrDefault(
+            return this.libraryContext.Authors.FirstOrDefault(
                 a => a.FirstName.Equals(firstName) && a.LastName.Equals(lastName));
         }
 
@@ -41,8 +41,8 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>If author was added.</returns>
         public bool AddAuthor(Author author)
         {
-            this.libraryDb.Authors.Add(author);
-            return this.libraryDb.SaveChanges() != 0;
+            this.libraryContext.Authors.Add(author);
+            return this.libraryContext.SaveChanges() != 0;
         }
     }
 }

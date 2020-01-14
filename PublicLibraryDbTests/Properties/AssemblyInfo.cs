@@ -5,11 +5,11 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("PublicLibraryDbTests")]
+[assembly: AssemblyTitle("PublicLibraryDbContextTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PublicLibraryDbTests")]
+[assembly: AssemblyProduct("PublicLibraryDbContextTests")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

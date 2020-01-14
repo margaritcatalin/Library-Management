@@ -2,7 +2,7 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibraryDbTests
+namespace PublicLibraryDbContextTests
 {
     using System;
     using System.Collections.Generic;
@@ -19,23 +19,23 @@ namespace PublicLibraryDbTests
     [TestFixture]
     public class BookBorrowingTests
     {
-        private LibraryDb libraryDb;
+        private LibraryDbContext libraryContext;
 
         private BookService bookService;
 
-        private Author author;
+        private Author defaultTestAuthor;
 
-        private Edition edition;
+        private Edition defaultTestEdition;
 
         private BookStock bookStock;
 
-        private Category category;
+        private Category defaultTestCategory;
 
         private Employee employee;
 
         private Reader reader;
 
-        private Book book;
+        private Book defaultTestBook;
 
         private ReaderService readerService;
 
@@ -45,19 +45,19 @@ namespace PublicLibraryDbTests
         [SetUp]
         public void SetUp()
         {
-            this.libraryDb = new LibraryDb();
-            var readerRepository = new ReaderRepository(this.libraryDb);
-            var employeeService = new EmployeeService(new EmployeeRepository(this.libraryDb));
+            this.libraryContext = new LibraryDbContext();
+            var readerRepository = new ReaderRepository(this.libraryContext);
+            var employeeService = new EmployeeService(new EmployeeRepository(this.libraryContext));
             this.readerService = new ReaderService(readerRepository);
             this.bookService = new BookService(
-                new BookRepository(this.libraryDb),
-                new CategoriesService(new CategoriesRepository(this.libraryDb)),
+                new BookRepository(this.libraryContext),
+                new CategoriesService(new CategoriesRepository(this.libraryContext)),
                 readerRepository);
-            this.author = new Author { FirstName = "Estera", LastName = "Balas" };
+            this.defaultTestAuthor = new Author { FirstName = "Estera", LastName = "Balas" };
             this.bookStock = new BookStock { Amount = 14, LectureRoomAmount = 10 };
             var bookStock2 = new BookStock { Amount = 1000, LectureRoomAmount = 0 };
             var bookstock3 = new BookStock { Amount = 12, LectureRoomAmount = 10 };
-            this.edition = new Edition
+            this.defaultTestEdition = new Edition
                             {
                                 Name = "Corint", BookType = "Plasticcover", Pages = 320, BookStock = this.bookStock,
                             };
@@ -65,7 +65,7 @@ namespace PublicLibraryDbTests
                            {
                                Name = "Ultimate Edition", BookType = "Plasticcover", Pages = 320, BookStock = bookstock3,
                            };
-            this.category = new Category { Name = "Novel" };
+            this.defaultTestCategory = new Category { Name = "Novel" };
 
             this.employee = new Employee()
                              {
@@ -86,24 +86,24 @@ namespace PublicLibraryDbTests
                                Extensions = new List<Extension>(),
                                Gender = "M",
                            };
-            this.book = new Book
+            this.defaultTestBook = new Book
                          {
                              Name = "Java for junior",
-                             Authors = new[] { this.author },
-                             Editions = new[] { this.edition },
-                             Categories = new[] { this.category },
+                             Authors = new[] { this.defaultTestAuthor },
+                             Editions = new[] { this.defaultTestEdition },
+                             Categories = new[] { this.defaultTestCategory },
                          };
 
             this.readerService.AddReader(this.reader);
             employeeService.AddEmployee(this.employee);
-            this.bookService.CreateBook(this.book);
+            this.bookService.CreateBook(this.defaultTestBook);
             for (var i = 0; i < 25; i++)
             {
                 this.bookService.CreateBook(
                     new Book
                     {
                         Name = $"Java for junior{(char)('a' + i)}",
-                        Authors = new[] { this.author },
+                        Authors = new[] { this.defaultTestAuthor },
                         Editions = new[]
                                    {
                                        new Edition
@@ -124,7 +124,7 @@ namespace PublicLibraryDbTests
                     new Book
                     {
                         Name = $"SQL Server{(char)('a' + i)}",
-                        Authors = new[] { this.author },
+                        Authors = new[] { this.defaultTestAuthor },
                         Editions = new[]
                                    {
                                        new Edition
@@ -135,7 +135,7 @@ namespace PublicLibraryDbTests
                                            BookStock = bookStock2,
                                        },
                                    },
-                        Categories = new[] { this.category },
+                        Categories = new[] { this.defaultTestCategory },
                     });
             }
 
@@ -143,9 +143,9 @@ namespace PublicLibraryDbTests
                 new Book
                 {
                     Name = "Testing is important",
-                    Authors = new[] { this.author },
+                    Authors = new[] { this.defaultTestAuthor },
                     Editions = new[] { edition2 },
-                    Categories = new[] { this.category },
+                    Categories = new[] { this.defaultTestCategory },
                 });
         }
 
@@ -155,7 +155,7 @@ namespace PublicLibraryDbTests
         [TearDown]
         public void Cleanup()
         {
-            this.libraryDb.Database.Delete();
+            this.libraryContext.Database.Delete();
         }
 
         /// <summary>

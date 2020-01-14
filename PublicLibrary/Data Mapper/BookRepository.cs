@@ -15,15 +15,15 @@ namespace PublicLibrary.Data_Mapper
     /// </summary>
     public class BookRepository
     {
-        private readonly LibraryDb libraryDb;
+        private readonly LibraryDbContext libraryContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BookRepository"/> class.
         /// </summary>
-        /// <param name="libraryDb">The library db.</param>
-        public BookRepository(LibraryDb libraryDb)
+        /// <param name="libraryContext">The library db.</param>
+        public BookRepository(LibraryDbContext libraryContext)
         {
-            this.libraryDb = libraryDb;
+            this.libraryContext = libraryContext;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace PublicLibrary.Data_Mapper
             book.Authors = book.Authors.Select(
                 a =>
                 {
-                    var dba = this.libraryDb.Authors.FirstOrDefault(
+                    var dba = this.libraryContext.Authors.FirstOrDefault(
                         dbA => dbA.FirstName.Equals(a.FirstName) && dbA.LastName.Equals(a.LastName));
                     if (dba == null)
                     {
@@ -51,7 +51,7 @@ namespace PublicLibrary.Data_Mapper
             book.Categories = book.Categories.Select(
                 c =>
                 {
-                    var dbc = this.libraryDb.Categories.FirstOrDefault(dbC => dbC.Name.Equals(c.Name));
+                    var dbc = this.libraryContext.Categories.FirstOrDefault(dbC => dbC.Name.Equals(c.Name));
                     if (dbc == null)
                     {
                         return c;
@@ -62,8 +62,8 @@ namespace PublicLibrary.Data_Mapper
                     }
                 }).ToList();
 
-            this.libraryDb.Books.Add(book);
-            return this.libraryDb.SaveChanges() != 0;
+            this.libraryContext.Books.Add(book);
+            return this.libraryContext.SaveChanges() != 0;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>A book.</returns>
         public Book GetBook(string bookName)
         {
-            var result = this.libraryDb.Books.FirstOrDefault(b => b.Name.Equals(bookName));
+            var result = this.libraryContext.Books.FirstOrDefault(b => b.Name.Equals(bookName));
             return result;
         }
 
@@ -85,7 +85,7 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>An edition.</returns>
         public Edition GetEdition(string bookName, string editionName)
         {
-            var edition = this.libraryDb.Editions.Include(e => e.BookStock).Include(e => e.BorrowedBooks)
+            var edition = this.libraryContext.Editions.Include(e => e.BookStock).Include(e => e.BorrowedBooks)
                 .Include(e => e.BorrowedBooks.Select(bb => bb.BookWithdrawal))
                 .FirstOrDefault(e => e.Name.Equals(editionName) && e.Book.Name.Equals(bookName));
 
@@ -123,8 +123,8 @@ namespace PublicLibrary.Data_Mapper
                                      Extensions = new List<Extension>(),
                                  };
 
-            this.libraryDb.BookWithdrawals.Add(bookWithdrawal);
-            if (this.libraryDb.SaveChanges() == 0)
+            this.libraryContext.BookWithdrawals.Add(bookWithdrawal);
+            if (this.libraryContext.SaveChanges() == 0)
             {
                 return null;
             }
@@ -139,7 +139,7 @@ namespace PublicLibrary.Data_Mapper
         /// <returns>A book.</returns>
         public Book GetBook(Book bookToGet)
         {
-            return this.libraryDb.Books.FirstOrDefault(b => b.Name.Equals(bookToGet.Name));
+            return this.libraryContext.Books.FirstOrDefault(b => b.Name.Equals(bookToGet.Name));
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace PublicLibrary.Data_Mapper
                 book.Editions.Add(edition);
             }
 
-            return this.libraryDb.SaveChanges() != 0;
+            return this.libraryContext.SaveChanges() != 0;
         }
     }
 }

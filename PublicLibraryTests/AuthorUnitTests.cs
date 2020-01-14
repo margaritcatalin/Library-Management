@@ -16,7 +16,7 @@ namespace PublicLibraryTests
     [TestFixture]
     public class AuthorUnitTests
     {
-        private LibraryDb libraryDbMock;
+        private LibraryDbContext libraryContextMock;
 
         private AuthorService authorService;
 
@@ -26,8 +26,8 @@ namespace PublicLibraryTests
         [SetUp]
         public void SetUp()
         {
-            this.libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
-            this.authorService = new AuthorService(new AuthorRepository(this.libraryDbMock));
+            this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
+            this.authorService = new AuthorService(new AuthorRepository(this.libraryContextMock));
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 1);
+            Assert.True(this.libraryContextMock.Authors.Count() == 1);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace PublicLibraryTests
         public void TestAddNullAuthor()
         {
             var result = this.authorService.AddAuthor(null);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = null, LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = string.Empty, LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Aa", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace PublicLibraryTests
                              Gender = "M",
                          };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "gigel", LastName = "Frone", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Al13Mihai", LastName = "Cioran", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Aly$^@*#^*", LastName = "Baba", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Aly Baba", LastName = "Ionel", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 1);
+            Assert.True(this.libraryContextMock.Authors.Count() == 1);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Aly-Baba", LastName = "Kalu", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 1);
+            Assert.True(this.libraryContextMock.Authors.Count() == 1);
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Horatiu", LastName = null, Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Horatiu", LastName = string.Empty, Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Horatiu", LastName = "small", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace PublicLibraryTests
                              Gender = "M",
                          };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Fratele", LastName = "Galusca5", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Horatiu", LastName = "Vlad$@%^@#%$)_*", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Case", LastName = "lower", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Estera", LastName = "Aly Baba", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 1);
+            Assert.True(this.libraryContextMock.Authors.Count() == 1);
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Galusca", LastName = "Aly-Baba", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 1);
+            Assert.True(this.libraryContextMock.Authors.Count() == 1);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = null };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = string.Empty };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "M" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 1);
+            Assert.True(this.libraryContextMock.Authors.Count() == 1);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "F" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 1);
+            Assert.True(this.libraryContextMock.Authors.Count() == 1);
         }
 
         /// <summary>
@@ -313,7 +313,7 @@ namespace PublicLibraryTests
         {
             var author = new Author { FirstName = "Estera", LastName = "Balas", Gender = "C" };
             var result = this.authorService.AddAuthor(author);
-            Assert.True(this.libraryDbMock.Authors.Count() == 0);
+            Assert.True(this.libraryContextMock.Authors.Count() == 0);
         }
 
         /// <summary>
