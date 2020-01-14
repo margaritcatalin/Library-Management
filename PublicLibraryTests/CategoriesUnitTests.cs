@@ -1,179 +1,288 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using PublicLibrary.BusinessLayer;
-using PublicLibrary.Data_Mapper;
-using PublicLibrary.Domain_Model;
-using Telerik.JustMock.EntityFramework;
+﻿// <copyright file="CategoriesUnitTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace PublicLibraryTests
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+    using PublicLibrary.BusinessLayer;
+    using PublicLibrary.Data_Mapper;
+    using PublicLibrary.Domain_Model;
+    using Telerik.JustMock.EntityFramework;
+
+    /// <summary>
+    /// Categories unit tests.
+    /// </summary>
     [TestFixture]
     public class CategoriesUnitTests
     {
-        private CategoriesService _categoriesService;
-        private BookService _bookService;
-        private LibraryDb _libraryDbMock;
+        private CategoriesService categoriesService;
 
+        private BookService bookService;
+
+        private LibraryDb libraryDbMock;
+
+        /// <summary>
+        /// Testes setup.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
-            _libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
-
-            _categoriesService = new CategoriesService(new CategoriesRepository(_libraryDbMock));
-            _bookService = new BookService(new BookRepository(_libraryDbMock), _categoriesService,
-                new ReaderRepository(_libraryDbMock));
+            this.libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
+            this.categoriesService = new CategoriesService(new CategoriesRepository(this.libraryDbMock));
+            this.bookService = new BookService(
+    new BookRepository(this.libraryDbMock),
+    new CategoriesService(new CategoriesRepository(this.libraryDbMock)),
+    new ReaderRepository(this.libraryDbMock));
         }
 
+        /// <summary>
+        /// Test add category witch is part of subcategory.
+        /// </summary>
         [Test]
         public void TestCategoryIsPartOfSubCategory()
         {
-            Category c1 = new Category {Name = "C1" };
-            Category c2 = new Category { Name = "C2" };
-            Category c3 = new Category { Name = "C3" };
-            Category c4 = new Category { Name = "C4", ParentCategory = c1};
+            var c1 = new Category { Name = "C1" };
+            var c2 = new Category { Name = "C2" };
+            var c3 = new Category { Name = "C3" };
+            var c4 = new Category { Name = "C4", ParentCategory = c1 };
 
-            var result =_categoriesService.CategoryIsPartOfCategories(c4, new List<Category>{c2,c3,c1});
+            var result = this.categoriesService.CategoryIsPartOfCategories(c4, new List<Category> { c2, c3, c1 });
 
             Assert.True(result);
         }
+
+        /// <summary>
+        /// Test add a parent category and it is part of subcategory.
+        /// </summary>
         [Test]
         public void TestParentCategoryIsPartOfSubCategory()
         {
-            Category c1 = new Category { Name = "C1" };
-            Category c2 = new Category { Name = "C2", ParentCategory = c1 };
-            Category c3 = new Category { Name = "C3", ParentCategory = c1 };
-            Category c4 = new Category { Name = "C4", ParentCategory = c1 };
+            var c1 = new Category { Name = "C1" };
+            var c2 = new Category { Name = "C2", ParentCategory = c1 };
+            var c3 = new Category { Name = "C3", ParentCategory = c1 };
+            var c4 = new Category { Name = "C4", ParentCategory = c1 };
 
-            var result = _categoriesService.CategoryIsPartOfCategories(c1, new List<Category> { c2, c3, c4 });
+            var result = this.categoriesService.CategoryIsPartOfCategories(c1, new List<Category> { c2, c3, c4 });
 
             Assert.True(result);
         }
+
+        /// <summary>
+        /// Test add category and it is not part of subcategory.
+        /// </summary>
         [Test]
         public void TestCategoryIsNotPartOfSubCategory()
         {
-            Category c1 = new Category { Name = "C1" };
-            Category c2 = new Category { Name = "C2" };
-            Category c3 = new Category { Name = "C3" };
+            var c1 = new Category { Name = "C1" };
+            var c2 = new Category { Name = "C2" };
+            var c3 = new Category { Name = "C3" };
 
-            var result = _categoriesService.CategoryIsPartOfCategories(c1, new List<Category> { c2, c3 });
+            var result = this.categoriesService.CategoryIsPartOfCategories(c1, new List<Category> { c2, c3 });
 
             Assert.False(result);
         }
 
+        /// <summary>
+        /// Test add a null category.
+        /// </summary>
         [Test]
         public void AddNullCategory()
         {
-            var result = _categoriesService.AddCategory(null);
+            var result = this.categoriesService.AddCategory(null);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryDbMock.Categories.Count() == 0);
         }
+
+        /// <summary>
+        /// Test add a category with null name.
+        /// </summary>
         [Test]
         public void AddCategoryWithNullName()
         {
-            Category c = new Category { Name = null };
-            var result = _categoriesService.AddCategory(c);
+            var c = new Category { Name = null };
+            var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryDbMock.Categories.Count() == 0);
         }
+
+        /// <summary>
+        /// Test add a category with empty name.
+        /// </summary>
         [Test]
         public void AddCategoryWithEmptyName()
         {
-            Category c = new Category { Name = "" };
-            var result = _categoriesService.AddCategory(c);
+            var c = new Category { Name = string.Empty };
+            var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryDbMock.Categories.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a category with small name.
+        /// </summary>
         [Test]
         public void AddCategoryNameLengthLessThanThree()
         {
-            Category c = new Category { Name = "Da" };
-            var result = _categoriesService.AddCategory(c);
+            var c = new Category { Name = "Mi" };
+            var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryDbMock.Categories.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a category with bigger name.
+        /// </summary>
         [Test]
         public void AddCategoryNameLengthMoreThanLimitEighty()
         {
-            Category c = new Category { Name = "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
-                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
-                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
-                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
-                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
-                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength" +
-                                               "LengthLengthLengthLengthLengthLengthLengthLengthLength"
+            var c = new Category
+            {
+                Name = "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong",
             };
-            var result = _categoriesService.AddCategory(c);
+            var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryDbMock.Categories.Count() == 0);
         }
+
+        /// <summary>
+        /// Test add category with digit in name.
+        /// </summary>
         [Test]
         public void AddCategoryNameWithDigit()
         {
-            Category c = new Category { Name = "2326546" };
-            var result = _categoriesService.AddCategory(c);
+            var c = new Category { Name = "2425" };
+            var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryDbMock.Categories.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add category with symbol in name.
+        /// </summary>
         [Test]
         public void AddCategoryNameWithSymbol()
         {
-            Category c = new Category { Name = "@&abcd" };
-            var result = _categoriesService.AddCategory(c);
+            var c = new Category { Name = "@&abcd" };
+            var result = this.categoriesService.AddCategory(c);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Categories.Count() == 0);
+            Assert.True(this.libraryDbMock.Categories.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add category with space in name.
+        /// </summary>
         [Test]
         public void AddCategoryNameWithWhiteSpace()
         {
-            Category c = new Category { Name = "Drama and thriller" };
-            var result = _categoriesService.AddCategory(c);
-            Assert.False(_libraryDbMock.Categories.Count() == 0);
+            var c = new Category { Name = "Drama and thriller" };
+            var result = this.categoriesService.AddCategory(c);
+            Assert.False(this.libraryDbMock.Categories.Count() == 0);
         }
+
+        /// <summary>
+        /// Test add a category.
+        /// </summary>
         [Test]
         public void AddCategory()
         {
-            Category c = new Category{Name = "Science"};
-            var result = _categoriesService.AddCategory(c);
-            Assert.True(_libraryDbMock.Categories.Count()==1);
+            var c = new Category { Name = "Science" };
+            var result = this.categoriesService.AddCategory(c);
+            Assert.True(this.libraryDbMock.Categories.Count() == 1);
         }
+
+        /// <summary>
+        /// Test get a category.
+        /// </summary>
+        [Test]
+        public void GetCategory()
+        {
+            var c = new Category { Name = "Science" };
+            var result = this.categoriesService.AddCategory(c);
+
+            c = this.categoriesService.GetCategory(c.Name);
+            Assert.NotNull(c);
+        }
+
+        /// <summary>
+        /// Test get a category by null name.
+        /// </summary>
+        [Test]
+        public void GetNullCategory()
+        {
+            var c = this.categoriesService.GetCategory(null);
+            Assert.Null(c);
+        }
+
+        /// <summary>
+        /// Test get a category by empty name.
+        /// </summary>
+        [Test]
+        public void GetEmptyCategory()
+        {
+            var c = this.categoriesService.GetCategory(string.Empty);
+            Assert.Null(c);
+        }
+
+        /// <summary>
+        /// Test get an unknown category.
+        /// </summary>
+        [Test]
+        public void GetUnknownCategory()
+        {
+            var c = new Category { Name = "Science" };
+            var result = this.categoriesService.AddCategory(c);
+
+            c = this.categoriesService.GetCategory("Philosophy");
+            Assert.Null(c);
+        }
+
+        /// <summary>
+        /// Test add a subcategory.
+        /// </summary>
         [Test]
         public void AddSubCateory()
         {
             Category c = new Category { Name = "Science" };
-            Category c2 = new Category { Name = "Test", ParentCategory=c };
-            var result = _categoriesService.AddCategory(c);
-            var result2 = _categoriesService.AddCategory(c2);
+            Category c2 = new Category { Name = "Test", ParentCategory = c };
+            var result = this.categoriesService.AddCategory(c);
+            var result2 = this.categoriesService.AddCategory(c2);
             Assert.True(c2.ParentCategory != null);
-            Assert.True(_libraryDbMock.Categories.Count() == 2);
+            Assert.True(this.libraryDbMock.Categories.Count() == 2);
         }
+
+        /// <summary>
+        /// Test add a subcategory with no parent category.
+        /// </summary>
         [Test]
         public void AddSubCateoryWithNoParentCategory()
         {
             Category c = new Category { Name = "Science" };
-            Category c2 = new Category { Name = "Test"};
-            var result = _categoriesService.AddCategory(c);
-            var result2 = _categoriesService.AddCategory(c2);
+            Category c2 = new Category { Name = "Test" };
+            var result = this.categoriesService.AddCategory(c);
+            var result2 = this.categoriesService.AddCategory(c2);
             Assert.False(c2.ParentCategory != null);
-            Assert.True(_libraryDbMock.Categories.Count() == 2);
+            Assert.True(this.libraryDbMock.Categories.Count() == 2);
         }
 
+        /// <summary>
+        /// Test is part of category.
+        /// </summary>
         [Test]
         public void IsPartOfCategory()
         {
             Category c = new Category { Name = "Science" };
-            var result = _categoriesService.AddCategory(c);
+            var result = this.categoriesService.AddCategory(c);
 
             Book book = new Book
             {
                 Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
-                Editions = new List<Edition> { new Edition
+                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Editions = new List<Edition>
+                {
+                    new Edition
             {
                 Name = "Teora",
                 BookType = "Hardcover",
@@ -181,28 +290,34 @@ namespace PublicLibraryTests
                 BookStock = new BookStock
             {
                 Amount = 100,
-                LectureRoomAmount = 10
-            }
-            } },
-                Categories = new List<Category> { c }
+                LectureRoomAmount = 10,
+            },
+            },
+                },
+                Categories = new List<Category> { c },
             };
-            var resultB = _bookService.CreateBook(book);
-            Assert.True(_categoriesService.IsPartOfCategory(book,c));
-            Assert.True(_libraryDbMock.Categories.Count() == 1 && _libraryDbMock.Books.Count()==1);
+            var resultB = this.bookService.CreateBook(book);
+            Assert.True(this.categoriesService.IsPartOfCategory(book, c));
+            Assert.True(this.libraryDbMock.Categories.Count() == 1 && this.libraryDbMock.Books.Count() == 1);
         }
 
+        /// <summary>
+        /// Test if is not part of category.
+        /// </summary>
         [Test]
         public void IsNotPartOfCategory()
         {
             Category c = new Category { Name = "Science" };
-            var result = _categoriesService.AddCategory(c);
+            var result = this.categoriesService.AddCategory(c);
             Category c2 = new Category { Name = "Test" };
-            var result2 = _categoriesService.AddCategory(c2);
+            var result2 = this.categoriesService.AddCategory(c2);
             Book book = new Book
             {
                 Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
-                Editions = new List<Edition> { new Edition
+                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Editions = new List<Edition>
+                {
+                    new Edition
             {
                 Name = "Teora",
                 BookType = "Hardcover",
@@ -210,29 +325,36 @@ namespace PublicLibraryTests
                 BookStock = new BookStock
             {
                 Amount = 100,
-                LectureRoomAmount = 10
-            }
-            } },
-                Categories = new List<Category> { c }
+                LectureRoomAmount = 10,
+            },
+            },
+                },
+                Categories = new List<Category> { c },
             };
-            var resultB = _bookService.CreateBook(book);
-            Assert.False(_categoriesService.IsPartOfCategory(book, c2));
-            Assert.True(_libraryDbMock.Categories.Count() == 2 && _libraryDbMock.Books.Count() == 1);
+            var resultB = this.bookService.CreateBook(book);
+            Assert.False(this.categoriesService.IsPartOfCategory(book, c2));
+            Assert.True(this.libraryDbMock.Categories.Count() == 2 && this.libraryDbMock.Books.Count() == 1);
         }
+
+        /// <summary>
+        /// Test check if is not part of parent category.
+        /// </summary>
         [Test]
         public void IsNotPartOfParentCategory()
         {
             Category c = new Category { Name = "Science" };
-            var result = _categoriesService.AddCategory(c);
+            var result = this.categoriesService.AddCategory(c);
             Category c1 = new Category { Name = "Science2" };
-            var result1 = _categoriesService.AddCategory(c1);
-            Category c2 = new Category { Name = "Test", ParentCategory=c };
-            var result2 = _categoriesService.AddCategory(c2);
+            var result1 = this.categoriesService.AddCategory(c1);
+            Category c2 = new Category { Name = "Test", ParentCategory = c };
+            var result2 = this.categoriesService.AddCategory(c2);
             Book book = new Book
             {
                 Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
-                Editions = new List<Edition> { new Edition
+                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Editions = new List<Edition>
+                {
+                    new Edition
             {
                 Name = "Teora",
                 BookType = "Hardcover",
@@ -240,27 +362,34 @@ namespace PublicLibraryTests
                 BookStock = new BookStock
             {
                 Amount = 100,
-                LectureRoomAmount = 10
-            }
-            } },
-                Categories = new List<Category> { c1 }
+                LectureRoomAmount = 10,
+            },
+            },
+                },
+                Categories = new List<Category> { c1 },
             };
-            var resultB = _bookService.CreateBook(book);
-            Assert.False(_categoriesService.IsPartOfCategory(book, c));
-            Assert.True(_libraryDbMock.Categories.Count() == 2 && _libraryDbMock.Books.Count() == 1);
+            var resultB = this.bookService.CreateBook(book);
+            Assert.False(this.categoriesService.IsPartOfCategory(book, c));
+            Assert.True(this.libraryDbMock.Categories.Count() == 2 && this.libraryDbMock.Books.Count() == 1);
         }
+
+        /// <summary>
+        /// Test is part of parent category.
+        /// </summary>
         [Test]
         public void IsPartOfParentCategory()
         {
             Category c = new Category { Name = "Science" };
-            var result = _categoriesService.AddCategory(c);
-            Category c2 = new Category { Name = "Test",ParentCategory=c };
-            var result2 = _categoriesService.AddCategory(c2);
+            var result = this.categoriesService.AddCategory(c);
+            Category c2 = new Category { Name = "Test", ParentCategory = c };
+            var result2 = this.categoriesService.AddCategory(c2);
             Book book = new Book
             {
                 Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
-                Editions = new List<Edition> { new Edition
+                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Editions = new List<Edition>
+                {
+                    new Edition
             {
                 Name = "Teora",
                 BookType = "Hardcover",
@@ -268,26 +397,33 @@ namespace PublicLibraryTests
                 BookStock = new BookStock
             {
                 Amount = 100,
-                LectureRoomAmount = 10
-            }
-            } },
-                Categories = new List<Category> { c2 }
+                LectureRoomAmount = 10,
+            },
+            },
+                },
+                Categories = new List<Category> { c2 },
             };
-            var resultB = _bookService.CreateBook(book);
-            Assert.True(_categoriesService.IsPartOfCategory(book, c));
-            Assert.True(_libraryDbMock.Categories.Count() == 2 && _libraryDbMock.Books.Count() == 1);
+            var resultB = this.bookService.CreateBook(book);
+            Assert.True(this.categoriesService.IsPartOfCategory(book, c));
+            Assert.True(this.libraryDbMock.Categories.Count() == 2 && this.libraryDbMock.Books.Count() == 1);
         }
+
+        /// <summary>
+        /// Test is part of null categories.
+        /// </summary>
         [Test]
         public void IsPartOfCategoryNullCategory()
         {
             Category c = new Category { Name = "Science" };
-            var result = _categoriesService.AddCategory(c);
+            var result = this.categoriesService.AddCategory(c);
 
             Book book = new Book
             {
                 Name = "Moara cu Noroc",
-                Authors = new List<Author> { new Author { Name = "Mihail Sadoveanu" } },
-                Editions = new List<Edition> { new Edition
+                Authors = new List<Author> { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                Editions = new List<Edition>
+                {
+                    new Edition
             {
                 Name = "Teora",
                 BookType = "Hardcover",
@@ -295,55 +431,68 @@ namespace PublicLibraryTests
                 BookStock = new BookStock
             {
                 Amount = 100,
-                LectureRoomAmount = 10
-            }
-            } },
-                Categories = new List<Category> { c }
+                LectureRoomAmount = 10,
+            },
+            },
+                },
+                Categories = new List<Category> { c },
             };
-            var resultB = _bookService.CreateBook(book);
-            Assert.False(_categoriesService.IsPartOfCategory(book, null));
-            Assert.True(_libraryDbMock.Categories.Count() == 1 && _libraryDbMock.Books.Count() == 1);
+            var resultB = this.bookService.CreateBook(book);
+            Assert.False(this.categoriesService.IsPartOfCategory(book, null));
+            Assert.True(this.libraryDbMock.Categories.Count() == 1 && this.libraryDbMock.Books.Count() == 1);
         }
+
+        /// <summary>
+        /// Test category is part of categories.
+        /// </summary>
         [Test]
         public void CategoryIsPartOfCategoriesNotNullCategory()
         {
             Category c = new Category { Name = "Science" };
             Category c2 = new Category { Name = "Test", ParentCategory = c };
-            var result = _categoriesService.AddCategory(c);
-            var result2 = _categoriesService.AddCategory(c2);
+            var result = this.categoriesService.AddCategory(c);
+            var result2 = this.categoriesService.AddCategory(c2);
             List<Category> categories = new List<Category>();
             categories.Add(c);
             categories.Add(c2);
-            Assert.True(_categoriesService.CategoryIsPartOfCategories(c, categories));
-            Assert.True(_libraryDbMock.Categories.Count() == 2);
+            Assert.True(this.categoriesService.CategoryIsPartOfCategories(c, categories));
+            Assert.True(this.libraryDbMock.Categories.Count() == 2);
         }
+
+        /// <summary>
+        /// Test categories is part off null categories.
+        /// </summary>
         [Test]
         public void CategoryIsPartOfCategoriesNullCategory()
         {
             Category c = new Category { Name = "Science" };
             Category c2 = new Category { Name = "Test", ParentCategory = c };
-            var result = _categoriesService.AddCategory(c);
-            var result2 = _categoriesService.AddCategory(c2);
+            var result = this.categoriesService.AddCategory(c);
+            var result2 = this.categoriesService.AddCategory(c2);
             List<Category> categories = new List<Category>();
             categories.Add(c);
             categories.Add(c2);
-            Assert.False(_categoriesService.CategoryIsPartOfCategories(null, categories));
-            Assert.True(_libraryDbMock.Categories.Count() == 2);
+            Assert.False(this.categoriesService.CategoryIsPartOfCategories(null, categories));
+            Assert.True(this.libraryDbMock.Categories.Count() == 2);
         }
+
+        /// <summary>
+        /// Testcategory is not part of categories.
+        /// </summary>
         [Test]
         public void CategoryIsNotPartOfCategories()
         {
             Category c = new Category { Name = "Science" };
             Category c2 = new Category { Name = "Test", ParentCategory = c };
-            Category c1 = new Category { Name = "Science" };
-            var result = _categoriesService.AddCategory(c);
-            var result1 = _categoriesService.AddCategory(c1);
-            var result2 = _categoriesService.AddCategory(c2);
+            Category c1 = new Category { Name = "Glob" };
+            var result = this.categoriesService.AddCategory(c);
+            var result1 = this.categoriesService.AddCategory(c1);
+            var result2 = this.categoriesService.AddCategory(c2);
             List<Category> categories = new List<Category>();
             categories.Add(c);
             categories.Add(c2);
-            Assert.False(_categoriesService.CategoryIsPartOfCategories(c1, categories));
-            Assert.True(_libraryDbMock.Categories.Count() == 2);
+            Assert.False(this.categoriesService.CategoryIsPartOfCategories(c1, categories));
+            Assert.True(this.libraryDbMock.Categories.Count() == 3);
         }
     }
 }

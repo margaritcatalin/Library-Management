@@ -8,7 +8,7 @@ namespace PublicLibrary.Data_Mapper
     using PublicLibrary.Domain_Model;
 
     /// <summary>
-    /// Library database.
+    /// The library database manager.
     /// </summary>
     public class LibraryDb : DbContext
     {
@@ -38,12 +38,12 @@ namespace PublicLibrary.Data_Mapper
         public DbSet<Author> Authors { get; set; }
 
         /// <summary>
-        /// Gets or sets bookwithdrawls.
+        /// Gets or sets bookwithdrawl.
         /// </summary>
         public DbSet<BookWithdrawal> BookWithdrawals { get; set; }
 
         /// <summary>
-        /// Gets or sets borrowedbooks.
+        /// Gets or sets borrowed books.
         /// </summary>
         public DbSet<BorrowedBook> BorrowedBooks { get; set; }
 
@@ -68,7 +68,7 @@ namespace PublicLibrary.Data_Mapper
         public DbSet<Employee> Employees { get; set; }
 
         /// <summary>
-        /// Gets or sets bookStocks.
+        /// Gets or sets bookstocks.
         /// </summary>
         public DbSet<BookStock> BookStocks { get; set; }
 
@@ -79,6 +79,7 @@ namespace PublicLibrary.Data_Mapper
 
         // Add a DbSet for each entity type that you want to include in your model. For more information
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
+
         // public virtual DbSet<MyEntity> MyEntities { get; set; }
     }
 }

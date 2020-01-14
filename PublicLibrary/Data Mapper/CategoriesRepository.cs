@@ -4,10 +4,11 @@
 
 namespace PublicLibrary.Data_Mapper
 {
+    using System.Linq;
     using PublicLibrary.Domain_Model;
 
     /// <summary>
-    /// The category repository.
+    /// The categories repository.
     /// </summary>
     public class CategoriesRepository
     {
@@ -16,7 +17,7 @@ namespace PublicLibrary.Data_Mapper
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoriesRepository"/> class.
         /// </summary>
-        /// <param name="libraryDb">The database connection.</param>
+        /// <param name="libraryDb">The library database.</param>
         public CategoriesRepository(LibraryDb libraryDb)
         {
             this.libraryDb = libraryDb;
@@ -25,7 +26,7 @@ namespace PublicLibrary.Data_Mapper
         /// <summary>
         /// Add a new category.
         /// </summary>
-        /// <param name="category">The category.</param>
+        /// <param name="category">The new category.</param>
         /// <returns>If category was added.</returns>
         public bool AddCategory(Category category)
         {
@@ -41,6 +42,16 @@ namespace PublicLibrary.Data_Mapper
             }
 
             return successful;
+        }
+
+        /// <summary>
+        /// Get category by name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>A category.</returns>
+        public Category GetCategory(string name)
+        {
+            return this.libraryDb.Categories.FirstOrDefault(c => c.Name.Equals(name));
         }
     }
 }

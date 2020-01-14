@@ -48,6 +48,11 @@ namespace PublicLibrary.Domain_Model
         public string Email { get; set; }
 
         /// <summary>
+        /// Gets or sets author gender.
+        /// </summary>
+        public string Gender { get; set; }
+
+        /// <summary>
         /// Gets or sets bookwithdrawls.
         /// </summary>
         public virtual ICollection<BookWithdrawal> BookWithdrawals { get; set; }

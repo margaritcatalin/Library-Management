@@ -13,7 +13,7 @@ namespace PublicLibrary.BusinessLayer
     using PublicLibrary.Domain_Model;
 
     /// <summary>
-    /// This is a service for Book entity.
+    /// The book service.
     /// </summary>
     public class BookService
     {
@@ -28,69 +28,70 @@ namespace PublicLibrary.BusinessLayer
         /// <summary>
         /// Initializes a new instance of the <see cref="BookService"/> class.
         /// </summary>
-        /// <param name="bookRepository"> The book repositoty.</param>
-        /// <param name="categoriesService">The category service.</param>
+        /// <param name="bookRepository">The book repository.</param>
+        /// <param name="categoriesService">The categories service.</param>
         /// <param name="readerRepository">The reader repository.</param>
-        public BookService(BookRepository bookRepository, CategoriesService categoriesService, ReaderRepository readerRepository)
+        public BookService(
+            BookRepository bookRepository,
+            CategoriesService categoriesService,
+            ReaderRepository readerRepository)
         {
             this.bookRepository = bookRepository;
             this.categoriesService = categoriesService;
             this.readerRepository = readerRepository;
-            this.readerService = new ReaderService(readerRepository);
+            this.readerService = new ReaderService(this.readerRepository);
         }
 
         /// <summary>
-        /// With this method you can create a new book.
+        /// Add a new book.
         /// </summary>
-        /// <param name="book"> The new book.</param>
-        /// <returns>If book is created.</returns>
+        /// <param name="book">The book.</param>
+        /// <returns>If book was created.</returns>
         public bool CreateBook(Book book)
         {
             if (book == null)
             {
-                LoggerUtil.LogInfo($"The CreateBook method was called with a null book.");
+                LoggerUtil.LogInfo($"Your book is invalid. Book is null.");
                 return false;
             }
 
             if (string.IsNullOrEmpty(book.Name))
             {
-                LoggerUtil.LogInfo($"The CreateBook method was called with a book with null or empty name.");
+                LoggerUtil.LogInfo($"Your book is invalid. Book name is null or empty.");
                 return false;
             }
 
-            if (book.Name.Length < 3 || book.Name.Length > 80)
+            if ((book.Name.Length < 3) || (book.Name.Length > 80))
             {
-                LoggerUtil.LogInfo($"The CreateBook method was called with a book with a invalid book name({book.Name}).");
+                LoggerUtil.LogInfo($"Your book is invalid. Param book name has an invalid length.");
                 return false;
             }
 
             if (book.Name.Any(c => !(char.IsLetter(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"The CreateBook method was called with a book with a invalid book name({book.Name}).");
+                LoggerUtil.LogInfo($"Your book is invalid. Param book name is invalid.");
                 return false;
             }
 
             if (book.Categories.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"The CreateBook method was called with a book with no category.");
+                LoggerUtil.LogInfo($"Your book is invalid. Param categories is null or empty.");
                 return false;
             }
 
             if (book.Authors.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"The CreateBook method was called with a book with no author.");
-
+                LoggerUtil.LogInfo($"Your book is invalid. Param author is null or empty.");
                 return false;
             }
 
             if (book.Editions.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"The CreateBook method was called with a book with no edition.");
-
+                LoggerUtil.LogInfo($"Your book is invalid. Param Edition is null or empty.");
                 return false;
             }
 
-            int dOM = int.Parse(ConfigurationManager.AppSettings["DOM"]);
+            var dOM = int.Parse(ConfigurationManager.AppSettings["DOM"]);
 
             if (book.Categories.Count > dOM)
             {
@@ -104,6 +105,7 @@ namespace PublicLibrary.BusinessLayer
                 categories.Remove(bookCategory);
                 if (this.categoriesService.CategoryIsPartOfCategories(bookCategory, categories))
                 {
+                    LoggerUtil.LogInfo($"Your book has a invalid category.");
                     return false;
                 }
             }
@@ -111,7 +113,8 @@ namespace PublicLibrary.BusinessLayer
             var addBook = this.bookRepository.AddBook(book);
             if (addBook)
             {
-                LoggerUtil.LogInfo($"Successfully added book {book.Name} from author {book.Authors.First()} of edition {book.Editions.First()}");
+                LoggerUtil.LogInfo(
+                    $"Successfully added book {book.Name} from author {book.Authors.First()} of edition {book.Editions.First()}");
             }
 
             return addBook;
@@ -127,73 +130,73 @@ namespace PublicLibrary.BusinessLayer
         {
             if (book == null)
             {
-                LoggerUtil.LogInfo($"The AddEdition method was called with a null book.");
+                LoggerUtil.LogInfo($"Your book is invalid. Book is null.");
                 return false;
             }
 
             if (edition == null)
             {
-                LoggerUtil.LogInfo($"The AddEdition method was called with a null edition.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Edition is null.");
                 return false;
             }
 
             if (edition.Name.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"The Edition Name is null or empty.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Edition name is null or empty.");
                 return false;
             }
 
-            if (edition.Name.Length < 3 || edition.Name.Length > 80)
+            if ((edition.Name.Length < 3) || (edition.Name.Length > 80))
             {
-                LoggerUtil.LogInfo($"The Edition Name is invalid.");
+                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with invalid length.");
                 return false;
             }
 
             if (edition.Name.Any(c => !(char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"The Edition Name is invalid.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Your edition name is invalid.");
                 return false;
             }
 
             if (char.IsLower(edition.Name.First()))
             {
-                LoggerUtil.LogInfo($"The Edition Name is started with lower case.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Your edition name is need to start with upper case.");
                 return false;
             }
 
             if (edition.BookType.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"The Edition Book type is null or empty.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Your tried to create an edition with null or empty booktype.");
                 return false;
             }
 
-            if (edition.BookType.Length < 3 || edition.BookType.Length > 80)
+            if ((edition.BookType.Length < 3) || (edition.BookType.Length > 80))
             {
-                LoggerUtil.LogInfo($"The Edition Book Type is invalid.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Your booktype length is invalid.");
                 return false;
             }
 
             if (edition.BookType.Any(c => !(char.IsLetter(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"The Edition Book Type is invalid.");
+                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with invalid booktype.");
                 return false;
             }
 
             if (char.IsLower(edition.BookType.First()))
             {
-                LoggerUtil.LogInfo($"The Edition Book Type is started with lower case.");
+                LoggerUtil.LogInfo($"Your edition is invalid. The book type is need to start with uppercase.");
                 return false;
             }
 
             if (edition.Pages > 100000)
             {
-                LoggerUtil.LogInfo($"The Edition have to many pages.");
+                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with too many pages.");
                 return false;
             }
 
             if (edition.Pages <= 0)
             {
-                LoggerUtil.LogInfo($"The edition does not have enough pages.");
+                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with no pages.");
                 return false;
             }
 
@@ -204,12 +207,16 @@ namespace PublicLibrary.BusinessLayer
         /// <summary>
         /// Borrow books.
         /// </summary>
-        /// <param name="books"> The books list.</param>
-        /// <param name="reader"> The reader.</param>
-        /// <param name="employee"> The employee.</param>
-        /// <param name="dateOfBorrowing"> The date of borrowing.</param>
-        /// <returns>The bookwithdrawl.</returns>
-        public BookWithdrawal BorrowBooks(List<Borrowing> books, Reader reader, Employee employee, DateTime dateOfBorrowing)
+        /// <param name="books">Books list.</param>
+        /// <param name="reader">The reader.</param>
+        /// <param name="employee">The employee.</param>
+        /// <param name="dateOfBorrowing">Date of borrowing.</param>
+        /// <returns>A bookwihdrawl.</returns>
+        public BookWithdrawal BorrowBooks(
+            List<Borrowing> books,
+            Reader reader,
+            Employee employee,
+            DateTime dateOfBorrowing)
         {
             LoggerUtil.LogInfo($"Borrowing book {books.First().BookName}");
 
@@ -217,6 +224,7 @@ namespace PublicLibrary.BusinessLayer
             {
                 if (!this.CanBorrowBook(book.BookName, book.EditionName))
                 {
+                    LoggerUtil.LogInfo($"{book.BookName} with edition {book.EditionName} can not be borrow.");
                     return null;
                 }
             }
@@ -224,29 +232,31 @@ namespace PublicLibrary.BusinessLayer
             var booksToBorrow = books.Select(b => this.bookRepository.GetBook(b.BookName)).ToList();
             if (!this.readerService.CanBorrowBooks(booksToBorrow, reader, employee, dateOfBorrowing))
             {
+                LoggerUtil.LogInfo($"{reader.FirstName} can not borrow a new book.");
                 return null;
             }
 
             var readerFromDb = this.readerService.GetReader(reader.Email, reader.Phone);
             var employeeFromDb = this.readerRepository.GetEmployee(employee);
             BookWithdrawal bw = null;
-            if (employeeFromDb != null && readerFromDb != null)
+            if ((employeeFromDb != null) && (readerFromDb != null))
             {
                 bw = this.bookRepository.BorrowBooks(books, readerFromDb, employeeFromDb);
             }
 
-            LoggerUtil.LogInfo(bw != null
-                ? $"Borrowing book {books.First().BookName} completed successfully"
-                : $"Borrowing book {books.First().BookName} failed");
+            LoggerUtil.LogInfo(
+                bw != null
+                    ? $"Borrowing book {books.First().BookName} completed successfully"
+                    : $"Borrowing book {books.First().BookName} failed");
             return bw;
         }
 
         /// <summary>
-        /// Check if book can be borrow.
+        /// Check if you can borrow a book.
         /// </summary>
-        /// <param name="bookName"> The book Name.</param>
-        /// <param name="editionName">The edition Name.</param>
-        /// <returns>If book can be borrow.</returns>
+        /// <param name="bookName">The book name.</param>
+        /// <param name="editionName">The edition name.</param>
+        /// <returns>If you can borrow the book.</returns>
         public bool CanBorrowBook(string bookName, string editionName)
         {
             var edition = this.bookRepository.GetEdition(bookName, editionName);
@@ -258,10 +268,10 @@ namespace PublicLibrary.BusinessLayer
         }
 
         /// <summary>
-        /// Get Number of borrowed books.
+        /// Get number of borrowed books.
         /// </summary>
-        /// <param name="edition">Edition for the book.</param>
-        /// <returns>Number of books.</returns>
+        /// <param name="edition">The edition.</param>
+        /// <returns>Number of borrowed books.</returns>
         public int GetNumberOfBorrowedBooks(Edition edition)
         {
             var borrowedBooks = edition.BorrowedBooks;
@@ -271,6 +281,39 @@ namespace PublicLibrary.BusinessLayer
             bookWithdrawals = bookWithdrawals.Where(bw => DateTime.Now.CompareTo(bw.Date) == 1);
 
             return bookWithdrawals.Count();
+        }
+
+        /// <summary>
+        /// Get edition by book name and edition name.
+        /// </summary>
+        /// <param name="bookName">The bookName.</param>
+        /// <param name="editionName">The editionName.</param>
+        /// <returns>An edition.</returns>
+        public Edition GetEdition(string bookName, string editionName)
+        {
+            if (bookName.IsNullOrEmpty() || editionName.IsNullOrEmpty())
+            {
+                LoggerUtil.LogInfo($"Params bookName and editionName is required.");
+                return null;
+            }
+
+            return this.bookRepository.GetEdition(bookName, editionName);
+        }
+
+        /// <summary>
+        /// Get book by name.
+        /// </summary>
+        /// <param name="name">The book name.</param>
+        /// <returns>A book.</returns>
+        public Book GetBook(string name)
+        {
+            if (name.IsNullOrEmpty())
+            {
+                LoggerUtil.LogInfo($"Param name is required.");
+                return null;
+            }
+
+            return this.bookRepository.GetBook(name);
         }
     }
 }

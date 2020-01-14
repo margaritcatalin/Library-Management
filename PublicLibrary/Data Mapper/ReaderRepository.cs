@@ -20,14 +20,14 @@ namespace PublicLibrary.Data_Mapper
         /// <summary>
         /// Initializes a new instance of the <see cref="ReaderRepository"/> class.
         /// </summary>
-        /// <param name="libraryDb">The database connection.</param>
+        /// <param name="libraryDb">The library db manager.</param>
         public ReaderRepository(LibraryDb libraryDb)
         {
             this.libraryDb = libraryDb;
         }
 
         /// <summary>
-        /// Get reader by email and phone.
+        /// Get a reader by email and phone.
         /// </summary>
         /// <param name="email">The email.</param>
         /// <param name="phone">The phone.</param>
@@ -49,32 +49,26 @@ namespace PublicLibrary.Data_Mapper
         }
 
         /// <summary>
-        /// Get books borrowed for a specific period.
+        /// Get books by withdrawl period.
         /// </summary>
         /// <param name="days">Number of days.</param>
         /// <param name="reader">The reader.</param>
-        /// <param name="dateTime">The date time.</param>
+        /// <param name="dateTime">The date.</param>
         /// <returns>The books list.</returns>
         public List<Book> GetBooksWithdrawalWithinPeriod(int days, Reader reader, DateTime dateTime)
         {
             return this.libraryDb.BookWithdrawals.Include(bw => bw.BorrowedBooks)
-                .Include(bw => bw.BorrowedBooks.Select(bb => bb.Book)).Where(bw =>
-                    bw.Reader.Id.Equals(reader.Id) &&
-                    DbFunctions.DiffDays(
-                        bw.Date,
-                        dateTime) <
-                    days)
-                .SelectMany(bw => bw.BorrowedBooks).Include(bb => bb.Book)
-                .Select(bb => bb.Book)
-                .ToList();
+                .Include(bw => bw.BorrowedBooks.Select(bb => bb.Book)).Where(
+                    bw => bw.Reader.Id.Equals(reader.Id) && (DbFunctions.DiffDays(bw.Date, dateTime) < days))
+                .SelectMany(bw => bw.BorrowedBooks).Include(bb => bb.Book).Select(bb => bb.Book).ToList();
         }
 
         /// <summary>
-        /// Add a new extensions.
+        /// Add a new extension.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <param name="bookWithdrawal">The bookWihdrawl.</param>
-        /// <returns>If extension was added.</returns>
+        /// <param name="bookWithdrawal">The book withdrawl.</param>
+        /// <returns>if extension was added.</returns>
         public bool AddExtension(Reader reader, BookWithdrawal bookWithdrawal)
         {
             bookWithdrawal.Extensions.Add(new Extension { Date = DateTime.Now, Reader = reader });
@@ -82,9 +76,9 @@ namespace PublicLibrary.Data_Mapper
         }
 
         /// <summary>
-        /// Add a new reader.
+        /// Create a new reader.
         /// </summary>
-        /// <param name="reader">The reader.</param>
+        /// <param name="reader">The new reader.</param>
         /// <returns>If reader was added.</returns>
         public bool AddReader(Reader reader)
         {
@@ -106,24 +100,24 @@ namespace PublicLibrary.Data_Mapper
         /// Get employee by reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>A emoloyee.</returns>
+        /// <returns>An employee.</returns>
         public Employee GetEmployeeFromReader(Reader reader)
         {
             return this.libraryDb.Employees.FirstOrDefault(e => e.Email.Equals(reader.Email));
         }
 
         /// <summary>
-        /// Check if is employee.
+        /// Check if reader is employee.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>If reader is employee.</returns>
+        /// <returns>If is employee.</returns>
         public bool IsEmployee(Reader reader)
         {
             return this.GetEmployeeFromReader(reader) != null;
         }
 
         /// <summary>
-        /// Get an employee.
+        /// Get same employee.
         /// </summary>
         /// <param name="employee">The employee.</param>
         /// <returns>An employee.</returns>

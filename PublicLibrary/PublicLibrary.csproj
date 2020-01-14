@@ -136,7 +136,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLayer\AuthorService.cs" />
     <Compile Include="BusinessLayer\BookService.cs" />
+    <Compile Include="Data Mapper\AuthorRepository.cs" />
     <Compile Include="Domain Model\Borrowing.cs" />
     <Compile Include="BusinessLayer\CategoriesService.cs" />
     <Compile Include="BusinessLayer\EmployeeService.cs" />

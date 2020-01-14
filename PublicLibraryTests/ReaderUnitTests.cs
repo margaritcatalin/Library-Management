@@ -1,657 +1,1012 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using PublicLibrary.BusinessLayer;
-using PublicLibrary.Data_Mapper;
-using PublicLibrary.Domain_Model;
-using Telerik.JustMock.EntityFramework;
+﻿// <copyright file="ReaderUnitTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace PublicLibraryTests
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+    using PublicLibrary.BusinessLayer;
+    using PublicLibrary.Data_Mapper;
+    using PublicLibrary.Domain_Model;
+    using Telerik.JustMock.EntityFramework;
+
+    /// <summary>
+    /// Reader unit testes.
+    /// </summary>
     [TestFixture]
     public class ReaderUnitTests
     {
-        private LibraryDb _libraryDbMock;
-        private ReaderService _readerService;
+        private LibraryDb libraryDbMock;
 
+        private ReaderService readerService;
+
+        /// <summary>
+        /// Tests setup.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
-            _libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
-            EntityFrameworkMock.PrepareMock(_libraryDbMock);
-            _readerService = new ReaderService(new ReaderRepository(_libraryDbMock));
+            this.libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
+            EntityFrameworkMock.PrepareMock(this.libraryDbMock);
+            this.readerService = new ReaderService(new ReaderRepository(this.libraryDbMock));
         }
 
+        /// <summary>
+        /// Test add a null reader.
+        /// </summary>
         [Test]
         public void TestAddNullReader()
         {
-            var result = _readerService.AddReader(null);
+            var result = this.readerService.AddReader(null);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a new reader with empty first Name.
+        /// </summary>
         [Test]
         public void TestAddReaderWithFirstNameEmpty()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = string.Empty,
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a new reader with null firstName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithFirstNameNull()
         {
-            Reader reader = new Reader
-            {
-                FirstName = null,
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = null,
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test Add a reader with firstName less than 3.
+        /// </summary>
         [Test]
         public void TestAddReaderWithFirstNameLessThan3()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Aa",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Aa",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with long firstName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLongFirstName()
         {
-            Reader reader = new Reader
-            {
-                FirstName =
-                    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName =
+                                 "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with digit in firstName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithFirstNameDigit()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "123",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "123",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with symbol in firstName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithFirstNameSymbol()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "@#Ana",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "@#Ana",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
+
+        /// <summary>
+        /// Test add a reader with lower case firstName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithFirstNameLowerCase()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "ana",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "ana",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with white space in firstName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithFirstNameWhiteSpace()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
-            Assert.True(_libraryDbMock.Readers.Count() == 1);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            Assert.True(this.libraryDbMock.Readers.Count() == 1);
         }
 
+        /// <summary>
+        /// Add a reader with lastName Null.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLastNameNull()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = null,
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = null,
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with empty lastName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLastNameEmpty()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = "",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = string.Empty,
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with lastName less than 3.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLastNameLessThan3()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = "Ak",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Ak",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with long lastName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLongLastName()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName =
-                    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName =
+                                 "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with digit in lastName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLastNameDigit()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = "Ak467",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Ak467",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with symbol in lastName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLastNameSymbol()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = "Ak@",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Ak@",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
+
+        /// <summary>
+        /// Test add a reader with lower case lastName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLastNameLowerCase()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = "alexandrescu",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "alexandrescu",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with space in lastName.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLastNameWhiteSpace()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = "Sad Huseiim",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
-            Assert.True(_libraryDbMock.Readers.Count() == 1);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Sad Huseiim",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            Assert.True(this.libraryDbMock.Readers.Count() == 1);
         }
 
+        /// <summary>
+        /// Test add a reader with null address.
+        /// </summary>
         [Test]
         public void TestAddReaderWithNullAddress()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = null,
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = null,
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with empty address.
+        /// </summary>
         [Test]
         public void TestAddReaderWithEmptyAddress()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = string.Empty,
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with address less than 3.
+        /// </summary>
         [Test]
         public void TestAddReaderWithAddressLessThan3()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "aa",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "aa",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with long address.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLongAddress()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address =
-                    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address =
+                                 "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with symbol in address.
+        /// </summary>
         [Test]
         public void TestAddReaderWithAddressSymbol()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str. Memorandului nr4$@",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str. Memorandului nr4$@",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with null email.
+        /// </summary>
         [Test]
         public void TestAddReaderWithNullEmail()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = null,
-                Phone = null,
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = null,
+                             Phone = null,
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with empty email.
+        /// </summary>
         [Test]
         public void TestAddReaderWithEmptyEmail()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "",
-                Phone = null,
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = string.Empty,
+                             Phone = null,
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with email less than 10.
+        /// </summary>
         [Test]
         public void TestAddReaderWithEmailLessThan10Chars()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "@yahoo.co",
-                Phone = null,
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = "@yahoo.co",
+                             Phone = null,
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with long email.
+        /// </summary>
         [Test]
         public void TestAddReaderWithLongEmail()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email =
-                    "@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                Phone = null,
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email =
+                                 "@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                             Phone = null,
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with symbol in email.
+        /// </summary>
         [Test]
         public void TestAddReaderWithEmailBadSymbol()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "alexandru.v###@gmail.com",
-                Phone = null,
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v###@gmail.com",
+                             Phone = null,
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with space in email.
+        /// </summary>
         [Test]
         public void TestAddReaderWithEmailWhiteSpace()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "alexandru v@gmail.com",
-                Phone = null,
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = "alexandru v@gmail.com",
+                             Phone = null,
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with invalid email.
+        /// </summary>
         [Test]
         public void TestAddReaderWithBadEmail()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = "alexandrugmail.com",
-                Phone = null,
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = "alexandrugmail.com",
+                             Phone = null,
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with null phone number.
+        /// </summary>
         [Test]
         public void TestAddReaderWithNullPhone()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = null,
-                Phone = null,
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = null,
+                             Phone = null,
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with empty phone.
+        /// </summary>
         [Test]
         public void TestAddReaderWithEmptyPhone()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = null,
-                Phone = "",
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = null,
+                             Phone = string.Empty,
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with invalid phone number.
+        /// </summary>
         [Test]
         public void TestAddReaderWithPhoneSmallerLength()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = null,
-                Phone = "12345",
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = null,
+                             Phone = "12345",
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with too big phone number.
+        /// </summary>
         [Test]
         public void TestAddReaderWithPhoneBiggerLength()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = null,
-                Phone = "123456789123456789",
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = null,
+                             Phone = "123456789123456789",
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
 
+        /// <summary>
+        /// Test add a reader with invalid phone number.
+        /// </summary>
         [Test]
         public void TestAddReaderWithPhoneWithLetters()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Valentin",
-                LastName = "Alexandru",
-                Email = null,
-                Phone = "123456Vali",
-                Address = "Str. Memorandului nr4",
-                Extensions = new List<Extension>()
-            };
+            var reader = new Reader
+                         {
+                             FirstName = "Valentin",
+                             LastName = "Alexandru",
+                             Email = null,
+                             Phone = "123456Vali",
+                             Address = "Str. Memorandului nr4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
 
-            var result = _readerService.AddReader(reader);
+            var result = this.readerService.AddReader(reader);
             Assert.False(result);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
+
+        /// <summary>
+        /// Test add reader with null extensions.
+        /// </summary>
         [Test]
         public void TestAddReaderWithNullExtensions()
         {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = "Sad Huseiim",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = null
-            };
-            var result = _readerService.AddReader(reader);
-            Assert.True(_libraryDbMock.Readers.Count() == 0);
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Sad Huseiim",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = null,
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
         }
-        /*[Test]
-        public void AddExtension()
-        {
-            Reader reader = new Reader
-            {
-                FirstName = "Al Alekku",
-                LastName = "Alexandru",
-                Email = "alexandru.v@yahoo.com",
-                Phone = "7345345568",
-                Address = "Str.Memorandului nr.4",
-                Extensions = new List<Extension>()
-            };
-            var result = _readerService.AddReader(reader);
 
-            _readerService.AddExtension(reader);
-            Assert.True(reader.Extensions.Count() == 1);
-        }
+        /// <summary>
+        /// Test add a reader with null gender.
+        /// </summary>
         [Test]
-        public void AddExtensionNullReader()
+        public void TestAddReaderWithNullGender()
         {
-            var result =_readerService.AddExtension(null);
-            Assert.False(result);
-        }*/
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = null,
+                         };
+            var result = this.readerService.AddReader(reader);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+        }
+
+        /// <summary>
+        /// Test add a reader with empty gender.
+        /// </summary>
+        [Test]
+        public void TestAddReaderWithEmptyGender()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = string.Empty,
+                         };
+            var result = this.readerService.AddReader(reader);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+        }
+
+        /// <summary>
+        /// Test add a reader with gender male.
+        /// </summary>
+        [Test]
+        public void TestAddReaderWithMGender()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            Assert.True(this.libraryDbMock.Readers.Count() == 1);
+        }
+
+        /// <summary>
+        /// Test add a reader with gender female.
+        /// </summary>
+        [Test]
+        public void TestAddReaderWithFGender()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "F",
+                         };
+            var result = this.readerService.AddReader(reader);
+            Assert.True(this.libraryDbMock.Readers.Count() == 1);
+        }
+
+        /// <summary>
+        /// Test add a reader with invalid gender.
+        /// </summary>
+        [Test]
+        public void TestAddReaderWithBadGender()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Alexandru",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "C",
+                         };
+            var result = this.readerService.AddReader(reader);
+            Assert.True(this.libraryDbMock.Readers.Count() == 0);
+        }
+
+        /// <summary>
+        /// Test get a reader.
+        /// </summary>
+        [Test]
+        public void TestGetReader()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Sad Huseiim",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            reader = this.readerService.GetReader(reader.Email, reader.Phone);
+            Assert.NotNull(reader);
+        }
+
+        /// <summary>
+        /// Test get a reader by phone.
+        /// </summary>
+        [Test]
+        public void TestGetReaderByPhone()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Sad Huseiim",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            reader = this.readerService.GetReader(null, reader.Phone);
+            Assert.NotNull(reader);
+        }
+
+        /// <summary>
+        /// Test get a reader by email.
+        /// </summary>
+        [Test]
+        public void TestGetReaderByEmail()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Sad Huseiim",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            reader = this.readerService.GetReader(reader.Email, null);
+            Assert.NotNull(reader);
+        }
+
+        /// <summary>
+        /// Test get a reader by null values.
+        /// </summary>
+        [Test]
+        public void TestGetNullReader()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Sad Huseiim",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            reader = this.readerService.GetReader(null, null);
+            Assert.Null(reader);
+        }
+
+        /// <summary>
+        /// Test ge a reader by empty strings.
+        /// </summary>
+        [Test]
+        public void TestGetEmptyReader()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Sad Huseiim",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            reader = this.readerService.GetReader(string.Empty, string.Empty);
+            Assert.Null(reader);
+        }
+
+        /// <summary>
+        /// Test find a unknown reader.
+        /// </summary>
+        [Test]
+        public void TestGetUnknownReader()
+        {
+            var reader = new Reader
+                         {
+                             FirstName = "Al Alekku",
+                             LastName = "Sad Huseiim",
+                             Email = "alexandru.v@yahoo.com",
+                             Phone = "7345345568",
+                             Address = "Str.Memorandului nr.4",
+                             Extensions = new List<Extension>(),
+                             Gender = "M",
+                         };
+            var result = this.readerService.AddReader(reader);
+            reader = this.readerService.GetReader("NicuRata@gmail.com", "0738489489");
+            Assert.Null(reader);
+        }
     }
 }

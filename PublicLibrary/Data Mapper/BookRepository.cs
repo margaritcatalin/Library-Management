@@ -11,7 +11,7 @@ namespace PublicLibrary.Data_Mapper
     using PublicLibrary.Domain_Model;
 
     /// <summary>
-    /// The Book repository.
+    /// The book repository.
     /// </summary>
     public class BookRepository
     {
@@ -20,7 +20,7 @@ namespace PublicLibrary.Data_Mapper
         /// <summary>
         /// Initializes a new instance of the <see cref="BookRepository"/> class.
         /// </summary>
-        /// <param name="libraryDb">The database connection.</param>
+        /// <param name="libraryDb">The library db.</param>
         public BookRepository(LibraryDb libraryDb)
         {
             this.libraryDb = libraryDb;
@@ -30,44 +30,47 @@ namespace PublicLibrary.Data_Mapper
         /// Add a new book.
         /// </summary>
         /// <param name="book">The book.</param>
-        /// <returns>If book was created.</returns>
+        /// <returns>If book was added.</returns>
         public bool AddBook(Book book)
         {
-            book.Authors = book.Authors.Select(a =>
-            {
-                var dba = this.libraryDb.Authors.FirstOrDefault(dbA => dbA.Name.Equals(a.Name));
-                if (dba == null)
+            book.Authors = book.Authors.Select(
+                a =>
                 {
-                    return a;
-                }
-                else
-                {
-                    return dba;
-                }
-            }).ToList();
+                    var dba = this.libraryDb.Authors.FirstOrDefault(
+                        dbA => dbA.FirstName.Equals(a.FirstName) && dbA.LastName.Equals(a.LastName));
+                    if (dba == null)
+                    {
+                        return a;
+                    }
+                    else
+                    {
+                        return dba;
+                    }
+                }).ToList();
 
-            book.Categories = book.Categories.Select(c =>
-            {
-                var dbc = this.libraryDb.Categories.FirstOrDefault(dbC => dbC.Name.Equals(c.Name));
-                if (dbc == null)
+            book.Categories = book.Categories.Select(
+                c =>
                 {
-                    return c;
-                }
-                else
-                {
-                    return dbc;
-                }
-            }).ToList();
+                    var dbc = this.libraryDb.Categories.FirstOrDefault(dbC => dbC.Name.Equals(c.Name));
+                    if (dbc == null)
+                    {
+                        return c;
+                    }
+                    else
+                    {
+                        return dbc;
+                    }
+                }).ToList();
 
             this.libraryDb.Books.Add(book);
             return this.libraryDb.SaveChanges() != 0;
         }
 
         /// <summary>
-        /// Get a book by bookName.
+        /// Get book by name.
         /// </summary>
         /// <param name="bookName">The book name.</param>
-        /// <returns>The book.</returns>
+        /// <returns>A book.</returns>
         public Book GetBook(string bookName)
         {
             var result = this.libraryDb.Books.FirstOrDefault(b => b.Name.Equals(bookName));
@@ -75,17 +78,16 @@ namespace PublicLibrary.Data_Mapper
         }
 
         /// <summary>
-        /// Ged edition by book name and edition name.
+        /// Get edition by book name adn edition name.
         /// </summary>
         /// <param name="bookName">The book name.</param>
         /// <param name="editionName">The edition name.</param>
-        /// <returns>The edition.</returns>
+        /// <returns>An edition.</returns>
         public Edition GetEdition(string bookName, string editionName)
         {
-            var edition = this.libraryDb.Editions.Include(e => e.BookStock)
-                .Include(e => e.BorrowedBooks)
+            var edition = this.libraryDb.Editions.Include(e => e.BookStock).Include(e => e.BorrowedBooks)
                 .Include(e => e.BorrowedBooks.Select(bb => bb.BookWithdrawal))
-                .First(e => e.Name.Equals(editionName) && e.Book.Name.Equals(bookName));
+                .FirstOrDefault(e => e.Name.Equals(editionName) && e.Book.Name.Equals(bookName));
 
             return edition;
         }
@@ -94,7 +96,7 @@ namespace PublicLibrary.Data_Mapper
         /// Get editions.
         /// </summary>
         /// <param name="editions">The editions.</param>
-        /// <returns>Editions list.</returns>
+        /// <returns>A list with editions.</returns>
         public List<Edition> GetEditions(List<Borrowing> editions)
         {
             return editions.Select(e => this.GetEdition(e.BookName, e.EditionName)).ToList();
@@ -103,26 +105,23 @@ namespace PublicLibrary.Data_Mapper
         /// <summary>
         /// Borrow books.
         /// </summary>
-        /// <param name="editionsList">The editions.</param>
+        /// <param name="editionsList">The edition list.</param>
         /// <param name="reader">The reader.</param>
         /// <param name="employee">The employee.</param>
         /// <returns>The bookwithdrawl.</returns>
         public BookWithdrawal BorrowBooks(List<Borrowing> editionsList, Reader reader, Employee employee)
         {
-            List<Edition> editions = this.GetEditions(editionsList);
+            var editions = this.GetEditions(editionsList);
 
-            BookWithdrawal bookWithdrawal = new BookWithdrawal
-            {
-                BorrowedBooks = editions.Select(e => new BorrowedBook
-                {
-                    Book = e.Book,
-                    Edition = e,
-                }).ToList(),
-                Date = DateTime.Now,
-                Reader = reader,
-                Employee = employee,
-                Extensions = new List<Extension>(),
-            };
+            var bookWithdrawal = new BookWithdrawal
+                                 {
+                                     BorrowedBooks =
+                                         editions.Select(e => new BorrowedBook { Book = e.Book, Edition = e }).ToList(),
+                                     Date = DateTime.Now,
+                                     Reader = reader,
+                                     Employee = employee,
+                                     Extensions = new List<Extension>(),
+                                 };
 
             this.libraryDb.BookWithdrawals.Add(bookWithdrawal);
             if (this.libraryDb.SaveChanges() == 0)
@@ -134,10 +133,10 @@ namespace PublicLibrary.Data_Mapper
         }
 
         /// <summary>
-        /// Get a book by bookToGet.
+        /// Find book by bookToGet.
         /// </summary>
         /// <param name="bookToGet">The book.</param>
-        /// <returns>The specific book.</returns>
+        /// <returns>A book.</returns>
         public Book GetBook(Book bookToGet)
         {
             return this.libraryDb.Books.FirstOrDefault(b => b.Name.Equals(bookToGet.Name));
@@ -147,11 +146,19 @@ namespace PublicLibrary.Data_Mapper
         /// Add a new edition.
         /// </summary>
         /// <param name="book">The book.</param>
-        /// <param name="edition">The new edition.</param>
+        /// <param name="edition">The edition.</param>
         /// <returns>If edition was added.</returns>
         public bool AddEdition(Book book, Edition edition)
         {
-            book.Editions.Add(edition);
+            if (book.Editions == null)
+            {
+                book.Editions = new List<Edition> { edition };
+            }
+            else
+            {
+                book.Editions.Add(edition);
+            }
+
             return this.libraryDb.SaveChanges() != 0;
         }
     }

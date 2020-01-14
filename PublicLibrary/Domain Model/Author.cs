@@ -19,11 +19,23 @@ namespace PublicLibrary.Data_Mapper
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets Author name.
+        /// Gets or sets Author firstName.
         /// </summary>
         [Index(IsUnique = true)]
         [StringLength(450)]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+
+        /// <summary>
+        /// Gets or sets author lastName.
+        /// </summary>
+        [Index(IsUnique = true)]
+        [StringLength(450)]
+        public string LastName { get; set; }
+
+        /// <summary>
+        /// Gets or sets author gender.
+        /// </summary>
+        public string Gender { get; set; }
 
         /// <summary>
         /// Gets or sets author books.
@@ -33,7 +45,7 @@ namespace PublicLibrary.Data_Mapper
         /// <inheritdoc/>
         public override string ToString()
         {
-            return this.Name;
+            return this.FirstName;
         }
     }
 }

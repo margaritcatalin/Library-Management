@@ -30,120 +30,127 @@ namespace PublicLibrary.BusinessLayer
         }
 
         /// <summary>
-        /// Get Reader by email and phone number.
+        /// Get reader by email and phone.
         /// </summary>
         /// <param name="email">The email.</param>
-        /// <param name="phone">The phone number.</param>
-        /// <returns>The reader.</returns>
+        /// <param name="phone">The phone.</param>
+        /// <returns>A reader.</returns>
         public Reader GetReader(string email, string phone)
         {
+            if (email.IsNullOrEmpty() && phone.IsNullOrEmpty())
+            {
+                LoggerUtil.LogInfo($"Params email and phone is required.");
+                return null;
+            }
+
             return this.readerRepository.GetReader(email, phone);
         }
 
         /// <summary>
-        /// Create a new reader.
+        /// Add a new reader.
         /// </summary>
-        /// <param name="reader">The new reader.</param>
+        /// <param name="reader">The reader.</param>
         /// <returns>If reader was created.</returns>
         public bool AddReader(Reader reader)
         {
             if (reader == null)
             {
-                LoggerUtil.LogInfo($"The reader is null.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader is null.");
                 return false;
             }
 
             if (reader.FirstName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"The reader first name is null or empty.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName is null or empty.");
                 return false;
             }
 
-            if (reader.FirstName.Length < 3 || reader.FirstName.Length > 80)
+            if ((reader.FirstName.Length < 3) || (reader.FirstName.Length > 80))
             {
-                LoggerUtil.LogInfo($"The reader first name is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName has invalid length.");
                 return false;
             }
 
             if (reader.FirstName.Any(c => !(char.IsLetter(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"The reader first name is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName is invalid.");
                 return false;
             }
 
             if (char.IsLower(reader.FirstName.First()))
             {
-                LoggerUtil.LogInfo($"The reader first name was started with lower case.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName is need to start with uppercase.");
                 return false;
             }
 
             if (reader.LastName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"The reader last name is null or empty.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastNameIsNull or empty.");
                 return false;
             }
 
-            if (reader.LastName.Length < 3 || reader.LastName.Length > 80)
+            if ((reader.LastName.Length < 3) || (reader.LastName.Length > 80))
             {
-                LoggerUtil.LogInfo($"The reader last name is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastName has a invalid length.");
                 return false;
             }
 
             if (reader.LastName.Any(c => !(char.IsLetter(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"The reader last name is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastName is invalid.");
                 return false;
             }
 
             if (char.IsLower(reader.LastName.First()))
             {
-                LoggerUtil.LogInfo($"The reader last name was started with lower case.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastName is need to start with upper case.");
                 return false;
             }
 
             if (reader.Address.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"The reader address is null or empty.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader address is null or empty.");
                 return false;
             }
 
-            if (reader.Address.Length < 3 || reader.Address.Length > 120)
+            if ((reader.Address.Length < 3) || (reader.Address.Length > 120))
             {
-                LoggerUtil.LogInfo($"The reader address is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader address has invalid length.");
                 return false;
             }
 
-            if (reader.Address.Any(c => !(char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '.' || c == ',')))
+            if (reader.Address.Any(c => !(char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || (c == '.') || (c == ','))))
             {
-                LoggerUtil.LogInfo($"The reader address is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader address is invalid.");
                 return false;
             }
 
-            bool hasEmailOrPhone = false;
+            var hasEmailOrPhone = false;
             hasEmailOrPhone = !(reader.Email.IsNullOrEmpty() && reader.Phone.IsNullOrEmpty());
             if (!hasEmailOrPhone)
             {
-                LoggerUtil.LogInfo($"The reader doesn't have email or phone number.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader email or phone is null or empty.");
                 return false;
             }
 
             if (!reader.Email.IsNullOrEmpty())
             {
-                if (reader.Email.Length < 10 || reader.Email.Length > 150)
+                if ((reader.Email.Length < 10) || (reader.Email.Length > 150))
                 {
-                    LoggerUtil.LogInfo($"The reader email is invalid.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader email has invalid length.");
                     return false;
                 }
 
-                if (reader.Email.Any(c => !(char.IsLetterOrDigit(c) || c == '@' || c == '.' || c == '_' || c == '-')))
+                if (reader.Email.Any(
+                    c => !(char.IsLetterOrDigit(c) || (c == '@') || (c == '.') || (c == '_') || (c == '-'))))
                 {
-                    LoggerUtil.LogInfo($"The reader email is invalid.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader email is invalid.");
                     return false;
                 }
 
                 if (reader.Email.All(c => c != '@'))
                 {
-                    LoggerUtil.LogInfo($"The reader email is invalid.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader email is invalid.");
                     return false;
                 }
             }
@@ -152,20 +159,32 @@ namespace PublicLibrary.BusinessLayer
             {
                 if (reader.Phone.Length != 10)
                 {
-                    LoggerUtil.LogInfo($"The reader phone number is invalid.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader phone number has invalid length.");
                     return false;
                 }
 
                 if (reader.Phone.Any(c => !char.IsDigit(c)))
                 {
-                    LoggerUtil.LogInfo($"The reader phone number is invalid.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader phone number is invalid.");
                     return false;
                 }
             }
 
             if (reader.Extensions == null)
             {
-                LoggerUtil.LogInfo($"The reader extensions is null.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader extensions is null.");
+                return false;
+            }
+
+            if (reader.Gender.IsNullOrEmpty())
+            {
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader gender is null or empty.");
+                return false;
+            }
+
+            if (!(reader.Gender.Equals("M") || reader.Gender.Equals("F")))
+            {
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader gender is invalid.");
                 return false;
             }
 
@@ -173,44 +192,44 @@ namespace PublicLibrary.BusinessLayer
         }
 
         /// <summary>
-        /// Check if can borrow books.
+        /// Check if can borrow the book.
         /// </summary>
         /// <param name="books">The books.</param>
         /// <param name="reader">The reader.</param>
         /// <param name="employee">The employee.</param>
-        /// <param name="dateOfBorrowing">The date of borrowing.</param>
-        /// <returns>If reader can borrow books.</returns>
+        /// <param name="dateOfBorrowing">Date of borrowing.</param>
+        /// <returns>If reader can borrow the books.</returns>
         public bool CanBorrowBooks(List<Book> books, Reader reader, Employee employee, DateTime dateOfBorrowing)
         {
             reader = this.readerRepository.GetReader(reader.Email, reader.Phone);
-            bool isEmployee = this.IsEmployee(reader);
+            var isEmployee = this.IsEmployee(reader);
             if (!this.CheckNumberOfBorrowedBooksInPeriod(books, reader, isEmployee, dateOfBorrowing))
             {
-                LoggerUtil.LogInfo($"The reader borrowed to many books.");
+                LoggerUtil.LogInfo($"The reader borrowed too many books.");
                 return false;
             }
 
             if (!this.CheckBooksDifferentCategories(books, isEmployee))
             {
-                LoggerUtil.LogInfo($"The reader tried to borrow a book from different categories.");
+                LoggerUtil.LogInfo($"The reader has books from too many categories.");
                 return false;
             }
 
             if (!this.CheckBooksForSameCategories(books, reader, isEmployee, dateOfBorrowing))
             {
-                LoggerUtil.LogInfo($"The reader tried to borrow a book from same category.");
+                LoggerUtil.LogInfo($"The reader has too many books from same categories.");
                 return false;
             }
 
             if (!this.CheckSameBookDelta(books, reader, isEmployee, dateOfBorrowing))
             {
-                LoggerUtil.LogInfo($"The reader tried to borrow a same book.");
+                LoggerUtil.LogInfo($"The reader borrowed too many books in same period.");
                 return false;
             }
 
             if (!this.CheckNumberOfBooksPerDay(books, reader, isEmployee, dateOfBorrowing))
             {
-                LoggerUtil.LogInfo($"The reader has to many books borrowed.");
+                LoggerUtil.LogInfo($"The reader borrowed too many books in same day.");
                 return false;
             }
 
@@ -218,21 +237,23 @@ namespace PublicLibrary.BusinessLayer
         }
 
         /// <summary>
-        ///  Add a new extension.
+        /// Add a new extension.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <param name="bookWithdrawal">The book wihdrawl.</param>
+        /// <param name="bookWithdrawal">The book withdrawl.</param>
         /// <returns>If extension was added.</returns>
         public bool AddExtension(Reader reader, BookWithdrawal bookWithdrawal)
         {
             if (reader == null)
             {
+                LoggerUtil.LogInfo($"Reader is null.");
                 return false;
             }
 
             reader = this.readerRepository.GetReader(reader.Email, reader.Phone);
             if (!this.CheckNumberOfExtensions(reader, this.IsEmployee(reader), DateTime.Now))
             {
+                LoggerUtil.LogInfo($"Reader has too many extensions.");
                 return false;
             }
 
@@ -240,86 +261,53 @@ namespace PublicLibrary.BusinessLayer
         }
 
         /// <summary>
-        /// Check if Reader is employee.
+        /// Check if reader is employee.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>If is employee.</returns>
+        /// <returns>If he's eployee.</returns>
         public bool IsEmployee(Reader reader)
         {
             return this.readerRepository.IsEmployee(reader);
         }
 
         /// <summary>
-        /// Get employee by reader.
+        /// Get an employee by reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>The employee.</returns>
+        /// <returns>An employee.</returns>
         public Employee GetEmployee(Reader reader)
         {
             return this.readerRepository.GetEmployeeFromReader(reader);
         }
 
-        private Category GoToTopParent(Category category)
+        private bool CheckNumberOfBorrowedBooksInPeriod(
+            List<Book> books,
+            Reader reader,
+            bool isEmployee,
+            DateTime dateTime)
         {
-            while (category.ParentCategory != null)
-            {
-                category = category.ParentCategory;
-            }
-
-            return category;
-        }
-
-        private bool CheckNumberOfExtensions(Reader reader, bool isEmployee, DateTime dateTime)
-        {
-            int lIM = int.Parse(ConfigurationManager.AppSettings["LIM"]);
+            var nMC = int.Parse(ConfigurationManager.AppSettings["NMC"]);
+            var pER = int.Parse(ConfigurationManager.AppSettings["PER"]);
             if (isEmployee)
             {
-                lIM *= 2;
+                nMC *= 2;
+                pER /= 2;
             }
 
-            var numberOfExtensions = reader.Extensions.Count(e => (dateTime - e.Date).TotalDays < 90);
+            var borrowedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(pER, reader, dateTime);
+            var numberOfBorrowedBooks = borrowedBooks.Count;
 
-            if (numberOfExtensions > lIM)
+            if (numberOfBorrowedBooks + books.Count > nMC)
             {
                 return false;
             }
 
             return true;
-        }
-
-        private bool CheckNumberOfBooksPerDay(List<Book> books, Reader reader, bool isEmployee, DateTime dateTime)
-        {
-            int nCZ = int.Parse(ConfigurationManager.AppSettings["NCZ"]);
-            if (isEmployee)
-            {
-                return this.CheckNumberOfLendedBooks(this.GetEmployee(reader), books.Count, dateTime);
-            }
-
-            List<Book> borrowedBooks;
-            int numberOfBorrowedBooks;
-            borrowedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(1, reader, dateTime);
-            numberOfBorrowedBooks = borrowedBooks.Count;
-
-            if (numberOfBorrowedBooks + books.Count > nCZ)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckNumberOfLendedBooks(Employee employee, int currentWithdrawBooks, DateTime dateTime)
-        {
-            int pERSIMP = int.Parse(ConfigurationManager.AppSettings["PERSIMP"]);
-            var bookWithdrawalsForToday = employee.BookWithdrawals.Where(bw => DbFunctions.DiffDays(dateTime, bw.Date) < 1);
-            var numberOfLendedBooks = bookWithdrawalsForToday.SelectMany(bw => bw.BorrowedBooks).Count();
-            return numberOfLendedBooks + currentWithdrawBooks <= pERSIMP;
         }
 
         private bool CheckBooksDifferentCategories(List<Book> books, bool isEmployee)
         {
-            int c = int.Parse(ConfigurationManager.AppSettings["C"]);
-
+            var c = int.Parse(ConfigurationManager.AppSettings["C"]);
             if (isEmployee)
             {
                 c *= 2;
@@ -342,17 +330,23 @@ namespace PublicLibrary.BusinessLayer
             return true;
         }
 
-        private bool CheckBooksForSameCategories(IEnumerable<Book> books, Reader reader, bool isEmployee, DateTime dateTime)
+        private bool CheckBooksForSameCategories(
+            IEnumerable<Book> books,
+            Reader reader,
+            bool isEmployee,
+            DateTime dateTime)
         {
-            int d = int.Parse(ConfigurationManager.AppSettings["D"]);
-            int l = int.Parse(ConfigurationManager.AppSettings["L"]);
+            var d = int.Parse(ConfigurationManager.AppSettings["D"]);
+            var l = int.Parse(ConfigurationManager.AppSettings["L"]);
             if (isEmployee)
             {
                 d *= 2;
             }
 
-            var borrowedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod((int)(30.436875f * l), reader, dateTime);
+            var borrowedBooks =
+                this.readerRepository.GetBooksWithdrawalWithinPeriod((int)(30.436875f * l), reader, dateTime);
             borrowedBooks = borrowedBooks.Union(books).ToList();
+
             var distinctCat = borrowedBooks.SelectMany(b => b.Categories).Select(c => this.GoToTopParent(c));
             var groupedCategories = distinctCat.GroupBy(dc => dc.Id);
             foreach (var groupedCategory in groupedCategories)
@@ -369,7 +363,7 @@ namespace PublicLibrary.BusinessLayer
 
         private bool CheckSameBookDelta(List<Book> books, Reader reader, bool isEmployee, DateTime dateTime)
         {
-            int dELTA = int.Parse(ConfigurationManager.AppSettings["DELTA"]);
+            var dELTA = int.Parse(ConfigurationManager.AppSettings["DELTA"]);
             if (isEmployee)
             {
                 dELTA /= 2;
@@ -388,25 +382,62 @@ namespace PublicLibrary.BusinessLayer
             return true;
         }
 
-        private bool CheckNumberOfBorrowedBooksInPeriod(List<Book> books, Reader reader, bool isEmployee, DateTime dateTime)
+        private bool CheckNumberOfExtensions(Reader reader, bool isEmployee, DateTime dateTime)
         {
-            int nMC = int.Parse(ConfigurationManager.AppSettings["NMC"]);
-            int pER = int.Parse(ConfigurationManager.AppSettings["PER"]);
+            var lIM = int.Parse(ConfigurationManager.AppSettings["LIM"]);
             if (isEmployee)
             {
-                nMC *= 2;
-                pER /= 2;
+                lIM *= 2;
             }
 
-            var borrowedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(pER, reader, dateTime);
-            var numberOfBorrowedBooks = borrowedBooks.Count;
+            var numberOfExtensions = reader.Extensions.Count(e => (dateTime - e.Date).TotalDays < 90);
 
-            if (numberOfBorrowedBooks + books.Count > nMC)
+            if (numberOfExtensions > lIM)
             {
                 return false;
             }
 
             return true;
+        }
+
+        private bool CheckNumberOfBooksPerDay(List<Book> books, Reader reader, bool isEmployee, DateTime dateTime)
+        {
+            var nCZ = int.Parse(ConfigurationManager.AppSettings["NCZ"]);
+            if (isEmployee)
+            {
+                return this.CheckNumberOfLendedBooks(this.GetEmployee(reader), books.Count, dateTime);
+            }
+
+            List<Book> borrowedBooks;
+            int numberOfBorrowedBooks;
+            borrowedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(1, reader, dateTime);
+            numberOfBorrowedBooks = borrowedBooks.Count;
+
+            if (numberOfBorrowedBooks + books.Count > nCZ)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckNumberOfLendedBooks(Employee employee, int currentWithdrawBooks, DateTime dateTime)
+        {
+            var pERSIMP = int.Parse(ConfigurationManager.AppSettings["PERSIMP"]);
+            var bookWithdrawalsForToday =
+                employee.BookWithdrawals.Where(bw => DbFunctions.DiffDays(dateTime, bw.Date) < 1);
+            var numberOfLendedBooks = bookWithdrawalsForToday.SelectMany(bw => bw.BorrowedBooks).Count();
+            return numberOfLendedBooks + currentWithdrawBooks <= pERSIMP;
+        }
+
+        private Category GoToTopParent(Category category)
+        {
+            while (category.ParentCategory != null)
+            {
+                category = category.ParentCategory;
+            }
+
+            return category;
         }
     }
 }

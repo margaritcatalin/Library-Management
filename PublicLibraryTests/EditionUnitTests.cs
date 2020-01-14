@@ -1,283 +1,348 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
-using PublicLibrary.BusinessLayer;
-using PublicLibrary.Data_Mapper;
-using PublicLibrary.Domain_Model;
-using Telerik.JustMock.EntityFramework;
+﻿// <copyright file="EditionUnitTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace PublicLibraryTests
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+    using PublicLibrary.BusinessLayer;
+    using PublicLibrary.Data_Mapper;
+    using PublicLibrary.Domain_Model;
+    using Telerik.JustMock.EntityFramework;
+
+    /// <summary>
+    /// Edition unit tests.
+    /// </summary>
     [TestFixture]
     public class EditionUnitTests
     {
-        private LibraryDb _libraryDbMock;
-        private BookService _bookService;
-        private Book _book;
+        private LibraryDb libraryDbMock;
+
+        private BookService bookService;
+
+        private Book book;
+
+        private Edition edition;
+
+        /// <summary>
+        /// Tests setup.
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
-            _libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
-            _bookService = new BookService(new BookRepository(_libraryDbMock),
-                new CategoriesService(new CategoriesRepository(_libraryDbMock)), new ReaderRepository(_libraryDbMock));
+            this.libraryDbMock = EntityFrameworkMock.Create<LibraryDb>();
+            this.bookService = new BookService(
+                new BookRepository(this.libraryDbMock),
+                new CategoriesService(new CategoriesRepository(this.libraryDbMock)),
+                new ReaderRepository(this.libraryDbMock));
 
-            var edition = new Edition{Name = "First Edition"};
-            _book = new Book
-            {
-                Name = "Moara cu Noroc",
-                Authors = new List<Author>()
-                {
-                    new Author{Name = "Ioan Slavici"}
-                },
-                Categories = new List<Category>
-                {
-                    new Category{Name = "Novel"}
-                },
-                Editions = new List<Edition>
-                {
-                    edition
-                },
-            };
-            _libraryDbMock.Editions.Add(edition);
-            _bookService.CreateBook(_book);
-
+            this.book = new Book
+                         {
+                             Name = "Moara cu Noroc",
+                             Authors = new List<Author>() { new Author { FirstName = "Ioan", LastName = "Slavici" } },
+                             Categories = new List<Category> { new Category { Name = "Novel" } },
+                             Editions = new List<Edition>
+                                        {
+                                            new Edition { Name = "First Edition", BookType = "Hard Cover", Pages = 100 },
+                                        },
+                         };
+            this.edition = this.book.Editions.First();
+            this.bookService.CreateBook(this.book);
+            this.edition.Book = this.book;
+            this.libraryDbMock.Editions.Add(this.edition);
         }
 
+        /// <summary>
+        /// Test add edition for a null book.
+        /// </summary>
         [Test]
         public void TestAddEditionNullBook()
         {
-            var edition = new Edition
-            {
-                Name = "Second edition",
-                BookType = "Hard cover",
-                Pages = 100
-            };
-            _bookService.AddEdition(null, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second edition", BookType = "Hard cover", Pages = 100 };
+            this.bookService.AddEdition(null, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add a null edition.
+        /// </summary>
         [Test]
         public void TestAddNullEdition()
         {
-            _bookService.AddEdition(_book, null);
-            Assert.True(_book.Editions.Count() == 1);
+            this.bookService.AddEdition(this.book, null);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add an edition.
+        /// </summary>
         [Test]
         public void TestAddEdition()
         {
-            var edition = new Edition
-            {
-                Name = "Second edition",
-                BookType = "Hard cover",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 2);
+            var edition = new Edition { Name = "Second edition", BookType = "Hard cover", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 2);
         }
+
+        /// <summary>
+        /// Test add edition with null name.
+        /// </summary>
         [Test]
         public void TestAddEditionNullName()
         {
-            var edition = new Edition
-            {
-                Name = null,
-                BookType = "Hard cover",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = null, BookType = "Hard cover", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with empty name.
+        /// </summary>
         [Test]
         public void TestAddEditionEmptyName()
         {
-            var edition = new Edition
-            {
-                Name = "",
-                BookType = "Hard cover",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = string.Empty, BookType = "Hard cover", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with small name.
+        /// </summary>
         [Test]
         public void TestAddEditionSmallName()
         {
-            var edition = new Edition
-            {
-                Name = "Aa",
-                BookType = "Hard cover",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Ab", BookType = "Hard cover", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with too long name.
+        /// </summary>
         [Test]
         public void TestAddEditionLongName()
         {
             var edition = new Edition
-            {
-                Name = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                BookType = "Hard cover",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+                          {
+                              Name =
+                                  "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong",
+                              BookType = "Hard cover",
+                              Pages = 100,
+                          };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with symbol in name.
+        /// </summary>
         [Test]
         public void TestAddEditionNameSymbol()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition@$@$@%%*&",
-                BookType = "Hard cover",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition@$@$@%%*&", BookType = "Hard cover", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with lower case.
+        /// </summary>
         [Test]
         public void TestAddEditionNameLowerCase()
         {
-            var edition = new Edition
-            {
-                Name = "second Edition",
-                BookType = "Hard cover",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "second Edition", BookType = "Hard cover", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
 
+        /// <summary>
+        /// Test add edition with null type.
+        /// </summary>
         [Test]
         public void TestAddEditionNullType()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = null,
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition", BookType = null, Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with empty type.
+        /// </summary>
         [Test]
         public void TestAddEditionEmptyType()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition", BookType = string.Empty, Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with small type.
+        /// </summary>
         [Test]
         public void TestAddEditionSmallType()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "Aa",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition", BookType = "Aa", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with bigger type.
+        /// </summary>
         [Test]
         public void TestAddEditionLongType()
         {
             var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+                          {
+                              Name = "Second Edition",
+                              BookType =
+                                  "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong",
+                              Pages = 100,
+                          };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with symbol in type.
+        /// </summary>
         [Test]
         public void TestAddEditionTypeSymbol()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "Hardcover@#%(#@*&$(*%",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition", BookType = "Hardcover@#%(#@*&$(*%", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with digit in type.
+        /// </summary>
         [Test]
         public void TestAddEditionTypeDigit()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "Hardcover23",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition", BookType = "Hardcover23", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with white space in type.
+        /// </summary>
         [Test]
         public void TestAddEditionTypeWhiteSpace()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "Hardcover slim",
-                Pages = 100
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 2);
+            var edition = new Edition { Name = "Second Edition", BookType = "Hardcover slim", Pages = 100 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 2);
         }
+
+        /// <summary>
+        /// Test add edition with negative number of pages.
+        /// </summary>
         [Test]
         public void TestAddEditionNegativeNumberOfPages()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "Hardcover slim",
-                Pages = -10
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition", BookType = "Hardcover slim", Pages = -10 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with 0 pages.
+        /// </summary>
         [Test]
         public void TestAddEditionZeroPages()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "Hardcover slim",
-                Pages = 0
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition", BookType = "Hardcover slim", Pages = 0 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with too many pages.
+        /// </summary>
         [Test]
         public void TestAddEditionTooManyPages()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "Hardcover slim",
-                Pages = 99999999
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition", BookType = "Hardcover slim", Pages = 99999999 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
         }
+
+        /// <summary>
+        /// Test add edition with type lowercase.
+        /// </summary>
         [Test]
         public void TestAddEditionTypeLowercase()
         {
-            var edition = new Edition
-            {
-                Name = "Second Edition",
-                BookType = "hardcover slim",
-                Pages = 99999999
-            };
-            _bookService.AddEdition(_book, edition);
-            Assert.True(_book.Editions.Count() == 1);
+            var edition = new Edition { Name = "Second Edition", BookType = "hardcover slim", Pages = 99999999 };
+            this.bookService.AddEdition(this.book, edition);
+            Assert.True(this.book.Editions.Count() == 1);
+        }
+
+        /// <summary>
+        /// Test get edition.
+        /// </summary>
+        [Test]
+        public void GetEdition()
+        {
+            var edition = this.bookService.GetEdition("Moara cu Noroc", "First Edition");
+            Assert.NotNull(edition);
+        }
+
+        /// <summary>
+        /// Test get edition by null.
+        /// </summary>
+        [Test]
+        public void GetNullEdition()
+        {
+            var edition = this.bookService.GetEdition(null, null);
+            Assert.Null(edition);
+        }
+
+        /// <summary>
+        /// Test get edition by empty strings.
+        /// </summary>
+        [Test]
+        public void GetEmptyEdition()
+        {
+            var edition = this.bookService.GetEdition(string.Empty, string.Empty);
+            Assert.Null(edition);
+        }
+
+        /// <summary>
+        /// Test get unknown edition.
+        /// </summary>
+        [Test]
+        public void GetUnknownEdition()
+        {
+            var edition = this.bookService.GetEdition("Morometii", "Jean De Lichte");
+            Assert.Null(edition);
+        }
+
+        /// <summary>
+        /// Test get edition by unknown book name.
+        /// </summary>
+        [Test]
+        public void GetEditionBadBookName()
+        {
+            var edition = this.bookService.GetEdition("Morometii", "First Edition");
+            Assert.Null(edition);
+        }
+
+        /// <summary>
+        /// Test get edition with unknown edition name.
+        /// </summary>
+        [Test]
+        public void GetEditionBadEditionName()
+        {
+            var edition = this.bookService.GetEdition("Moara cu Noroc", "Second Edition");
+            Assert.Null(edition);
         }
     }
 }

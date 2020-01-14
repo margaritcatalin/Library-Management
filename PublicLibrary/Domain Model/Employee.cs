@@ -30,6 +30,11 @@ namespace PublicLibrary.Data_Mapper
         public string LastName { get; set; }
 
         /// <summary>
+        /// Gets or sets gender.
+        /// </summary>
+        public string Gender { get; set; }
+
+        /// <summary>
         /// Gets or sets email.
         /// </summary>
         [Index(IsUnique = true)]
