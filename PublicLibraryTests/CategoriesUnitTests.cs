@@ -245,8 +245,8 @@ namespace PublicLibraryTests
         [Test]
         public void AddSubCateory()
         {
-            Category c = new Category { Name = "Fiction" };
-            Category c2 = new Category { Name = "C2", ParentCategory = c };
+            Category c = new Category { Name = "Science" };
+            Category c2 = new Category { Name = "Fiction", ParentCategory = c };
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
             Assert.True(c2.ParentCategory != null);
@@ -260,7 +260,7 @@ namespace PublicLibraryTests
         public void AddSubCateoryWithNoParentCategory()
         {
             Category c = new Category { Name = "Fiction" };
-            Category c2 = new Category { Name = "C3" };
+            Category c2 = new Category { Name = "Science" };
             var result = this.categoriesService.AddCategory(c);
             var result2 = this.categoriesService.AddCategory(c2);
             Assert.False(c2.ParentCategory != null);

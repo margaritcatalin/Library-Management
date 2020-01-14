@@ -465,8 +465,7 @@ namespace PublicLibraryTests
                              LastName = "Ionescu",
                              Email = "marcu.ionel@gmail.com",
                              Phone = "0765477898",
-                             Address =
-                                 "gfgk",
+                             Address = "LongLongAddressLongLongAddressLongLongAddressLongLongAddressLongLongAddressLongLongAddressLongLongAddressLongLongAddressLongLongAddressLongLongAddress",
                              Extensions = new List<Extension>(),
                              Gender = "M",
                          };
@@ -552,8 +551,8 @@ namespace PublicLibraryTests
                          {
                              FirstName = "Minodor",
                              LastName = "Ionescu",
-                             Email = "@google.co",
-                             Phone = null,
+                             Email = "g@t.com",
+                             Phone = "0734445567",
                              Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
                              Gender = "M",
@@ -574,8 +573,7 @@ namespace PublicLibraryTests
                          {
                              FirstName = "Minodor",
                              LastName = "Ionescu",
-                             Email =
-                                 "longemail@gooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogggggggggggggggggggggggggggggggggggglllllllllllleeeeeeeeee.ro",
+                             Email = "ineedtooolongemailtosave@gooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogggggggggggggggggggggggggggggggggggglllllllllllleeeeeeeeee.ro",
                              Phone = null,
                              Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
@@ -663,7 +661,7 @@ namespace PublicLibraryTests
                          {
                              FirstName = "Minodor",
                              LastName = "Ionescu",
-                             Email = "emaildetest@email.com",
+                             Email = null,
                              Phone = null,
                              Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),
@@ -685,7 +683,7 @@ namespace PublicLibraryTests
                          {
                              FirstName = "Minodor",
                              LastName = "Ionescu",
-                             Email = "emaildetest@email.com",
+                             Email = null,
                              Phone = string.Empty,
                              Address = "Str. Camil Petrescu nr66",
                              Extensions = new List<Extension>(),

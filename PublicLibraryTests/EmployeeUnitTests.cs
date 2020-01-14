@@ -345,7 +345,7 @@ namespace PublicLibraryTests
             var employee = new Employee()
                            {
                                FirstName = "Marian",
-                               LastName = "Valeriu",
+                               LastName = "valeriu",
                                Email = "marcu.ionel@gmail.com",
                                Phone = "0765477898",
                                Address = "Str.Camil Petrescu nr.23",
@@ -535,7 +535,7 @@ namespace PublicLibraryTests
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
-                               Email = "@google.co",
+                               Email = "t@t.com",
                                Phone = "0765477898",
                                Address = "Str. Camil Petrescu nr66",
                                Gender = "M",
