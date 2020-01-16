@@ -8,6 +8,7 @@ namespace LibraryManagement.BusinessLayer
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
+    using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
     using LibraryManagement.DomainModel;
@@ -51,43 +52,43 @@ namespace LibraryManagement.BusinessLayer
         {
             if (book == null)
             {
-                LoggerUtil.LogInfo($"Your book is invalid. Book is null.");
+                LoggerUtil.LogInfo($"Your book is invalid. Book is null.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (string.IsNullOrEmpty(book.Name))
             {
-                LoggerUtil.LogInfo($"Your book is invalid. Book name is null or empty.");
+                LoggerUtil.LogInfo($"Your book is invalid. Book name is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((book.Name.Length < 3) || (book.Name.Length > 80))
             {
-                LoggerUtil.LogInfo($"Your book is invalid. Param book name has an invalid length.");
+                LoggerUtil.LogInfo($"Your book is invalid. Param book name has an invalid length.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (book.Name.Any(c => !(char.IsLetter(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"Your book is invalid. Param book name is invalid.");
+                LoggerUtil.LogInfo($"Your book is invalid. Param book name is invalid.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (book.Categories.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your book is invalid. Param categories is null or empty.");
+                LoggerUtil.LogInfo($"Your book is invalid. Param categories is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (book.Authors.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your book is invalid. Param author is null or empty.");
+                LoggerUtil.LogInfo($"Your book is invalid. Param author is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (book.Editions.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your book is invalid. Param Edition is null or empty.");
+                LoggerUtil.LogInfo($"Your book is invalid. Param Edition is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -95,7 +96,7 @@ namespace LibraryManagement.BusinessLayer
 
             if (book.Categories.Count > dOM)
             {
-                LoggerUtil.LogInfo($"Book {book.Name} had too many categories:{book.Categories.Count}, limit is {dOM}");
+                LoggerUtil.LogInfo($"Book {book.Name} had too many categories:{book.Categories.Count}, limit is {dOM}", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -105,7 +106,7 @@ namespace LibraryManagement.BusinessLayer
                 categories.Remove(bookCategory);
                 if (this.categoriesService.CategoryIsPartOfCategories(bookCategory, categories))
                 {
-                    LoggerUtil.LogInfo($"Your book has a invalid category.");
+                    LoggerUtil.LogInfo($"Your book has a invalid category.", MethodBase.GetCurrentMethod());
                     return false;
                 }
             }
@@ -114,7 +115,7 @@ namespace LibraryManagement.BusinessLayer
             if (addBook)
             {
                 LoggerUtil.LogInfo(
-                    $"Successfully added book {book.Name} from author {book.Authors.First()} of edition {book.Editions.First()}");
+                    $"Successfully added book {book.Name} from author {book.Authors.First()} of edition {book.Editions.First()}", MethodBase.GetCurrentMethod());
             }
 
             return addBook;
@@ -130,73 +131,73 @@ namespace LibraryManagement.BusinessLayer
         {
             if (book == null)
             {
-                LoggerUtil.LogInfo($"Your book is invalid. Book is null.");
+                LoggerUtil.LogInfo($"Your book is invalid. Book is null.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (edition == null)
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. Edition is null.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Edition is null.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (edition.Name.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. Edition name is null or empty.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Edition name is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((edition.Name.Length < 3) || (edition.Name.Length > 80))
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with invalid length.");
+                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with invalid length.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (edition.Name.Any(c => !(char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. Your edition name is invalid.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Your edition name is invalid.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(edition.Name.First()))
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. Your edition name is need to start with upper case.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Your edition name is need to start with upper case.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (edition.BookType.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. Your tried to create an edition with null or empty booktype.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Your tried to create an edition with null or empty booktype.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((edition.BookType.Length < 3) || (edition.BookType.Length > 80))
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. Your booktype length is invalid.");
+                LoggerUtil.LogInfo($"Your edition is invalid. Your booktype length is invalid.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (edition.BookType.Any(c => !(char.IsLetter(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with invalid booktype.");
+                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with invalid booktype.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(edition.BookType.First()))
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. The book type is need to start with uppercase.");
+                LoggerUtil.LogInfo($"Your edition is invalid. The book type is need to start with uppercase.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (edition.Pages > 100000)
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with too many pages.");
+                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with too many pages.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (edition.Pages <= 0)
             {
-                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with no pages.");
+                LoggerUtil.LogInfo($"Your edition is invalid. You tried to add an edition with no pages.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -218,13 +219,13 @@ namespace LibraryManagement.BusinessLayer
             Employee employee,
             DateTime dateOfBorrowing)
         {
-            LoggerUtil.LogInfo($"Borrowing book {books.First().BookName}");
+            LoggerUtil.LogInfo($"Borrowing book {books.First().BookName}", MethodBase.GetCurrentMethod());
 
             foreach (var book in books)
             {
                 if (!this.CanBorrowBook(book.BookName, book.EditionName))
                 {
-                    LoggerUtil.LogInfo($"{book.BookName} with edition {book.EditionName} can not be borrow.");
+                    LoggerUtil.LogInfo($"{book.BookName} with edition {book.EditionName} can not be borrow.", MethodBase.GetCurrentMethod());
                     return null;
                 }
             }
@@ -232,7 +233,7 @@ namespace LibraryManagement.BusinessLayer
             var booksToBorrow = books.Select(b => this.bookRepository.GetBook(b.BookName)).ToList();
             if (!this.readerService.CanBorrowBooks(booksToBorrow, reader, employee, dateOfBorrowing))
             {
-                LoggerUtil.LogInfo($"{reader.FirstName} can not borrow a new book.");
+                LoggerUtil.LogInfo($"{reader.FirstName} can not borrow a new book.", MethodBase.GetCurrentMethod());
                 return null;
             }
 
@@ -247,7 +248,7 @@ namespace LibraryManagement.BusinessLayer
             LoggerUtil.LogInfo(
                 bw != null
                     ? $"Borrowing book {books.First().BookName} completed successfully"
-                    : $"Borrowing book {books.First().BookName} failed");
+                    : $"Borrowing book {books.First().BookName} failed", MethodBase.GetCurrentMethod());
             return bw;
         }
 
@@ -293,7 +294,7 @@ namespace LibraryManagement.BusinessLayer
         {
             if (bookName.IsNullOrEmpty() || editionName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Params bookName and editionName is required.");
+                LoggerUtil.LogInfo($"Params bookName and editionName is required.", MethodBase.GetCurrentMethod());
                 return null;
             }
 
@@ -309,7 +310,7 @@ namespace LibraryManagement.BusinessLayer
         {
             if (name.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Param name is required.");
+                LoggerUtil.LogInfo($"Param name is required.", MethodBase.GetCurrentMethod());
                 return null;
             }
 

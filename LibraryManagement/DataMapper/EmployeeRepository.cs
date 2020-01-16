@@ -5,6 +5,7 @@
 namespace LibraryManagement.DataMapper
 {
     using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// The employee repository.
@@ -33,11 +34,11 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Employee added successfully : {employee.FirstName} {employee.LastName}");
+                LoggerUtil.LogInfo($"Employee added successfully : {employee.FirstName} {employee.LastName}", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Employee failed to add to db : {employee.FirstName} {employee.LastName}");
+                LoggerUtil.LogError($"Employee failed to add to db : {employee.FirstName} {employee.LastName}", MethodBase.GetCurrentMethod());
             }
 
             return successful;

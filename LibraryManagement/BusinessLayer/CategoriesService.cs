@@ -6,6 +6,7 @@ namespace LibraryManagement.BusinessLayer
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
     using LibraryManagement.DomainModel;
@@ -35,25 +36,25 @@ namespace LibraryManagement.BusinessLayer
         {
             if (category == null)
             {
-                LoggerUtil.LogInfo($"Your category is invalid. Category is null.");
+                LoggerUtil.LogInfo($"Your category is invalid. Category is null.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (category.Name.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your category is invalid. Category name is null or empty.");
+                LoggerUtil.LogInfo($"Your category is invalid. Category name is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((category.Name.Length < 3) || (category.Name.Length > 80))
             {
-                LoggerUtil.LogInfo($"Your category is invalid. Category name has a invalid length.");
+                LoggerUtil.LogInfo($"Your category is invalid. Category name has a invalid length.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (category.Name.Any(c => !(char.IsLetter(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"Your category is invalid. Category name is invalid.");
+                LoggerUtil.LogInfo($"Your category is invalid. Category name is invalid.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -101,7 +102,7 @@ namespace LibraryManagement.BusinessLayer
         {
             if (name.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Param name is required.");
+                LoggerUtil.LogInfo($"Param name is required.", MethodBase.GetCurrentMethod());
                 return null;
             }
 

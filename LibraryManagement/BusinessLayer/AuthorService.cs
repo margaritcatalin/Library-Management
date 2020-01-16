@@ -5,6 +5,7 @@
 namespace LibraryManagement.BusinessLayer
 {
     using System.Linq;
+    using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
 
@@ -31,67 +32,67 @@ namespace LibraryManagement.BusinessLayer
         {
             if (author == null)
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an null author.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an null author.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (author.FirstName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author wtih null empty firstName.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author wtih null empty firstName.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((author.FirstName.Length < 3) || (author.FirstName.Length > 100))
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid lenght firstName.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid lenght firstName.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!author.FirstName.All(a => char.IsLetter(a) || char.IsWhiteSpace(a) || (a == '-')))
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid character in FirstName.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid character in FirstName.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(author.FirstName.First()))
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with firstName with lower case.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with firstName with lower case.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (author.LastName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with last name null or empty.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with last name null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((author.LastName.Length < 3) || (author.LastName.Length > 100))
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid length for lastName.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid length for lastName.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!author.LastName.All(a => char.IsLetter(a) || char.IsWhiteSpace(a) || (a == '-')))
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid characters.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid characters.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(author.LastName.First()))
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with lower case LastName.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with lower case LastName.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (author.Gender.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with null or empty gender.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with null or empty gender.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!(author.Gender.Equals("M") || author.Gender.Equals("F")))
             {
-                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid gender.");
+                LoggerUtil.LogInfo($"Author is invalid. You tried to add an author with invalid gender.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -108,13 +109,13 @@ namespace LibraryManagement.BusinessLayer
         {
             if (firstName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Param firstName is required.");
+                LoggerUtil.LogInfo($"Param firstName is required.", MethodBase.GetCurrentMethod());
                 return null;
             }
 
             if (lastName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Param lastName is required.");
+                LoggerUtil.LogInfo($"Param lastName is required.", MethodBase.GetCurrentMethod());
                 return null;
             }
 

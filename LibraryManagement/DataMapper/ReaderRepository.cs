@@ -8,6 +8,7 @@ namespace LibraryManagement.DataMapper
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using System.Reflection;
     using LibraryManagement.DomainModel;
 
     /// <summary>
@@ -44,7 +45,7 @@ namespace LibraryManagement.DataMapper
                 return this.libraryContext.Readers.FirstOrDefault(r => r.Phone.Equals(phone));
             }
 
-            LoggerUtil.LogInfo($"Reader not found in db with email or phone : {email} {phone}");
+            LoggerUtil.LogInfo($"Reader not found in db with email or phone : {email} {phone}", MethodBase.GetCurrentMethod());
             return null;
         }
 
@@ -86,11 +87,11 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Reader added successfully : {reader.FirstName} {reader.LastName}");
+                LoggerUtil.LogInfo($"Reader added successfully : {reader.FirstName} {reader.LastName}", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Reader failed to add to db : {reader.FirstName} {reader.LastName}");
+                LoggerUtil.LogError($"Reader failed to add to db : {reader.FirstName} {reader.LastName}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -126,7 +127,7 @@ namespace LibraryManagement.DataMapper
             var employeeFromDefault = this.libraryContext.Employees.FirstOrDefault(e => e.Email.Equals(employee.Email));
             if (employeeFromDefault == null)
             {
-                LoggerUtil.LogInfo($"Employee not found in db with name : {employee.FirstName} {employee.LastName}");
+                LoggerUtil.LogInfo($"Employee not found in db with name : {employee.FirstName} {employee.LastName}", MethodBase.GetCurrentMethod());
             }
 
             return employee;

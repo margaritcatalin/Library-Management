@@ -9,6 +9,7 @@ namespace LibraryManagement.BusinessLayer
     using System.Configuration;
     using System.Data.Entity;
     using System.Linq;
+    using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
     using LibraryManagement.DomainModel;
@@ -39,7 +40,7 @@ namespace LibraryManagement.BusinessLayer
         {
             if (email.IsNullOrEmpty() && phone.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Params email and phone is required.");
+                LoggerUtil.LogInfo($"Params email and phone is required.", MethodBase.GetCurrentMethod());
                 return null;
             }
 
@@ -55,73 +56,73 @@ namespace LibraryManagement.BusinessLayer
         {
             if (reader == null)
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader is null.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader is null.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (reader.FirstName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName is null or empty.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((reader.FirstName.Length < 3) || (reader.FirstName.Length > 80))
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName has invalid length.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName has invalid length.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (reader.FirstName.Any(c => !(char.IsLetter(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName is invalid.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(reader.FirstName.First()))
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName is need to start with uppercase.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader firstName is need to start with uppercase.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (reader.LastName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastNameIsNull or empty.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastNameIsNull or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((reader.LastName.Length < 3) || (reader.LastName.Length > 80))
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastName has a invalid length.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastName has a invalid length.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (reader.LastName.Any(c => !(char.IsLetter(c) || char.IsWhiteSpace(c))))
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastName is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastName is invalid.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(reader.LastName.First()))
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastName is need to start with upper case.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader lastName is need to start with upper case.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (reader.Address.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader address is null or empty.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader address is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((reader.Address.Length < 3) || (reader.Address.Length > 120))
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader address has invalid length.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader address has invalid length.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (reader.Address.Any(c => !(char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || (c == '.') || (c == ','))))
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader address is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader address is invalid.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -129,7 +130,7 @@ namespace LibraryManagement.BusinessLayer
             hasEmailOrPhone = !(reader.Email.IsNullOrEmpty() && reader.Phone.IsNullOrEmpty());
             if (!hasEmailOrPhone)
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader email or phone is null or empty.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader email or phone is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -137,20 +138,20 @@ namespace LibraryManagement.BusinessLayer
             {
                 if ((reader.Email.Length < 10) || (reader.Email.Length > 150))
                 {
-                    LoggerUtil.LogInfo($"Your reader is invalid. Reader email has invalid length.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader email has invalid length.", MethodBase.GetCurrentMethod());
                     return false;
                 }
 
                 if (reader.Email.Any(
                     c => !(char.IsLetterOrDigit(c) || (c == '@') || (c == '.') || (c == '_') || (c == '-'))))
                 {
-                    LoggerUtil.LogInfo($"Your reader is invalid. Reader email is invalid.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader email is invalid.", MethodBase.GetCurrentMethod());
                     return false;
                 }
 
                 if (reader.Email.All(c => c != '@'))
                 {
-                    LoggerUtil.LogInfo($"Your reader is invalid. Reader email is invalid.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader email is invalid.", MethodBase.GetCurrentMethod());
                     return false;
                 }
             }
@@ -159,32 +160,32 @@ namespace LibraryManagement.BusinessLayer
             {
                 if (reader.Phone.Length != 10)
                 {
-                    LoggerUtil.LogInfo($"Your reader is invalid. Reader phone number has invalid length.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader phone number has invalid length.", MethodBase.GetCurrentMethod());
                     return false;
                 }
 
                 if (reader.Phone.Any(c => !char.IsDigit(c)))
                 {
-                    LoggerUtil.LogInfo($"Your reader is invalid. Reader phone number is invalid.");
+                    LoggerUtil.LogInfo($"Your reader is invalid. Reader phone number is invalid.", MethodBase.GetCurrentMethod());
                     return false;
                 }
             }
 
             if (reader.Extensions == null)
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader extensions is null.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader extensions is null.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (reader.Gender.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader gender is null or empty.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader gender is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!(reader.Gender.Equals("M") || reader.Gender.Equals("F")))
             {
-                LoggerUtil.LogInfo($"Your reader is invalid. Reader gender is invalid.");
+                LoggerUtil.LogInfo($"Your reader is invalid. Reader gender is invalid.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -205,31 +206,31 @@ namespace LibraryManagement.BusinessLayer
             var isEmployee = this.IsEmployee(reader);
             if (!this.CheckNumberOfBorrowedBooksInPeriod(books, reader, isEmployee, dateOfBorrowing))
             {
-                LoggerUtil.LogInfo($"The reader borrowed too many books.");
+                LoggerUtil.LogInfo($"The reader borrowed too many books.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!this.CheckBooksDifferentCategories(books, isEmployee))
             {
-                LoggerUtil.LogInfo($"The reader has books from too many categories.");
+                LoggerUtil.LogInfo($"The reader has books from too many categories.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!this.CheckBooksForSameCategories(books, reader, isEmployee, dateOfBorrowing))
             {
-                LoggerUtil.LogInfo($"The reader has too many books from same categories.");
+                LoggerUtil.LogInfo($"The reader has too many books from same categories.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!this.CheckSameBookDelta(books, reader, isEmployee, dateOfBorrowing))
             {
-                LoggerUtil.LogInfo($"The reader borrowed too many books in same period.");
+                LoggerUtil.LogInfo($"The reader borrowed too many books in same period.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!this.CheckNumberOfBooksPerDay(books, reader, isEmployee, dateOfBorrowing))
             {
-                LoggerUtil.LogInfo($"The reader borrowed too many books in same day.");
+                LoggerUtil.LogInfo($"The reader borrowed too many books in same day.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -246,14 +247,14 @@ namespace LibraryManagement.BusinessLayer
         {
             if (reader == null)
             {
-                LoggerUtil.LogInfo($"Reader is null.");
+                LoggerUtil.LogInfo($"Reader is null.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             reader = this.readerRepository.GetReader(reader.Email, reader.Phone);
             if (!this.CheckNumberOfExtensions(reader, this.IsEmployee(reader), DateTime.Now))
             {
-                LoggerUtil.LogInfo($"Reader has too many extensions.");
+                LoggerUtil.LogInfo($"Reader has too many extensions.", MethodBase.GetCurrentMethod());
                 return false;
             }
 

@@ -2,6 +2,8 @@
 // Margarit Marian Catalin
 // </copyright>
 
+using System.Reflection;
+
 namespace LibraryManagement
 {
     /// <summary>
@@ -15,11 +17,12 @@ namespace LibraryManagement
         /// Log a new message.
         /// </summary>
         /// <param name="message">The message.</param>
-        public static void LogInfo(string message)
+        public static void LogInfo(string message, MethodBase method)
         {
+            string methodName = method.DeclaringType.Name + "." + method.Name;
             if (Log.IsInfoEnabled)
             {
-                Log.Info(message);
+                Log.Info("[" + methodName + "]:" +message);
             }
         }
 
@@ -27,11 +30,12 @@ namespace LibraryManagement
         /// Log a new error.
         /// </summary>
         /// <param name="message">The message.</param>
-        public static void LogError(string message)
+        public static void LogError(string message, MethodBase method)
         {
+            string methodName = method.DeclaringType.Name + "." + method.Name;
             if (Log.IsInfoEnabled)
             {
-                Log.Error(message);
+                Log.Error("[" + methodName + "]:" + message);
             }
         }
 
@@ -39,11 +43,12 @@ namespace LibraryManagement
         /// Log a new warning.
         /// </summary>
         /// <param name="message">The message.</param>
-        public static void LogWarning(string message)
+        public static void LogWarning(string message, MethodBase method)
         {
+            string methodName = method.DeclaringType.Name + "." + method.Name;
             if (Log.IsInfoEnabled)
             {
-                Log.Warn(message);
+                Log.Warn("[" + methodName + "]:" + message);
             }
         }
     }

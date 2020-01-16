@@ -5,6 +5,7 @@
 namespace LibraryManagement.DataMapper
 {
     using System.Linq;
+    using System.Reflection;
     using LibraryManagement.DomainModel;
 
     /// <summary>
@@ -34,11 +35,11 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Category added successfully : {category.Name} ");
+                LoggerUtil.LogInfo($"Category added successfully : {category.Name} ", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Category failed to add to db : {category.Name}");
+                LoggerUtil.LogError($"Category failed to add to db : {category.Name}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
