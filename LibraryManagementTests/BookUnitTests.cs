@@ -25,7 +25,7 @@ namespace LibraryManagementTests
 
         private BookService bookService;
 
-        private Category defaultTestCategory;
+        private Domain defaultTestDomain;
 
         private LibraryDbContext libraryContextMock;
 
@@ -38,12 +38,12 @@ namespace LibraryManagementTests
             var bookStock = new BookStock { Amount = 100, LectureRoomAmount = 10 };
             this.defaultTestEdition = new Edition { Name = "Corint", BookType = "Plasticcover", Pages = 256, BookStock = bookStock };
             this.defaultTestAuthor = new Author { FirstName = "Estera", LastName = "Balas" };
-            this.defaultTestCategory = new Category { Name = "Action", };
+            this.defaultTestDomain = new Domain { Name = "Action", };
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
             EntityFrameworkMock.PrepareMock(this.libraryContextMock);
             this.bookService = new BookService(
                 new BookRepository(this.libraryContextMock),
-                new CategoriesService(new CategoriesRepository(this.libraryContextMock)),
+                new DomainsService(new DomainsRepository(this.libraryContextMock)),
                 new ReaderRepository(this.libraryContextMock));
         }
 
@@ -60,7 +60,7 @@ namespace LibraryManagementTests
         }
 
         /// <summary>
-        /// Test add a book with null categories.
+        /// Test add a book with null domains.
         /// </summary>
         [Test]
         public void TestAddBookWithNullCategories()
@@ -78,51 +78,51 @@ namespace LibraryManagementTests
         }
 
         /// <summary>
-        /// Test add book with no category.
+        /// Test add book with no domain.
         /// </summary>
         [Test]
-        public void TestAddBookWithNoCategory()
+        public void TestAddBookWithNoDomain()
         {
             var book = new Book
             {
                 Name = "Java for junior",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category>(),
+                Categories = new List<Domain>(),
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
         }
 
         /// <summary>
-        /// Test add book with one category.
+        /// Test add book with one domain.
         /// </summary>
         [Test]
-        public void TestAddBookWithOneCategory()
+        public void TestAddBookWithOneDomain()
         {
             var book = new Book
             {
                 Name = "Java for junior",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             this.bookService.CreateBook(book);
             Assert.True(this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
-        /// Test add book with more than DOM categories.
+        /// Test add book with more than DOM domains.
         /// </summary>
         [Test]
         public void TestAddBookWithMoreThanDOMCategories()
         {
             var dOM = int.Parse(ConfigurationManager.AppSettings["DOM"]);
             dOM = dOM + 1;
-            var categoriesList = new List<Category>();
+            var domainsList = new List<Domain>();
             for (var i = 0; i < dOM; i++)
             {
-                categoriesList.Add(new Category { Name = i.ToString() });
+                domainsList.Add(new Domain { Name = i.ToString() });
             }
 
             var book = new Book
@@ -130,7 +130,7 @@ namespace LibraryManagementTests
                 Name = "Java for junior",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = categoriesList,
+                Categories = domainsList,
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -148,7 +148,7 @@ namespace LibraryManagementTests
                 Name = string.Empty,
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -166,7 +166,7 @@ namespace LibraryManagementTests
                 Name = null,
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -184,7 +184,7 @@ namespace LibraryManagementTests
                 Name = "ab",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -202,7 +202,7 @@ namespace LibraryManagementTests
                 Name = "LongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongName",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -220,7 +220,7 @@ namespace LibraryManagementTests
                 Name = "3454",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -238,7 +238,7 @@ namespace LibraryManagementTests
                 Name = "*&()_",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -256,7 +256,7 @@ namespace LibraryManagementTests
                 Name = "Fram ursul polar",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(this.libraryContextMock.Books.Count() == 0);
@@ -277,7 +277,7 @@ namespace LibraryManagementTests
                                    this.defaultTestAuthor, new Author { FirstName = "Robert", LastName = "German", },
                                },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.True(this.libraryContextMock.Books.Count() == 1);
@@ -294,7 +294,7 @@ namespace LibraryManagementTests
                 Name = "Testing is important",
                 Authors = new List<Author> { },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -312,7 +312,7 @@ namespace LibraryManagementTests
                 Name = "Testing is important",
                 Authors = null,
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -330,7 +330,7 @@ namespace LibraryManagementTests
                 Name = "Testing is important",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -348,7 +348,7 @@ namespace LibraryManagementTests
                 Name = "Testing is important",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = null,
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.False(result);
@@ -366,14 +366,14 @@ namespace LibraryManagementTests
                 Name = "Testing is important",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition, new Edition { Name = "Girofar" } },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             var result = this.bookService.CreateBook(book);
             Assert.True(this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
-        /// Test add book with related categories.
+        /// Test add book with related domains.
         /// </summary>
         [Test]
         public void TestAddBookWithRelatedCategories()
@@ -383,10 +383,10 @@ namespace LibraryManagementTests
                 Name = "Testing is important",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category>
+                Categories = new List<Domain>
                                         {
-                                            this.defaultTestCategory,
-                                            new Category { Name = "Science", ParentCategory = this.defaultTestCategory, },
+                                            this.defaultTestDomain,
+                                            new Domain { Name = "Science", ParentDomain = this.defaultTestDomain, },
                                         },
             };
             var result = this.bookService.CreateBook(book);
@@ -395,7 +395,7 @@ namespace LibraryManagementTests
         }
 
         /// <summary>
-        /// Test add book with related indirect categories.
+        /// Test add book with related indirect domains.
         /// </summary>
         [Test]
         public void TestAddBookWithRelatedIndirectCategories()
@@ -405,14 +405,14 @@ namespace LibraryManagementTests
                 Name = "Testing is important",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category>
+                Categories = new List<Domain>
                                         {
-                                            this.defaultTestCategory,
-                                            new Category
+                                            this.defaultTestDomain,
+                                            new Domain
                                             {
                                                 Name = "Science",
-                                                ParentCategory =
-                                                    new Category { ParentCategory = this.defaultTestCategory, Name = "Comedy", },
+                                                ParentDomain =
+                                                    new Domain { ParentDomain = this.defaultTestDomain, Name = "Comedy", },
                                             },
                                         },
             };
@@ -432,7 +432,7 @@ namespace LibraryManagementTests
                 Name = "Java for junior",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             this.bookService.CreateBook(book);
             book = this.bookService.GetBook(book.Name);
@@ -470,7 +470,7 @@ namespace LibraryManagementTests
                 Name = "Java for junior",
                 Authors = new List<Author> { this.defaultTestAuthor },
                 Editions = new List<Edition> { this.defaultTestEdition },
-                Categories = new List<Category> { this.defaultTestCategory },
+                Categories = new List<Domain> { this.defaultTestDomain },
             };
             this.bookService.CreateBook(book);
             book = this.bookService.GetBook("Fram ursul polar.");

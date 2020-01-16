@@ -20,7 +20,7 @@ namespace LibraryManagement.BusinessLayer
     {
         private readonly BookRepository bookRepository;
 
-        private readonly CategoriesService categoriesService;
+        private readonly DomainsService domainsService;
 
         private readonly ReaderRepository readerRepository;
 
@@ -30,15 +30,15 @@ namespace LibraryManagement.BusinessLayer
         /// Initializes a new instance of the <see cref="BookService"/> class.
         /// </summary>
         /// <param name="bookRepository">The book repository.</param>
-        /// <param name="categoriesService">The categories service.</param>
+        /// <param name="domainsService">The domains service.</param>
         /// <param name="readerRepository">The reader repository.</param>
         public BookService(
             BookRepository bookRepository,
-            CategoriesService categoriesService,
+            DomainsService domainsService,
             ReaderRepository readerRepository)
         {
             this.bookRepository = bookRepository;
-            this.categoriesService = categoriesService;
+            this.domainsService = domainsService;
             this.readerRepository = readerRepository;
             this.readerService = new ReaderService(this.readerRepository);
         }
@@ -76,7 +76,7 @@ namespace LibraryManagement.BusinessLayer
 
             if (book.Categories.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Your book is invalid. Param categories is null or empty.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Your book is invalid. Param domains is null or empty.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -96,17 +96,17 @@ namespace LibraryManagement.BusinessLayer
 
             if (book.Categories.Count > dOM)
             {
-                LoggerUtil.LogInfo($"Book {book.Name} had too many categories:{book.Categories.Count}, limit is {dOM}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Book {book.Name} had too many domains:{book.Categories.Count}, limit is {dOM}", MethodBase.GetCurrentMethod());
                 return false;
             }
 
-            foreach (var bookCategory in book.Categories)
+            foreach (var bookDomain in book.Categories)
             {
-                var categories = book.Categories.ToList();
-                categories.Remove(bookCategory);
-                if (this.categoriesService.CategoryIsPartOfCategories(bookCategory, categories))
+                var domains = book.Categories.ToList();
+                domains.Remove(bookDomain);
+                if (this.domainsService.DomainIsPartOfCategories(bookDomain, domains))
                 {
-                    LoggerUtil.LogInfo($"Your book has a invalid category.", MethodBase.GetCurrentMethod());
+                    LoggerUtil.LogInfo($"Your book has a invalid domain.", MethodBase.GetCurrentMethod());
                     return false;
                 }
             }
@@ -206,49 +206,49 @@ namespace LibraryManagement.BusinessLayer
         }
 
         /// <summary>
-        /// Borrow books.
+        /// Rent books.
         /// </summary>
         /// <param name="books">Books list.</param>
         /// <param name="reader">The reader.</param>
-        /// <param name="employee">The employee.</param>
-        /// <param name="dateOfBorrowing">Date of borrowing.</param>
+        /// <param name="librarian">The librarian.</param>
+        /// <param name="dateOfRent">Date of renting.</param>
         /// <returns>A bookwihdrawl.</returns>
-        public BookWithdrawal BorrowBooks(
-            List<Borrowing> books,
+        public BookWithdrawal RentBooks(
+            List<Rent> books,
             Reader reader,
-            Employee employee,
-            DateTime dateOfBorrowing)
+            Librarian librarian,
+            DateTime dateOfRent)
         {
-            LoggerUtil.LogInfo($"Borrowing book {books.First().BookName}", MethodBase.GetCurrentMethod());
+            LoggerUtil.LogInfo($"Rent book {books.First().BookName}", MethodBase.GetCurrentMethod());
 
             foreach (var book in books)
             {
-                if (!this.CanBorrowBook(book.BookName, book.EditionName))
+                if (!this.CanRentBook(book.BookName, book.EditionName))
                 {
                     LoggerUtil.LogInfo($"{book.BookName} with edition {book.EditionName} can not be borrow.", MethodBase.GetCurrentMethod());
                     return null;
                 }
             }
 
-            var booksToBorrow = books.Select(b => this.bookRepository.GetBook(b.BookName)).ToList();
-            if (!this.readerService.CanBorrowBooks(booksToBorrow, reader, employee, dateOfBorrowing))
+            var booksToRent = books.Select(b => this.bookRepository.GetBook(b.BookName)).ToList();
+            if (!this.readerService.CanRentBooks(booksToRent, reader, librarian, dateOfRent))
             {
                 LoggerUtil.LogInfo($"{reader.FirstName} can not borrow a new book.", MethodBase.GetCurrentMethod());
                 return null;
             }
 
             var readerFromDb = this.readerService.GetReader(reader.Email, reader.Phone);
-            var employeeFromDb = this.readerRepository.GetEmployee(employee);
+            var librarianFromDb = this.readerRepository.GetLibrarian(librarian);
             BookWithdrawal bw = null;
-            if ((employeeFromDb != null) && (readerFromDb != null))
+            if ((librarianFromDb != null) && (readerFromDb != null))
             {
-                bw = this.bookRepository.BorrowBooks(books, readerFromDb, employeeFromDb);
+                bw = this.bookRepository.RentBooks(books, readerFromDb, librarianFromDb);
             }
 
             LoggerUtil.LogInfo(
                 bw != null
-                    ? $"Borrowing book {books.First().BookName} completed successfully"
-                    : $"Borrowing book {books.First().BookName} failed", MethodBase.GetCurrentMethod());
+                    ? $"Rent book {books.First().BookName} completed successfully"
+                    : $"Rent book {books.First().BookName} failed", MethodBase.GetCurrentMethod());
             return bw;
         }
 
@@ -258,26 +258,26 @@ namespace LibraryManagement.BusinessLayer
         /// <param name="bookName">The book name.</param>
         /// <param name="editionName">The edition name.</param>
         /// <returns>If you can borrow the book.</returns>
-        public bool CanBorrowBook(string bookName, string editionName)
+        public bool CanRentBook(string bookName, string editionName)
         {
             var edition = this.bookRepository.GetEdition(bookName, editionName);
             var bookStock = edition.BookStock;
-            var amountOfBorrowedBooks = this.GetNumberOfBorrowedBooks(edition);
-            float leftovers = bookStock.Amount - amountOfBorrowedBooks - bookStock.LectureRoomAmount - 1;
+            var amountOfRentedBooks = this.GetNumberOfRentedBooks(edition);
+            float leftovers = bookStock.Amount - amountOfRentedBooks - bookStock.LectureRoomAmount - 1;
 
             return leftovers / bookStock.Amount > 0.1f;
         }
 
         /// <summary>
-        /// Get number of borrowed books.
+        /// Get number of rented books.
         /// </summary>
         /// <param name="edition">The edition.</param>
-        /// <returns>Number of borrowed books.</returns>
-        public int GetNumberOfBorrowedBooks(Edition edition)
+        /// <returns>Number of rented books.</returns>
+        public int GetNumberOfRentedBooks(Edition edition)
         {
-            var borrowedBooks = edition.BorrowedBooks;
+            var rentedBooks = edition.RentedBooks;
 
-            var bookWithdrawals = borrowedBooks.Select(b => b.BookWithdrawal);
+            var bookWithdrawals = rentedBooks.Select(b => b.BookWithdrawal);
 
             bookWithdrawals = bookWithdrawals.Where(bw => DateTime.Now.CompareTo(bw.Date) == 1);
 

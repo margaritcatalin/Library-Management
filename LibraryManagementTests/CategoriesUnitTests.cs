@@ -18,7 +18,7 @@ namespace LibraryManagementTests
     [TestFixture]
     public class CategoriesUnitTests
     {
-        private CategoriesService categoriesService;
+        private DomainsService domainsService;
 
         private BookService bookService;
 
@@ -31,250 +31,250 @@ namespace LibraryManagementTests
         public void SetUp()
         {
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
-            this.categoriesService = new CategoriesService(new CategoriesRepository(this.libraryContextMock));
+            this.domainsService = new DomainsService(new DomainsRepository(this.libraryContextMock));
             this.bookService = new BookService(
     new BookRepository(this.libraryContextMock),
-    new CategoriesService(new CategoriesRepository(this.libraryContextMock)),
+    new DomainsService(new DomainsRepository(this.libraryContextMock)),
     new ReaderRepository(this.libraryContextMock));
         }
 
         /// <summary>
-        /// Test add category witch is part of subcategory.
+        /// Test add domain witch is part of subdomain.
         /// </summary>
         [Test]
-        public void TestCategoryIsPartOfSubCategory()
+        public void TestDomainIsPartOfSubDomain()
         {
-            var c1 = new Category { Name = "C1" };
-            var c2 = new Category { Name = "C2" };
-            var c3 = new Category { Name = "C3" };
-            var c4 = new Category { Name = "C4", ParentCategory = c1 };
+            var c1 = new Domain { Name = "C1" };
+            var c2 = new Domain { Name = "C2" };
+            var c3 = new Domain { Name = "C3" };
+            var c4 = new Domain { Name = "C4", ParentDomain = c1 };
 
-            var result = this.categoriesService.CategoryIsPartOfCategories(c4, new List<Category> { c2, c3, c1 });
+            var result = this.domainsService.DomainIsPartOfCategories(c4, new List<Domain> { c2, c3, c1 });
 
             Assert.True(result);
         }
 
         /// <summary>
-        /// Test add a parent category and it is part of subcategory.
+        /// Test add a parent domain and it is part of subdomain.
         /// </summary>
         [Test]
-        public void TestParentCategoryIsPartOfSubCategory()
+        public void TestParentDomainIsPartOfSubDomain()
         {
-            var c1 = new Category { Name = "C1" };
-            var c2 = new Category { Name = "C2", ParentCategory = c1 };
-            var c3 = new Category { Name = "C3", ParentCategory = c1 };
-            var c4 = new Category { Name = "C4", ParentCategory = c1 };
+            var c1 = new Domain { Name = "C1" };
+            var c2 = new Domain { Name = "C2", ParentDomain = c1 };
+            var c3 = new Domain { Name = "C3", ParentDomain = c1 };
+            var c4 = new Domain { Name = "C4", ParentDomain = c1 };
 
-            var result = this.categoriesService.CategoryIsPartOfCategories(c1, new List<Category> { c2, c3, c4 });
+            var result = this.domainsService.DomainIsPartOfCategories(c1, new List<Domain> { c2, c3, c4 });
 
             Assert.True(result);
         }
 
         /// <summary>
-        /// Test add category and it is not part of subcategory.
+        /// Test add domain and it is not part of subdomain.
         /// </summary>
         [Test]
-        public void TestCategoryIsNotPartOfSubCategory()
+        public void TestDomainIsNotPartOfSubDomain()
         {
-            var c1 = new Category { Name = "C1" };
-            var c2 = new Category { Name = "C2" };
-            var c3 = new Category { Name = "C3" };
+            var c1 = new Domain { Name = "C1" };
+            var c2 = new Domain { Name = "C2" };
+            var c3 = new Domain { Name = "C3" };
 
-            var result = this.categoriesService.CategoryIsPartOfCategories(c1, new List<Category> { c2, c3 });
+            var result = this.domainsService.DomainIsPartOfCategories(c1, new List<Domain> { c2, c3 });
 
             Assert.False(result);
         }
 
         /// <summary>
-        /// Test add a null category.
+        /// Test add a null domain.
         /// </summary>
         [Test]
-        public void AddNullCategory()
+        public void AddNullDomain()
         {
-            var result = this.categoriesService.AddCategory(null);
-            Assert.False(result);
-            Assert.True(this.libraryContextMock.Categories.Count() == 0);
-        }
-
-        /// <summary>
-        /// Test add a category with null name.
-        /// </summary>
-        [Test]
-        public void AddCategoryWithNullName()
-        {
-            var c = new Category { Name = null };
-            var result = this.categoriesService.AddCategory(c);
+            var result = this.domainsService.AddDomain(null);
             Assert.False(result);
             Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
-        /// Test add a category with empty name.
+        /// Test add a domain with null name.
         /// </summary>
         [Test]
-        public void AddCategoryWithEmptyName()
+        public void AddDomainWithNullName()
         {
-            var c = new Category { Name = string.Empty };
-            var result = this.categoriesService.AddCategory(c);
+            var c = new Domain { Name = null };
+            var result = this.domainsService.AddDomain(c);
             Assert.False(result);
             Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
-        /// Test add a category with small name.
+        /// Test add a domain with empty name.
         /// </summary>
         [Test]
-        public void AddCategoryNameLengthLessThanThree()
+        public void AddDomainWithEmptyName()
         {
-            var c = new Category { Name = "Mi" };
-            var result = this.categoriesService.AddCategory(c);
+            var c = new Domain { Name = string.Empty };
+            var result = this.domainsService.AddDomain(c);
             Assert.False(result);
             Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
-        /// Test add a category with bigger name.
+        /// Test add a domain with small name.
         /// </summary>
         [Test]
-        public void AddCategoryNameLengthMoreThanLimitEighty()
+        public void AddDomainNameLengthLessThanThree()
         {
-            var c = new Category
+            var c = new Domain { Name = "Mi" };
+            var result = this.domainsService.AddDomain(c);
+            Assert.False(result);
+            Assert.True(this.libraryContextMock.Categories.Count() == 0);
+        }
+
+        /// <summary>
+        /// Test add a domain with bigger name.
+        /// </summary>
+        [Test]
+        public void AddDomainNameLengthMoreThanLimitEighty()
+        {
+            var c = new Domain
             {
                 Name = "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong",
             };
-            var result = this.categoriesService.AddCategory(c);
+            var result = this.domainsService.AddDomain(c);
             Assert.False(result);
             Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
-        /// Test add category with digit in name.
+        /// Test add domain with digit in name.
         /// </summary>
         [Test]
-        public void AddCategoryNameWithDigit()
+        public void AddDomainNameWithDigit()
         {
-            var c = new Category { Name = "2425" };
-            var result = this.categoriesService.AddCategory(c);
+            var c = new Domain { Name = "2425" };
+            var result = this.domainsService.AddDomain(c);
             Assert.False(result);
             Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
-        /// Test add category with symbol in name.
+        /// Test add domain with symbol in name.
         /// </summary>
         [Test]
-        public void AddCategoryNameWithSymbol()
+        public void AddDomainNameWithSymbol()
         {
-            var c = new Category { Name = "@&abcd" };
-            var result = this.categoriesService.AddCategory(c);
+            var c = new Domain { Name = "@&abcd" };
+            var result = this.domainsService.AddDomain(c);
             Assert.False(result);
             Assert.True(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
-        /// Test add category with space in name.
+        /// Test add domain with space in name.
         /// </summary>
         [Test]
-        public void AddCategoryNameWithWhiteSpace()
+        public void AddDomainNameWithWhiteSpace()
         {
-            var c = new Category { Name = "Action and Drama" };
-            var result = this.categoriesService.AddCategory(c);
+            var c = new Domain { Name = "Action and Drama" };
+            var result = this.domainsService.AddDomain(c);
             Assert.False(this.libraryContextMock.Categories.Count() == 0);
         }
 
         /// <summary>
-        /// Test add a category.
+        /// Test add a domain.
         /// </summary>
         [Test]
-        public void AddCategory()
+        public void AddDomain()
         {
-            var c = new Category { Name = "Fiction" };
-            var result = this.categoriesService.AddCategory(c);
+            var c = new Domain { Name = "Fiction" };
+            var result = this.domainsService.AddDomain(c);
             Assert.True(this.libraryContextMock.Categories.Count() == 1);
         }
 
         /// <summary>
-        /// Test get a category.
+        /// Test get a domain.
         /// </summary>
         [Test]
-        public void GetCategory()
+        public void GetDomain()
         {
-            var c = new Category { Name = "Fiction" };
-            var result = this.categoriesService.AddCategory(c);
+            var c = new Domain { Name = "Fiction" };
+            var result = this.domainsService.AddDomain(c);
 
-            c = this.categoriesService.GetCategory(c.Name);
+            c = this.domainsService.GetDomain(c.Name);
             Assert.NotNull(c);
         }
 
         /// <summary>
-        /// Test get a category by null name.
+        /// Test get a domain by null name.
         /// </summary>
         [Test]
-        public void GetNullCategory()
+        public void GetNullDomain()
         {
-            var c = this.categoriesService.GetCategory(null);
+            var c = this.domainsService.GetDomain(null);
             Assert.Null(c);
         }
 
         /// <summary>
-        /// Test get a category by empty name.
+        /// Test get a domain by empty name.
         /// </summary>
         [Test]
-        public void GetEmptyCategory()
+        public void GetEmptyDomain()
         {
-            var c = this.categoriesService.GetCategory(string.Empty);
+            var c = this.domainsService.GetDomain(string.Empty);
             Assert.Null(c);
         }
 
         /// <summary>
-        /// Test get an unknown category.
+        /// Test get an unknown domain.
         /// </summary>
         [Test]
-        public void GetUnknownCategory()
+        public void GetUnknownDomain()
         {
-            var c = new Category { Name = "Fiction" };
-            var result = this.categoriesService.AddCategory(c);
+            var c = new Domain { Name = "Fiction" };
+            var result = this.domainsService.AddDomain(c);
 
-            c = this.categoriesService.GetCategory("Philosophy");
+            c = this.domainsService.GetDomain("Philosophy");
             Assert.Null(c);
         }
 
         /// <summary>
-        /// Test add a subcategory.
+        /// Test add a subdomain.
         /// </summary>
         [Test]
         public void AddSubCateory()
         {
-            Category c = new Category { Name = "Science" };
-            Category c2 = new Category { Name = "Fiction", ParentCategory = c };
-            var result = this.categoriesService.AddCategory(c);
-            var result2 = this.categoriesService.AddCategory(c2);
-            Assert.True(c2.ParentCategory != null);
+            Domain c = new Domain { Name = "Science" };
+            Domain c2 = new Domain { Name = "Fiction", ParentDomain = c };
+            var result = this.domainsService.AddDomain(c);
+            var result2 = this.domainsService.AddDomain(c2);
+            Assert.True(c2.ParentDomain != null);
             Assert.True(this.libraryContextMock.Categories.Count() == 2);
         }
 
         /// <summary>
-        /// Test add a subcategory with no parent category.
+        /// Test add a subdomain with no parent domain.
         /// </summary>
         [Test]
-        public void AddSubCateoryWithNoParentCategory()
+        public void AddSubCateoryWithNoParentDomain()
         {
-            Category c = new Category { Name = "Fiction" };
-            Category c2 = new Category { Name = "Science" };
-            var result = this.categoriesService.AddCategory(c);
-            var result2 = this.categoriesService.AddCategory(c2);
-            Assert.False(c2.ParentCategory != null);
+            Domain c = new Domain { Name = "Fiction" };
+            Domain c2 = new Domain { Name = "Science" };
+            var result = this.domainsService.AddDomain(c);
+            var result2 = this.domainsService.AddDomain(c2);
+            Assert.False(c2.ParentDomain != null);
             Assert.True(this.libraryContextMock.Categories.Count() == 2);
         }
 
         /// <summary>
-        /// Test is part of category.
+        /// Test is part of domain.
         /// </summary>
         [Test]
-        public void IsPartOfCategory()
+        public void IsPartOfDomain()
         {
-            Category c = new Category { Name = "Fiction" };
-            var result = this.categoriesService.AddCategory(c);
+            Domain c = new Domain { Name = "Fiction" };
+            var result = this.domainsService.AddDomain(c);
 
             Book book = new Book
             {
@@ -294,23 +294,23 @@ namespace LibraryManagementTests
             },
             },
                 },
-                Categories = new List<Category> { c },
+                Categories = new List<Domain> { c },
             };
             var resultB = this.bookService.CreateBook(book);
-            Assert.True(this.categoriesService.IsPartOfCategory(book, c));
+            Assert.True(this.domainsService.IsPartOfDomain(book, c));
             Assert.True(this.libraryContextMock.Categories.Count() == 1 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
-        /// Test if is not part of category.
+        /// Test if is not part of domain.
         /// </summary>
         [Test]
-        public void IsNotPartOfCategory()
+        public void IsNotPartOfDomain()
         {
-            Category c = new Category { Name = "Fiction" };
-            var result = this.categoriesService.AddCategory(c);
-            Category c2 = new Category { Name = "Test" };
-            var result2 = this.categoriesService.AddCategory(c2);
+            Domain c = new Domain { Name = "Fiction" };
+            var result = this.domainsService.AddDomain(c);
+            Domain c2 = new Domain { Name = "Test" };
+            var result2 = this.domainsService.AddDomain(c2);
             Book book = new Book
             {
                 Name = "Testing is important",
@@ -329,25 +329,25 @@ namespace LibraryManagementTests
             },
             },
                 },
-                Categories = new List<Category> { c },
+                Categories = new List<Domain> { c },
             };
             var resultB = this.bookService.CreateBook(book);
-            Assert.False(this.categoriesService.IsPartOfCategory(book, c2));
+            Assert.False(this.domainsService.IsPartOfDomain(book, c2));
             Assert.True(this.libraryContextMock.Categories.Count() == 2 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
-        /// Test check if is not part of parent category.
+        /// Test check if is not part of parent domain.
         /// </summary>
         [Test]
-        public void IsNotPartOfParentCategory()
+        public void IsNotPartOfParentDomain()
         {
-            Category c = new Category { Name = "Fiction" };
-            var result = this.categoriesService.AddCategory(c);
-            Category c1 = new Category { Name = "Science2" };
-            var result1 = this.categoriesService.AddCategory(c1);
-            Category c2 = new Category { Name = "Test", ParentCategory = c };
-            var result2 = this.categoriesService.AddCategory(c2);
+            Domain c = new Domain { Name = "Fiction" };
+            var result = this.domainsService.AddDomain(c);
+            Domain c1 = new Domain { Name = "Science2" };
+            var result1 = this.domainsService.AddDomain(c1);
+            Domain c2 = new Domain { Name = "Test", ParentDomain = c };
+            var result2 = this.domainsService.AddDomain(c2);
             Book book = new Book
             {
                 Name = "Testing is important",
@@ -366,23 +366,23 @@ namespace LibraryManagementTests
             },
             },
                 },
-                Categories = new List<Category> { c1 },
+                Categories = new List<Domain> { c1 },
             };
             var resultB = this.bookService.CreateBook(book);
-            Assert.False(this.categoriesService.IsPartOfCategory(book, c));
+            Assert.False(this.domainsService.IsPartOfDomain(book, c));
             Assert.True(this.libraryContextMock.Categories.Count() == 2 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
-        /// Test is part of parent category.
+        /// Test is part of parent domain.
         /// </summary>
         [Test]
-        public void IsPartOfParentCategory()
+        public void IsPartOfParentDomain()
         {
-            Category c = new Category { Name = "Fiction" };
-            var result = this.categoriesService.AddCategory(c);
-            Category c2 = new Category { Name = "Test", ParentCategory = c };
-            var result2 = this.categoriesService.AddCategory(c2);
+            Domain c = new Domain { Name = "Fiction" };
+            var result = this.domainsService.AddDomain(c);
+            Domain c2 = new Domain { Name = "Test", ParentDomain = c };
+            var result2 = this.domainsService.AddDomain(c2);
             Book book = new Book
             {
                 Name = "Testing is important",
@@ -401,21 +401,21 @@ namespace LibraryManagementTests
             },
             },
                 },
-                Categories = new List<Category> { c2 },
+                Categories = new List<Domain> { c2 },
             };
             var resultB = this.bookService.CreateBook(book);
-            Assert.True(this.categoriesService.IsPartOfCategory(book, c));
+            Assert.True(this.domainsService.IsPartOfDomain(book, c));
             Assert.True(this.libraryContextMock.Categories.Count() == 2 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
-        /// Test is part of null categories.
+        /// Test is part of null domains.
         /// </summary>
         [Test]
-        public void IsPartOfCategoryNullCategory()
+        public void IsPartOfDomainNullDomain()
         {
-            Category c = new Category { Name = "Fiction" };
-            var result = this.categoriesService.AddCategory(c);
+            Domain c = new Domain { Name = "Fiction" };
+            var result = this.domainsService.AddDomain(c);
 
             Book book = new Book
             {
@@ -435,66 +435,66 @@ namespace LibraryManagementTests
             },
             },
                 },
-                Categories = new List<Category> { c },
+                Categories = new List<Domain> { c },
             };
             var resultB = this.bookService.CreateBook(book);
-            Assert.False(this.categoriesService.IsPartOfCategory(book, null));
+            Assert.False(this.domainsService.IsPartOfDomain(book, null));
             Assert.True(this.libraryContextMock.Categories.Count() == 1 && this.libraryContextMock.Books.Count() == 1);
         }
 
         /// <summary>
-        /// Test category is part of categories.
+        /// Test domain is part of domains.
         /// </summary>
         [Test]
-        public void CategoryIsPartOfCategoriesNotNullCategory()
+        public void DomainIsPartOfCategoriesNotNullDomain()
         {
-            Category c = new Category { Name = "Fiction" };
-            Category c2 = new Category { Name = "Test", ParentCategory = c };
-            var result = this.categoriesService.AddCategory(c);
-            var result2 = this.categoriesService.AddCategory(c2);
-            List<Category> categories = new List<Category>
+            Domain c = new Domain { Name = "Fiction" };
+            Domain c2 = new Domain { Name = "Test", ParentDomain = c };
+            var result = this.domainsService.AddDomain(c);
+            var result2 = this.domainsService.AddDomain(c2);
+            List<Domain> domains = new List<Domain>
             {
                 c, c2
             };
-            Assert.True(this.categoriesService.CategoryIsPartOfCategories(c, categories));
+            Assert.True(this.domainsService.DomainIsPartOfCategories(c, domains));
             Assert.True(this.libraryContextMock.Categories.Count() == 2);
         }
 
         /// <summary>
-        /// Test categories is part off null categories.
+        /// Test domains is part off null domains.
         /// </summary>
         [Test]
-        public void CategoryIsPartOfCategoriesNullCategory()
+        public void DomainIsPartOfCategoriesNullDomain()
         {
-            Category c = new Category { Name = "Fiction" };
-            Category c2 = new Category { Name = "Test", ParentCategory = c };
-            var result = this.categoriesService.AddCategory(c);
-            var result2 = this.categoriesService.AddCategory(c2);
-            List<Category> categories = new List<Category>
+            Domain c = new Domain { Name = "Fiction" };
+            Domain c2 = new Domain { Name = "Test", ParentDomain = c };
+            var result = this.domainsService.AddDomain(c);
+            var result2 = this.domainsService.AddDomain(c2);
+            List<Domain> domains = new List<Domain>
             {
                 c, c2
             };
-            Assert.False(this.categoriesService.CategoryIsPartOfCategories(null, categories));
+            Assert.False(this.domainsService.DomainIsPartOfCategories(null, domains));
             Assert.True(this.libraryContextMock.Categories.Count() == 2);
         }
 
         /// <summary>
-        /// Testcategory is not part of categories.
+        /// Testdomain is not part of domains.
         /// </summary>
         [Test]
-        public void CategoryIsNotPartOfCategories()
+        public void DomainIsNotPartOfCategories()
         {
-            Category c = new Category { Name = "Fiction" };
-            Category c2 = new Category { Name = "Test", ParentCategory = c };
-            Category c1 = new Category { Name = "Glob" };
-            var result = this.categoriesService.AddCategory(c);
-            var result1 = this.categoriesService.AddCategory(c1);
-            var result2 = this.categoriesService.AddCategory(c2);
-            List<Category> categories = new List<Category>
+            Domain c = new Domain { Name = "Fiction" };
+            Domain c2 = new Domain { Name = "Test", ParentDomain = c };
+            Domain c1 = new Domain { Name = "Glob" };
+            var result = this.domainsService.AddDomain(c);
+            var result1 = this.domainsService.AddDomain(c1);
+            var result2 = this.domainsService.AddDomain(c2);
+            List<Domain> domains = new List<Domain>
             {
                 c, c2
             };
-            Assert.False(this.categoriesService.CategoryIsPartOfCategories(c1, categories));
+            Assert.False(this.domainsService.DomainIsPartOfCategories(c1, domains));
             Assert.True(this.libraryContextMock.Categories.Count() == 3);
         }
     }

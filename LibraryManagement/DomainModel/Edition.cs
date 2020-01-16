@@ -38,9 +38,9 @@ namespace LibraryManagement.DomainModel
         public Book Book { get; set; }
 
         /// <summary>
-        /// Gets or sets borrowed books.
+        /// Gets or sets rented books.
         /// </summary>
-        public virtual ICollection<BorrowedBook> BorrowedBooks { get; set; }
+        public virtual ICollection<RentedBook> RentedBooks { get; set; }
 
         /// <summary>
         /// Gets or sets book stock.

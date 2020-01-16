@@ -27,9 +27,9 @@ namespace LibraryManagement.DataMapper
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets book categories.
+        /// Gets or sets book domains.
         /// </summary>
-        public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Domain> Categories { get; set; }
 
         /// <summary>
         /// Gets or sets book editions.
@@ -42,8 +42,8 @@ namespace LibraryManagement.DataMapper
         public virtual ICollection<Author> Authors { get; set; }
 
         /// <summary>
-        /// Gets or sets borrowed books.
+        /// Gets or sets rented books.
         /// </summary>
-        public virtual ICollection<BorrowedBook> BorrowedBooks { get; set; }
+        public virtual ICollection<RentedBook> RentedBooks { get; set; }
     }
 }

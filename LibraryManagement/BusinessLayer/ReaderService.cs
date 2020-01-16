@@ -197,40 +197,40 @@ namespace LibraryManagement.BusinessLayer
         /// </summary>
         /// <param name="books">The books.</param>
         /// <param name="reader">The reader.</param>
-        /// <param name="employee">The employee.</param>
-        /// <param name="dateOfBorrowing">Date of borrowing.</param>
+        /// <param name="librarian">The librarian.</param>
+        /// <param name="dateOfRent">Date of renting.</param>
         /// <returns>If reader can borrow the books.</returns>
-        public bool CanBorrowBooks(List<Book> books, Reader reader, Employee employee, DateTime dateOfBorrowing)
+        public bool CanRentBooks(List<Book> books, Reader reader, Librarian librarian, DateTime dateOfRent)
         {
             reader = this.readerRepository.GetReader(reader.Email, reader.Phone);
-            var isEmployee = this.IsEmployee(reader);
-            if (!this.CheckNumberOfBorrowedBooksInPeriod(books, reader, isEmployee, dateOfBorrowing))
+            var isLibrarian = this.IsLibrarian(reader);
+            if (!this.CheckNumberOfRentedBooksInPeriod(books, reader, isLibrarian, dateOfRent))
             {
-                LoggerUtil.LogInfo($"The reader borrowed too many books.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"The reader rented too many books.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
-            if (!this.CheckBooksDifferentCategories(books, isEmployee))
+            if (!this.CheckBooksDifferentCategories(books, isLibrarian))
             {
-                LoggerUtil.LogInfo($"The reader has books from too many categories.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"The reader has books from too many domains.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
-            if (!this.CheckBooksForSameCategories(books, reader, isEmployee, dateOfBorrowing))
+            if (!this.CheckBooksForSameCategories(books, reader, isLibrarian, dateOfRent))
             {
-                LoggerUtil.LogInfo($"The reader has too many books from same categories.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"The reader has too many books from same domains.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
-            if (!this.CheckSameBookDelta(books, reader, isEmployee, dateOfBorrowing))
+            if (!this.CheckSameBookDelta(books, reader, isLibrarian, dateOfRent))
             {
-                LoggerUtil.LogInfo($"The reader borrowed too many books in same period.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"The reader rented too many books in same period.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
-            if (!this.CheckNumberOfBooksPerDay(books, reader, isEmployee, dateOfBorrowing))
+            if (!this.CheckNumberOfBooksPerDay(books, reader, isLibrarian, dateOfRent))
             {
-                LoggerUtil.LogInfo($"The reader borrowed too many books in same day.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"The reader rented too many books in same day.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -252,7 +252,7 @@ namespace LibraryManagement.BusinessLayer
             }
 
             reader = this.readerRepository.GetReader(reader.Email, reader.Phone);
-            if (!this.CheckNumberOfExtensions(reader, this.IsEmployee(reader), DateTime.Now))
+            if (!this.CheckNumberOfExtensions(reader, this.IsLibrarian(reader), DateTime.Now))
             {
                 LoggerUtil.LogInfo($"Reader has too many extensions.", MethodBase.GetCurrentMethod());
                 return false;
@@ -262,43 +262,43 @@ namespace LibraryManagement.BusinessLayer
         }
 
         /// <summary>
-        /// Check if reader is employee.
+        /// Check if reader is librarian.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns>If he's eployee.</returns>
-        public bool IsEmployee(Reader reader)
+        public bool IsLibrarian(Reader reader)
         {
-            return this.readerRepository.IsEmployee(reader);
+            return this.readerRepository.IsLibrarian(reader);
         }
 
         /// <summary>
-        /// Get an employee by reader.
+        /// Get an librarian by reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>An employee.</returns>
-        public Employee GetEmployee(Reader reader)
+        /// <returns>An librarian.</returns>
+        public Librarian GetLibrarian(Reader reader)
         {
-            return this.readerRepository.GetEmployeeFromReader(reader);
+            return this.readerRepository.GetLibrarianFromReader(reader);
         }
 
-        private bool CheckNumberOfBorrowedBooksInPeriod(
+        private bool CheckNumberOfRentedBooksInPeriod(
             List<Book> books,
             Reader reader,
-            bool isEmployee,
+            bool isLibrarian,
             DateTime dateTime)
         {
             var nMC = int.Parse(ConfigurationManager.AppSettings["NMC"]);
             var pER = int.Parse(ConfigurationManager.AppSettings["PER"]);
-            if (isEmployee)
+            if (isLibrarian)
             {
                 nMC *= 2;
                 pER /= 2;
             }
 
-            var borrowedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(pER, reader, dateTime);
-            var numberOfBorrowedBooks = borrowedBooks.Count;
+            var rentedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(pER, reader, dateTime);
+            var numberOfRentedBooks = rentedBooks.Count;
 
-            if (numberOfBorrowedBooks + books.Count > nMC)
+            if (numberOfRentedBooks + books.Count > nMC)
             {
                 return false;
             }
@@ -306,10 +306,10 @@ namespace LibraryManagement.BusinessLayer
             return true;
         }
 
-        private bool CheckBooksDifferentCategories(List<Book> books, bool isEmployee)
+        private bool CheckBooksDifferentCategories(List<Book> books, bool isLibrarian)
         {
             var c = int.Parse(ConfigurationManager.AppSettings["C"]);
-            if (isEmployee)
+            if (isLibrarian)
             {
                 c *= 2;
             }
@@ -334,25 +334,25 @@ namespace LibraryManagement.BusinessLayer
         private bool CheckBooksForSameCategories(
             IEnumerable<Book> books,
             Reader reader,
-            bool isEmployee,
+            bool isLibrarian,
             DateTime dateTime)
         {
             var d = int.Parse(ConfigurationManager.AppSettings["D"]);
             var l = int.Parse(ConfigurationManager.AppSettings["L"]);
-            if (isEmployee)
+            if (isLibrarian)
             {
                 d *= 2;
             }
 
-            var borrowedBooks =
+            var rentedBooks =
                 this.readerRepository.GetBooksWithdrawalWithinPeriod((int)(30.436875f * l), reader, dateTime);
-            borrowedBooks = borrowedBooks.Union(books).ToList();
+            rentedBooks = rentedBooks.Union(books).ToList();
 
-            var distinctCat = borrowedBooks.SelectMany(b => b.Categories).Select(c => this.GoToTopParent(c));
+            var distinctCat = rentedBooks.SelectMany(b => b.Categories).Select(c => this.GoToTopParent(c));
             var groupedCategories = distinctCat.GroupBy(dc => dc.Id);
-            foreach (var groupedCategory in groupedCategories)
+            foreach (var groupedDomain in groupedCategories)
             {
-                var numberOfBooks = groupedCategory.Count();
+                var numberOfBooks = groupedDomain.Count();
                 if (numberOfBooks > d)
                 {
                     return false;
@@ -362,19 +362,19 @@ namespace LibraryManagement.BusinessLayer
             return true;
         }
 
-        private bool CheckSameBookDelta(List<Book> books, Reader reader, bool isEmployee, DateTime dateTime)
+        private bool CheckSameBookDelta(List<Book> books, Reader reader, bool isLibrarian, DateTime dateTime)
         {
             var dELTA = int.Parse(ConfigurationManager.AppSettings["DELTA"]);
-            if (isEmployee)
+            if (isLibrarian)
             {
                 dELTA /= 2;
             }
 
-            List<Book> borrowedBooks;
-            borrowedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(dELTA, reader, dateTime);
+            List<Book> rentedBooks;
+            rentedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(dELTA, reader, dateTime);
             foreach (var book in books)
             {
-                if (borrowedBooks.FirstOrDefault(bb => bb.Name.Equals(book.Name)) != null)
+                if (rentedBooks.FirstOrDefault(bb => bb.Name.Equals(book.Name)) != null)
                 {
                     return false;
                 }
@@ -383,10 +383,10 @@ namespace LibraryManagement.BusinessLayer
             return true;
         }
 
-        private bool CheckNumberOfExtensions(Reader reader, bool isEmployee, DateTime dateTime)
+        private bool CheckNumberOfExtensions(Reader reader, bool isLibrarian, DateTime dateTime)
         {
             var lIM = int.Parse(ConfigurationManager.AppSettings["LIM"]);
-            if (isEmployee)
+            if (isLibrarian)
             {
                 lIM *= 2;
             }
@@ -401,20 +401,20 @@ namespace LibraryManagement.BusinessLayer
             return true;
         }
 
-        private bool CheckNumberOfBooksPerDay(List<Book> books, Reader reader, bool isEmployee, DateTime dateTime)
+        private bool CheckNumberOfBooksPerDay(List<Book> books, Reader reader, bool isLibrarian, DateTime dateTime)
         {
             var nCZ = int.Parse(ConfigurationManager.AppSettings["NCZ"]);
-            if (isEmployee)
+            if (isLibrarian)
             {
-                return this.CheckNumberOfLendedBooks(this.GetEmployee(reader), books.Count, dateTime);
+                return this.CheckNumberOfLendedBooks(this.GetLibrarian(reader), books.Count, dateTime);
             }
 
-            List<Book> borrowedBooks;
-            int numberOfBorrowedBooks;
-            borrowedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(1, reader, dateTime);
-            numberOfBorrowedBooks = borrowedBooks.Count;
+            List<Book> rentedBooks;
+            int numberOfRentedBooks;
+            rentedBooks = this.readerRepository.GetBooksWithdrawalWithinPeriod(1, reader, dateTime);
+            numberOfRentedBooks = rentedBooks.Count;
 
-            if (numberOfBorrowedBooks + books.Count > nCZ)
+            if (numberOfRentedBooks + books.Count > nCZ)
             {
                 return false;
             }
@@ -422,23 +422,23 @@ namespace LibraryManagement.BusinessLayer
             return true;
         }
 
-        private bool CheckNumberOfLendedBooks(Employee employee, int currentWithdrawBooks, DateTime dateTime)
+        private bool CheckNumberOfLendedBooks(Librarian librarian, int currentWithdrawBooks, DateTime dateTime)
         {
             var pERSIMP = int.Parse(ConfigurationManager.AppSettings["PERSIMP"]);
             var bookWithdrawalsForToday =
-                employee.BookWithdrawals.Where(bw => DbFunctions.DiffDays(dateTime, bw.Date) < 1);
-            var numberOfLendedBooks = bookWithdrawalsForToday.SelectMany(bw => bw.BorrowedBooks).Count();
+                librarian.BookWithdrawals.Where(bw => DbFunctions.DiffDays(dateTime, bw.Date) < 1);
+            var numberOfLendedBooks = bookWithdrawalsForToday.SelectMany(bw => bw.RentedBooks).Count();
             return numberOfLendedBooks + currentWithdrawBooks <= pERSIMP;
         }
 
-        private Category GoToTopParent(Category category)
+        private Domain GoToTopParent(Domain domain)
         {
-            while (category.ParentCategory != null)
+            while (domain.ParentDomain != null)
             {
-                category = category.ParentCategory;
+                domain = domain.ParentDomain;
             }
 
-            return category;
+            return domain;
         }
     }
 }

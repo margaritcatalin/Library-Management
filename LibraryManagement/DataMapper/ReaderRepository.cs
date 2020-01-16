@@ -58,10 +58,10 @@ namespace LibraryManagement.DataMapper
         /// <returns>The books list.</returns>
         public List<Book> GetBooksWithdrawalWithinPeriod(int days, Reader reader, DateTime dateTime)
         {
-            return this.libraryContext.BookWithdrawals.Include(bw => bw.BorrowedBooks)
-                .Include(bw => bw.BorrowedBooks.Select(bb => bb.Book)).Where(
+            return this.libraryContext.BookWithdrawals.Include(bw => bw.RentedBooks)
+                .Include(bw => bw.RentedBooks.Select(bb => bb.Book)).Where(
                     bw => bw.Reader.Id.Equals(reader.Id) && (DbFunctions.DiffDays(bw.Date, dateTime) < days))
-                .SelectMany(bw => bw.BorrowedBooks).Include(bb => bb.Book).Select(bb => bb.Book).ToList();
+                .SelectMany(bw => bw.RentedBooks).Include(bb => bb.Book).Select(bb => bb.Book).ToList();
         }
 
         /// <summary>
@@ -98,39 +98,39 @@ namespace LibraryManagement.DataMapper
         }
 
         /// <summary>
-        /// Get employee by reader.
+        /// Get librarian by reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>An employee.</returns>
-        public Employee GetEmployeeFromReader(Reader reader)
+        /// <returns>An librarian.</returns>
+        public Librarian GetLibrarianFromReader(Reader reader)
         {
-            return this.libraryContext.Employees.FirstOrDefault(e => e.Email.Equals(reader.Email));
+            return this.libraryContext.Librarians.FirstOrDefault(e => e.Email.Equals(reader.Email));
         }
 
         /// <summary>
-        /// Check if reader is employee.
+        /// Check if reader is librarian.
         /// </summary>
         /// <param name="reader">The reader.</param>
-        /// <returns>If is employee.</returns>
-        public bool IsEmployee(Reader reader)
+        /// <returns>If is librarian.</returns>
+        public bool IsLibrarian(Reader reader)
         {
-            return this.GetEmployeeFromReader(reader) != null;
+            return this.GetLibrarianFromReader(reader) != null;
         }
 
         /// <summary>
-        /// Get same employee.
+        /// Get same librarian.
         /// </summary>
-        /// <param name="employee">The employee.</param>
-        /// <returns>An employee.</returns>
-        public Employee GetEmployee(Employee employee)
+        /// <param name="librarian">The librarian.</param>
+        /// <returns>An librarian.</returns>
+        public Librarian GetLibrarian(Librarian librarian)
         {
-            var employeeFromDefault = this.libraryContext.Employees.FirstOrDefault(e => e.Email.Equals(employee.Email));
-            if (employeeFromDefault == null)
+            var librarianFromDefault = this.libraryContext.Librarians.FirstOrDefault(e => e.Email.Equals(librarian.Email));
+            if (librarianFromDefault == null)
             {
-                LoggerUtil.LogInfo($"Employee not found in db with name : {employee.FirstName} {employee.LastName}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Librarian not found in db with name : {librarian.FirstName} {librarian.LastName}", MethodBase.GetCurrentMethod());
             }
 
-            return employee;
+            return librarian;
         }
     }
 }

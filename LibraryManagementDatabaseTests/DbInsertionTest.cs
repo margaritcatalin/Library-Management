@@ -37,24 +37,24 @@ namespace LibraryManagementDatabaseTests
         }
 
         /// <summary>
-        /// Test insert a new category.
+        /// Test insert a new domain.
         /// </summary>
         [Test]
-        public void TestAddCategoryToDb()
+        public void TestAddDomainToDb()
         {
-            var category = new Category { Name = "Fiction", };
-            var categoriesService = new CategoriesService(new CategoriesRepository(this.libraryContext));
-            var result = categoriesService.AddCategory(category);
+            var domain = new Domain { Name = "Fiction", };
+            var domainsService = new DomainsService(new DomainsRepository(this.libraryContext));
+            var result = domainsService.AddDomain(domain);
             Assert.True(result);
         }
 
         /// <summary>
-        /// Test added a new employee.
+        /// Test added a new librarian.
         /// </summary>
         [Test]
-        public void TestAddEmployeeToDb()
+        public void TestAddLibrarianToDb()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Margarit",
                                LastName = "Marian",
@@ -63,8 +63,8 @@ namespace LibraryManagementDatabaseTests
                                Address = "Str. Egretei nr31",
                                Gender = "M",
                            };
-            var employeeService = new EmployeeService(new EmployeeRepository(this.libraryContext));
-            var result = employeeService.AddEmployee(employee);
+            var librarianService = new LibrarianService(new LibrarianRepository(this.libraryContext));
+            var result = librarianService.AddLibrarian(librarian);
             Assert.True(result);
         }
 

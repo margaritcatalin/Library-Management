@@ -1,4 +1,4 @@
-// <copyright file="Employee.cs" company="Transilvania University of Brasov">
+// <copyright file="Librarian.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
 
@@ -10,9 +10,9 @@ namespace LibraryManagement.DataMapper
     using LibraryManagement.DomainModel;
 
     /// <summary>
-    /// Employee entity.
+    /// Librarian entity.
     /// </summary>
-    public class Employee
+    public class Librarian
     {
         /// <summary>
         /// Gets or sets id.

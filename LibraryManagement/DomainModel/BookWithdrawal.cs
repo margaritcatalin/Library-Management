@@ -29,9 +29,9 @@ namespace LibraryManagement.DomainModel
         public Reader Reader { get; set; }
 
         /// <summary>
-        /// Gets or sets borrowed books.
+        /// Gets or sets rented books.
         /// </summary>
-        public ICollection<BorrowedBook> BorrowedBooks { get; set; }
+        public ICollection<RentedBook> RentedBooks { get; set; }
 
         /// <summary>
         /// Gets or sets extensions.
@@ -39,8 +39,8 @@ namespace LibraryManagement.DomainModel
         public ICollection<Extension> Extensions { get; set; }
 
         /// <summary>
-        /// Gets or sets employee.
+        /// Gets or sets librarian.
         /// </summary>
-        public Employee Employee { get; set; }
+        public Librarian Librarian { get; set; }
     }
 }

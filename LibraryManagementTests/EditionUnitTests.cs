@@ -35,14 +35,14 @@ namespace LibraryManagementTests
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
             this.bookService = new BookService(
                 new BookRepository(this.libraryContextMock),
-                new CategoriesService(new CategoriesRepository(this.libraryContextMock)),
+                new DomainsService(new DomainsRepository(this.libraryContextMock)),
                 new ReaderRepository(this.libraryContextMock));
 
             this.defaultTestBook = new Book
                          {
                              Name = "Testing is important",
                              Authors = new List<Author>() { new Author { FirstName = "Estera", LastName = "Balas" } },
-                             Categories = new List<Category> { new Category { Name = "Novel" } },
+                             Categories = new List<Domain> { new Domain { Name = "Novel" } },
                              Editions = new List<Edition>
                                         {
                                             new Edition { Name = "Ultimate Edition", BookType = "Plastic Cover", Pages = 100 },

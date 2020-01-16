@@ -1,13 +1,13 @@
-﻿// <copyright file="Borrowing.cs" company="Transilvania University of Brasov">
+﻿// <copyright file="Rent.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
 
 namespace LibraryManagement.DomainModel
 {
     /// <summary>
-    /// Borrowing entity.
+    /// Rent entity.
     /// </summary>
-    public class Borrowing
+    public class Rent
     {
         /// <summary>
         /// Gets or sets bookName.

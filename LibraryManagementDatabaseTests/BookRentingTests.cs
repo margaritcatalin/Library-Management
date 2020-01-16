@@ -1,4 +1,4 @@
-﻿// <copyright file="BookBorrowingTests.cs" company="Transilvania University of Brasov">
+﻿// <copyright file="BookRentTests.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
 
@@ -14,10 +14,10 @@ namespace LibraryManagementDatabaseTests
     using Assert = NUnit.Framework.Assert;
 
     /// <summary>
-    /// BookBorrowing tests.
+    /// BookRent tests.
     /// </summary>
     [TestFixture]
-    public class BookBorrowingTests
+    public class BookRentTests
     {
         private LibraryDbContext libraryContext;
 
@@ -29,9 +29,9 @@ namespace LibraryManagementDatabaseTests
 
         private BookStock bookStock;
 
-        private Category defaultTestCategory;
+        private Domain defaultTestDomain;
 
-        private Employee employee;
+        private Librarian librarian;
 
         private Reader reader;
 
@@ -47,11 +47,11 @@ namespace LibraryManagementDatabaseTests
         {
             this.libraryContext = new LibraryDbContext();
             var readerRepository = new ReaderRepository(this.libraryContext);
-            var employeeService = new EmployeeService(new EmployeeRepository(this.libraryContext));
+            var librarianService = new LibrarianService(new LibrarianRepository(this.libraryContext));
             this.readerService = new ReaderService(readerRepository);
             this.bookService = new BookService(
                 new BookRepository(this.libraryContext),
-                new CategoriesService(new CategoriesRepository(this.libraryContext)),
+                new DomainsService(new DomainsRepository(this.libraryContext)),
                 readerRepository);
             this.defaultTestAuthor = new Author { FirstName = "Estera", LastName = "Balas" };
             this.bookStock = new BookStock { Amount = 14, LectureRoomAmount = 10 };
@@ -65,9 +65,9 @@ namespace LibraryManagementDatabaseTests
                            {
                                Name = "Ultimate Edition", BookType = "Plasticcover", Pages = 320, BookStock = bookstock3,
                            };
-            this.defaultTestCategory = new Category { Name = "Novel" };
+            this.defaultTestDomain = new Domain { Name = "Novel" };
 
-            this.employee = new Employee()
+            this.librarian = new Librarian()
                              {
                                  FirstName = "Catalin",
                                  LastName = "Marcus",
@@ -91,11 +91,11 @@ namespace LibraryManagementDatabaseTests
                              Name = "Java for junior",
                              Authors = new[] { this.defaultTestAuthor },
                              Editions = new[] { this.defaultTestEdition },
-                             Categories = new[] { this.defaultTestCategory },
+                             Categories = new[] { this.defaultTestDomain },
                          };
 
             this.readerService.AddReader(this.reader);
-            employeeService.AddEmployee(this.employee);
+            librarianService.AddLibrarian(this.librarian);
             this.bookService.CreateBook(this.defaultTestBook);
             for (var i = 0; i < 25; i++)
             {
@@ -114,7 +114,7 @@ namespace LibraryManagementDatabaseTests
                                            BookStock = bookStock2,
                                        },
                                    },
-                        Categories = new[] { new Category { Name = $"noroc{(char)('a' + i)}" }, },
+                        Categories = new[] { new Domain { Name = $"noroc{(char)('a' + i)}" }, },
                     });
             }
 
@@ -135,7 +135,7 @@ namespace LibraryManagementDatabaseTests
                                            BookStock = bookStock2,
                                        },
                                    },
-                        Categories = new[] { this.defaultTestCategory },
+                        Categories = new[] { this.defaultTestDomain },
                     });
             }
 
@@ -145,7 +145,7 @@ namespace LibraryManagementDatabaseTests
                     Name = "Testing is important",
                     Authors = new[] { this.defaultTestAuthor },
                     Editions = new[] { edition2 },
-                    Categories = new[] { this.defaultTestCategory },
+                    Categories = new[] { this.defaultTestDomain },
                 });
         }
 
@@ -159,30 +159,30 @@ namespace LibraryManagementDatabaseTests
         }
 
         /// <summary>
-        /// Test Borrow one book.
+        /// Test Rent one book.
         /// </summary>
         [Test]
-        public void TestBorrowOneBook()
+        public void TestRentOneBook()
         {
-            var result = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
+            var result = this.bookService.RentBooks(
+                new List<Rent> { new Rent { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
-                this.employee,
+                this.librarian,
                 DateTime.Now);
 
             Assert.True(result != null);
         }
 
         /// <summary>
-        /// Test Borrow one book with is not in stock.
+        /// Test Rent one book with is not in stock.
         /// </summary>
         [Test]
-        public void TestBorrowOneBookNotInStock()
+        public void TestRentOneBookNotInStock()
         {
-            var result = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Testing is important", EditionName = "Ultimate Edition" } },
+            var result = this.bookService.RentBooks(
+                new List<Rent> { new Rent { BookName = "Testing is important", EditionName = "Ultimate Edition" } },
                 this.reader,
-                this.employee,
+                this.librarian,
                 DateTime.Now);
 
             Assert.False(result != null);
@@ -192,19 +192,19 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow books in delta.
         /// </summary>
         [Test]
-        public void TestBorrowBooksWithinDelta()
+        public void TestRentBooksWithinDelta()
         {
             var delta = int.Parse(ConfigurationManager.AppSettings["DELTA"]);
 
-            var result1 = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
+            var result1 = this.bookService.RentBooks(
+                new List<Rent> { new Rent { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
-                this.employee,
+                this.librarian,
                 DateTime.Now);
-            var result2 = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
+            var result2 = this.bookService.RentBooks(
+                new List<Rent> { new Rent { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
-                this.employee,
+                this.librarian,
                 DateTime.Now.AddDays(delta - 1));
 
             Assert.True(result1 != null);
@@ -215,19 +215,19 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow book in outside delta.
         /// </summary>
         [Test]
-        public void TestBorrowBooksOutsideDelta()
+        public void TestRentBooksOutsideDelta()
         {
             var delta = int.Parse(ConfigurationManager.AppSettings["DELTA"]);
 
-            var result1 = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
+            var result1 = this.bookService.RentBooks(
+                new List<Rent> { new Rent { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
-                this.employee,
+                this.librarian,
                 DateTime.Now);
-            var result2 = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
+            var result2 = this.bookService.RentBooks(
+                new List<Rent> { new Rent { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
-                this.employee,
+                this.librarian,
                 DateTime.Now.AddDays(delta + 1));
 
             Assert.True(result1 != null);
@@ -238,22 +238,22 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow books in less NMCPER.
         /// </summary>
         [Test]
-        public void TestBorrowBooksLessNMCPER()
+        public void TestRentBooksLessNMCPER()
         {
             var nmc = int.Parse(ConfigurationManager.AppSettings["NMC"]);
 
             for (var i = 0; i < nmc - 1; i++)
             {
-                var result = this.bookService.BorrowBooks(
-                    new List<Borrowing>
+                var result = this.bookService.RentBooks(
+                    new List<Rent>
                     {
-                        new Borrowing
+                        new Rent
                         {
                             BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                         },
                     },
                     this.reader,
-                    this.employee,
+                    this.librarian,
                     DateTime.Now.AddDays(i));
                 Assert.True(result != null);
             }
@@ -263,22 +263,22 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow books more NMCPER.
         /// </summary>
         [Test]
-        public void TestBorrowBooksMoreNMCPER()
+        public void TestRentBooksMoreNMCPER()
         {
             var nmc = int.Parse(ConfigurationManager.AppSettings["NMC"]);
 
             for (var i = 0; i < nmc + 1; i++)
             {
-                var result = this.bookService.BorrowBooks(
-                    new List<Borrowing>
+                var result = this.bookService.RentBooks(
+                    new List<Rent>
                     {
-                        new Borrowing
+                        new Rent
                         {
                             BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                         },
                     },
                     this.reader,
-                    this.employee,
+                    this.librarian,
                     DateTime.Now.AddDays(i));
                 if (i != nmc)
                 {
@@ -295,22 +295,22 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow books in less NCZ.
         /// </summary>
         [Test]
-        public void TestBorrowBooksLessNCZ()
+        public void TestRentBooksLessNCZ()
         {
             var ncz = int.Parse(ConfigurationManager.AppSettings["NCZ"]);
 
             for (var i = 0; i < ncz - 1; i++)
             {
-                var result = this.bookService.BorrowBooks(
-                    new List<Borrowing>
+                var result = this.bookService.RentBooks(
+                    new List<Rent>
                     {
-                        new Borrowing
+                        new Rent
                         {
                             BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                         },
                     },
                     this.reader,
-                    this.employee,
+                    this.librarian,
                     DateTime.Now);
                 Assert.True(result != null);
             }
@@ -320,22 +320,22 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow books with more ncz.
         /// </summary>
         [Test]
-        public void TestBorrowBooksMoreNCZ()
+        public void TestRentBooksMoreNCZ()
         {
             var ncz = int.Parse(ConfigurationManager.AppSettings["NCZ"]);
 
             for (var i = 0; i < ncz + 1; i++)
             {
-                var result = this.bookService.BorrowBooks(
-                    new List<Borrowing>
+                var result = this.bookService.RentBooks(
+                    new List<Rent>
                     {
-                        new Borrowing
+                        new Rent
                         {
                             BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                         },
                     },
                     this.reader,
-                    this.employee,
+                    this.librarian,
                     DateTime.Now);
                 if (i != ncz)
                 {
@@ -352,21 +352,21 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow less c books.
         /// </summary>
         [Test]
-        public void TestBorrowLessCBooks()
+        public void TestRentLessCBooks()
         {
             var c = int.Parse(ConfigurationManager.AppSettings["C"]);
-            var borrowList = new List<Borrowing>();
+            var borrowList = new List<Rent>();
 
             for (var i = 0; i < c - 1; i++)
             {
                 borrowList.Add(
-                    new Borrowing
+                    new Rent
                     {
                         BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                     });
             }
 
-            var result = this.bookService.BorrowBooks(borrowList, this.reader, this.employee, DateTime.Now);
+            var result = this.bookService.RentBooks(borrowList, this.reader, this.librarian, DateTime.Now);
             Assert.True(result != null);
         }
 
@@ -374,21 +374,21 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow more c books.
         /// </summary>
         [Test]
-        public void TestBorrowMoreCBooks()
+        public void TestRentMoreCBooks()
         {
             var c = int.Parse(ConfigurationManager.AppSettings["C"]);
-            var borrowList = new List<Borrowing>();
+            var borrowList = new List<Rent>();
 
             for (var i = 0; i < c + 1; i++)
             {
                 borrowList.Add(
-                    new Borrowing
+                    new Rent
                     {
                         BookName = $"Java for junior{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}",
                     });
             }
 
-            var result = this.bookService.BorrowBooks(borrowList, this.reader, this.employee, DateTime.Now);
+            var result = this.bookService.RentBooks(borrowList, this.reader, this.librarian, DateTime.Now);
             Assert.False(result != null);
         }
 
@@ -396,19 +396,19 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow books with less DL.
         /// </summary>
         [Test]
-        public void TestBorrowBooksLessDL()
+        public void TestRentBooksLessDL()
         {
             var d = int.Parse(ConfigurationManager.AppSettings["D"]);
 
             for (var i = 0; i < d - 1; i++)
             {
-                var result = this.bookService.BorrowBooks(
-                    new List<Borrowing>
+                var result = this.bookService.RentBooks(
+                    new List<Rent>
                     {
-                        new Borrowing { BookName = $"SQL Server{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}", },
+                        new Rent { BookName = $"SQL Server{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}", },
                     },
                     this.reader,
-                    this.employee,
+                    this.librarian,
                     DateTime.Now.AddDays(i * 7));
                 Assert.True(result != null);
             }
@@ -418,19 +418,19 @@ namespace LibraryManagementDatabaseTests
         /// Test borrow books with more DL.
         /// </summary>
         [Test]
-        public void TestBorrowBooksMoreDL()
+        public void TestRentBooksMoreDL()
         {
             var d = int.Parse(ConfigurationManager.AppSettings["D"]);
 
             for (var i = 0; i < d + 1; i++)
             {
-                var result = this.bookService.BorrowBooks(
-                    new List<Borrowing>
+                var result = this.bookService.RentBooks(
+                    new List<Rent>
                     {
-                        new Borrowing { BookName = $"SQL Server{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}", },
+                        new Rent { BookName = $"SQL Server{(char)('a' + i)}", EditionName = $"Corint{(char)('a' + i)}", },
                     },
                     this.reader,
-                    this.employee,
+                    this.librarian,
                     DateTime.Now.AddDays(i * 7));
                 if (i != d)
                 {
@@ -451,10 +451,10 @@ namespace LibraryManagementDatabaseTests
         {
             var lim = int.Parse(ConfigurationManager.AppSettings["LIM"]);
 
-            var bw = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
+            var bw = this.bookService.RentBooks(
+                new List<Rent> { new Rent { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
-                this.employee,
+                this.librarian,
                 DateTime.Now);
 
             for (var i = 0; i <= lim; i++)
@@ -472,10 +472,10 @@ namespace LibraryManagementDatabaseTests
         {
             var lim = int.Parse(ConfigurationManager.AppSettings["LIM"]);
 
-            var bw = this.bookService.BorrowBooks(
-                new List<Borrowing> { new Borrowing { BookName = "Java for junior", EditionName = "Corint" } },
+            var bw = this.bookService.RentBooks(
+                new List<Rent> { new Rent { BookName = "Java for junior", EditionName = "Corint" } },
                 this.reader,
-                this.employee,
+                this.librarian,
                 DateTime.Now);
 
             for (var i = 0; i <= lim + 1; i++)

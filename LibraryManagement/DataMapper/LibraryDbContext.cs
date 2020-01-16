@@ -43,14 +43,14 @@ namespace LibraryManagement.DataMapper
         public DbSet<BookWithdrawal> BookWithdrawals { get; set; }
 
         /// <summary>
-        /// Gets or sets borrowed books.
+        /// Gets or sets rented books.
         /// </summary>
-        public DbSet<BorrowedBook> BorrowedBooks { get; set; }
+        public DbSet<RentedBook> RentedBooks { get; set; }
 
         /// <summary>
-        /// Gets or sets categories.
+        /// Gets or sets domains.
         /// </summary>
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Domain> Categories { get; set; }
 
         /// <summary>
         /// Gets or sets editions.
@@ -63,9 +63,9 @@ namespace LibraryManagement.DataMapper
         public DbSet<Reader> Readers { get; set; }
 
         /// <summary>
-        /// Gets or sets employees.
+        /// Gets or sets librarians.
         /// </summary>
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Librarian> Librarians { get; set; }
 
         /// <summary>
         /// Gets or sets bookstocks.

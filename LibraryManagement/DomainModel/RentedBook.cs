@@ -1,4 +1,4 @@
-// <copyright file="BorrowedBook.cs" company="Transilvania University of Brasov">
+// <copyright file="RentedBook.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
 
@@ -7,9 +7,9 @@ namespace LibraryManagement.DomainModel
     using LibraryManagement.DataMapper;
 
     /// <summary>
-    /// The borrowed book entity.
+    /// The rented book entity.
     /// </summary>
-    public class BorrowedBook
+    public class RentedBook
     {
         /// <summary>
         /// Gets or sets id.

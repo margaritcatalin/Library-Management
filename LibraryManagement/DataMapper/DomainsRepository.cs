@@ -9,48 +9,48 @@ namespace LibraryManagement.DataMapper
     using LibraryManagement.DomainModel;
 
     /// <summary>
-    /// The categories repository.
+    /// The domains repository.
     /// </summary>
-    public class CategoriesRepository
+    public class DomainsRepository
     {
         private readonly LibraryDbContext libraryContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CategoriesRepository"/> class.
+        /// Initializes a new instance of the <see cref="DomainsRepository"/> class.
         /// </summary>
         /// <param name="libraryContext">The library database.</param>
-        public CategoriesRepository(LibraryDbContext libraryContext)
+        public DomainsRepository(LibraryDbContext libraryContext)
         {
             this.libraryContext = libraryContext;
         }
 
         /// <summary>
-        /// Add a new category.
+        /// Add a new domain.
         /// </summary>
-        /// <param name="category">The new category.</param>
-        /// <returns>If category was added.</returns>
-        public bool AddCategory(Category category)
+        /// <param name="domain">The new domain.</param>
+        /// <returns>If domain was added.</returns>
+        public bool AddDomain(Domain domain)
         {
-            this.libraryContext.Categories.Add(category);
+            this.libraryContext.Categories.Add(domain);
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Category added successfully : {category.Name} ", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Domain added successfully : {domain.Name} ", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Category failed to add to db : {category.Name}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Domain failed to add to db : {domain.Name}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
         }
 
         /// <summary>
-        /// Get category by name.
+        /// Get domain by name.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <returns>A category.</returns>
-        public Category GetCategory(string name)
+        /// <returns>A domain.</returns>
+        public Domain GetDomain(string name)
         {
             return this.libraryContext.Categories.FirstOrDefault(c => c.Name.Equals(name));
         }

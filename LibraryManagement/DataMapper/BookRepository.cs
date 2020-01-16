@@ -85,8 +85,8 @@ namespace LibraryManagement.DataMapper
         /// <returns>An edition.</returns>
         public Edition GetEdition(string bookName, string editionName)
         {
-            var edition = this.libraryContext.Editions.Include(e => e.BookStock).Include(e => e.BorrowedBooks)
-                .Include(e => e.BorrowedBooks.Select(bb => bb.BookWithdrawal))
+            var edition = this.libraryContext.Editions.Include(e => e.BookStock).Include(e => e.RentedBooks)
+                .Include(e => e.RentedBooks.Select(bb => bb.BookWithdrawal))
                 .FirstOrDefault(e => e.Name.Equals(editionName) && e.Book.Name.Equals(bookName));
 
             return edition;
@@ -97,29 +97,29 @@ namespace LibraryManagement.DataMapper
         /// </summary>
         /// <param name="editions">The editions.</param>
         /// <returns>A list with editions.</returns>
-        public List<Edition> GetEditions(List<Borrowing> editions)
+        public List<Edition> GetEditions(List<Rent> editions)
         {
             return editions.Select(e => this.GetEdition(e.BookName, e.EditionName)).ToList();
         }
 
         /// <summary>
-        /// Borrow books.
+        /// Rent books.
         /// </summary>
         /// <param name="editionsList">The edition list.</param>
         /// <param name="reader">The reader.</param>
-        /// <param name="employee">The employee.</param>
+        /// <param name="librarian">The librarian.</param>
         /// <returns>The bookwithdrawl.</returns>
-        public BookWithdrawal BorrowBooks(List<Borrowing> editionsList, Reader reader, Employee employee)
+        public BookWithdrawal RentBooks(List<Rent> editionsList, Reader reader, Librarian librarian)
         {
             var editions = this.GetEditions(editionsList);
 
             var bookWithdrawal = new BookWithdrawal
                                  {
-                                     BorrowedBooks =
-                                         editions.Select(e => new BorrowedBook { Book = e.Book, Edition = e }).ToList(),
+                                     RentedBooks =
+                                         editions.Select(e => new RentedBook { Book = e.Book, Edition = e }).ToList(),
                                      Date = DateTime.Now,
                                      Reader = reader,
-                                     Employee = employee,
+                                     Librarian = librarian,
                                      Extensions = new List<Extension>(),
                                  };
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="EmployeeUnitTests.cs" company="Transilvania University of Brasov">
+﻿// <copyright file="LibrarianUnitTests.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
 
@@ -11,14 +11,14 @@ namespace LibraryManagementTests
     using Telerik.JustMock.EntityFramework;
 
     /// <summary>
-    /// Employee unit tests.
+    /// Librarian unit tests.
     /// </summary>
     [TestFixture]
-    public class EmployeeUnitTests
+    public class LibrarianUnitTests
     {
         private LibraryDbContext libraryContextMock;
 
-        private EmployeeService employeeService;
+        private LibrarianService librarianService;
 
         /// <summary>
         /// Tests setup.
@@ -28,26 +28,26 @@ namespace LibraryManagementTests
         {
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
             EntityFrameworkMock.PrepareMock(this.libraryContextMock);
-            this.employeeService = new EmployeeService(new EmployeeRepository(this.libraryContextMock));
+            this.librarianService = new LibrarianService(new LibrarianRepository(this.libraryContextMock));
         }
 
         /// <summary>
-        /// Test add a null employee.
+        /// Test add a null librarian.
         /// </summary>
         [Test]
-        public void TestAddNullEmployee()
+        public void TestAddNullLibrarian()
         {
-            var result = this.employeeService.AddEmployee(null);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            var result = this.librarianService.AddLibrarian(null);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with null firstName.
+        /// Test add librarian with null firstName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithNullFirstName()
+        public void TestAddLibrarianWithNullFirstName()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = null,
                                LastName = "Valeriu",
@@ -57,18 +57,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with empty first name.
+        /// Test add librarian with empty first name.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithEmptyFirstName()
+        public void TestAddLibrarianWithEmptyFirstName()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = string.Empty,
                                LastName = "Valeriu",
@@ -78,18 +78,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with first name less than 3.
+        /// Test add librarian with first name less than 3.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithFirstNameLessThan3()
+        public void TestAddLibrarianWithFirstNameLessThan3()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "aa",
                                LastName = "Valeriu",
@@ -99,18 +99,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with long firstName.
+        /// Test add librarian with long firstName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithLongFirstName()
+        public void TestAddLibrarianWithLongFirstName()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName =
                                    "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong",
@@ -121,18 +121,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with digit in firstName.
+        /// Test add librarian with digit in firstName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithFirstNameDigit()
+        public void TestAddLibrarianWithFirstNameDigit()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marcu78",
                                LastName = "Ionescu",
@@ -142,18 +142,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with symbol in firstName.
+        /// Test add librarian with symbol in firstName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithFirstNameSymbol()
+        public void TestAddLibrarianWithFirstNameSymbol()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian@@##$@#",
                                LastName = "Ionescu",
@@ -163,18 +163,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with lower case for firstName.
+        /// Test add librarian with lower case for firstName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithFirstNameLowerCase()
+        public void TestAddLibrarianWithFirstNameLowerCase()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "marcu",
                                LastName = "Ionescu",
@@ -184,18 +184,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with white space in firstName.
+        /// Test add librarian with white space in firstName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithFirstNameWhiteSpace()
+        public void TestAddLibrarianWithFirstNameWhiteSpace()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian Al Alekku",
                                LastName = "Ionescu",
@@ -205,17 +205,17 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryContextMock.Employees.Count() == 1);
+            var result = this.librarianService.AddLibrarian(librarian);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 1);
         }
 
         /// <summary>
-        /// Test add employee with null lastName.
+        /// Test add librarian with null lastName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithNullLastName()
+        public void TestAddLibrarianWithNullLastName()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName = null,
@@ -225,18 +225,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with empty lastName.
+        /// Test add librarian with empty lastName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithEmptyLastName()
+        public void TestAddLibrarianWithEmptyLastName()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName = string.Empty,
@@ -246,18 +246,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with invalid last Name.
+        /// Test add librarian with invalid last Name.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithLastNameLessThan3()
+        public void TestAddLibrarianWithLastNameLessThan3()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName = "Al",
@@ -267,18 +267,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with long lastName.
+        /// Test add librarian with long lastName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithLongLastName()
+        public void TestAddLibrarianWithLongLastName()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName =
@@ -289,18 +289,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with symbol in lastName.
+        /// Test add librarian with symbol in lastName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithLastNameSymbol()
+        public void TestAddLibrarianWithLastNameSymbol()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName = "Alexandru@@#@$%",
@@ -310,18 +310,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with digit in lastName.
+        /// Test add librarian with digit in lastName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithLastNameDigit()
+        public void TestAddLibrarianWithLastNameDigit()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName = "Alexandru12",
@@ -331,18 +331,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with lastName with lower case.
+        /// Test add librarian with lastName with lower case.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithLastNameLowerCase()
+        public void TestAddLibrarianWithLastNameLowerCase()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName = "valeriu",
@@ -352,18 +352,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with white space in lastName.
+        /// Test add librarian with white space in lastName.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithLastNameWhiteSpace()
+        public void TestAddLibrarianWithLastNameWhiteSpace()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName = "Alexandru Al Alehu",
@@ -373,17 +373,17 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryContextMock.Employees.Count() == 1);
+            var result = this.librarianService.AddLibrarian(librarian);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 1);
         }
 
         /// <summary>
-        /// Test add employee with null address.
+        /// Test add librarian with null address.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithNullAddress()
+        public void TestAddLibrarianWithNullAddress()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -393,18 +393,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with empty address.
+        /// Test add librarian with empty address.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithEmptyAddress()
+        public void TestAddLibrarianWithEmptyAddress()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -414,18 +414,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with address less than 3.
+        /// Test add librarian with address less than 3.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithAddressLessThan3()
+        public void TestAddLibrarianWithAddressLessThan3()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -435,18 +435,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with long address.
+        /// Test add librarian with long address.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithLongAddress()
+        public void TestAddLibrarianWithLongAddress()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -457,18 +457,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with symbol in address.
+        /// Test add librarian with symbol in address.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithAddressSymbol()
+        public void TestAddLibrarianWithAddressSymbol()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -478,18 +478,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with email null.
+        /// Test add librarian with email null.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithNullEmail()
+        public void TestAddLibrarianWithNullEmail()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -499,18 +499,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with empty email.
+        /// Test add librarian with empty email.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithEmptyEmail()
+        public void TestAddLibrarianWithEmptyEmail()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -520,18 +520,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with email less than 10.
+        /// Test add librarian with email less than 10.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithEmailLessThan10()
+        public void TestAddLibrarianWithEmailLessThan10()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -541,18 +541,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with long email.
+        /// Test add librarian with long email.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithLongEmail()
+        public void TestAddLibrarianWithLongEmail()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -563,18 +563,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with symbol in email.
+        /// Test add librarian with symbol in email.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithEmailSymbols()
+        public void TestAddLibrarianWithEmailSymbols()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -584,18 +584,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with space in email.
+        /// Test add librarian with space in email.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithBadEmailWhiteSpace()
+        public void TestAddLibrarianWithBadEmailWhiteSpace()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -605,18 +605,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with invalid email.
+        /// Test add librarian with invalid email.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithBadEmailNoSymbol()
+        public void TestAddLibrarianWithBadEmailNoSymbol()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -626,18 +626,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with null phone.
+        /// Test add librarian with null phone.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithNullPhone()
+        public void TestAddLibrarianWithNullPhone()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -647,18 +647,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with empty phone number.
+        /// Test add librarian with empty phone number.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithEmptyPhone()
+        public void TestAddLibrarianWithEmptyPhone()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -668,18 +668,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with invalid phone number.
+        /// Test add librarian with invalid phone number.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithPhoneSmallerLength()
+        public void TestAddLibrarianWithPhoneSmallerLength()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -689,18 +689,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with invalid phone number.
+        /// Test add librarian with invalid phone number.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithPhoneBiggerLength()
+        public void TestAddLibrarianWithPhoneBiggerLength()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -710,18 +710,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with invalid phone number.
+        /// Test add librarian with invalid phone number.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithPhoneWithLetters()
+        public void TestAddLibrarianWithPhoneWithLetters()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -731,18 +731,18 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
+            var result = this.librarianService.AddLibrarian(librarian);
             Assert.False(result);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with null gender.
+        /// Test add librarian with null gender.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithNullGender()
+        public void TestAddLibrarianWithNullGender()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -752,17 +752,17 @@ namespace LibraryManagementTests
                                Gender = null,
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            var result = this.librarianService.AddLibrarian(librarian);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with empty gender.
+        /// Test add librarian with empty gender.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithEmptyGender()
+        public void TestAddLibrarianWithEmptyGender()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -772,17 +772,17 @@ namespace LibraryManagementTests
                                Gender = string.Empty,
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            var result = this.librarianService.AddLibrarian(librarian);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test add employee with gender male.
+        /// Test add librarian with gender male.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithMGender()
+        public void TestAddLibrarianWithMGender()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -792,17 +792,17 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryContextMock.Employees.Count() == 1);
+            var result = this.librarianService.AddLibrarian(librarian);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 1);
         }
 
         /// <summary>
-        /// Test add employee with gender female.
+        /// Test add librarian with gender female.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithFGender()
+        public void TestAddLibrarianWithFGender()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -812,17 +812,17 @@ namespace LibraryManagementTests
                                Gender = "F",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryContextMock.Employees.Count() == 1);
+            var result = this.librarianService.AddLibrarian(librarian);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 1);
         }
 
         /// <summary>
-        /// Test add employee with unknown gender.
+        /// Test add librarian with unknown gender.
         /// </summary>
         [Test]
-        public void TestAddEmployeeWithBadGender()
+        public void TestAddLibrarianWithBadGender()
         {
-            var employee = new Employee
+            var librarian = new Librarian
                            {
                                FirstName = "Minodor",
                                LastName = "Ionescu",
@@ -832,17 +832,17 @@ namespace LibraryManagementTests
                                Gender = "C",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
-            Assert.True(this.libraryContextMock.Employees.Count() == 0);
+            var result = this.librarianService.AddLibrarian(librarian);
+            Assert.True(this.libraryContextMock.Librarians.Count() == 0);
         }
 
         /// <summary>
-        /// Test get an employee.
+        /// Test get an librarian.
         /// </summary>
         [Test]
-        public void TestGetGoodEmployee()
+        public void TestGetGoodLibrarian()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName = "Marcus Al Alehu",
@@ -852,38 +852,38 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
-            employee = this.employeeService.GetEmployee(employee.Email);
-            Assert.True(employee != null);
+            var result = this.librarianService.AddLibrarian(librarian);
+            librarian = this.librarianService.GetLibrarian(librarian.Email);
+            Assert.True(librarian != null);
         }
 
         /// <summary>
-        /// Test get an employee by null email.
+        /// Test get an librarian by null email.
         /// </summary>
         [Test]
-        public void TestGetNullEmployee()
+        public void TestGetNullLibrarian()
         {
-            var employee = this.employeeService.GetEmployee(null);
-            Assert.False(employee != null);
+            var librarian = this.librarianService.GetLibrarian(null);
+            Assert.False(librarian != null);
         }
 
         /// <summary>
-        /// Testget an employee with empty email.
+        /// Testget an librarian with empty email.
         /// </summary>
         [Test]
-        public void TestGetEmptyEmployee()
+        public void TestGetEmptyLibrarian()
         {
-            var employee = this.employeeService.GetEmployee(string.Empty);
-            Assert.False(employee != null);
+            var librarian = this.librarianService.GetLibrarian(string.Empty);
+            Assert.False(librarian != null);
         }
 
         /// <summary>
-        /// Test gen an unknown employee.
+        /// Test gen an unknown librarian.
         /// </summary>
         [Test]
-        public void TestGetUnknownEmployee()
+        public void TestGetUnknownLibrarian()
         {
-            var employee = new Employee()
+            var librarian = new Librarian()
                            {
                                FirstName = "Marian",
                                LastName = "Marcus Al Alehu",
@@ -893,9 +893,9 @@ namespace LibraryManagementTests
                                Gender = "M",
                            };
 
-            var result = this.employeeService.AddEmployee(employee);
-            employee = this.employeeService.GetEmployee("glorios@mailinator.com");
-            Assert.False(employee != null);
+            var result = this.librarianService.AddLibrarian(librarian);
+            librarian = this.librarianService.GetLibrarian("glorios@mailinator.com");
+            Assert.False(librarian != null);
         }
     }
 }
