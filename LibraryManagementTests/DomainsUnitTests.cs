@@ -16,7 +16,7 @@ namespace LibraryManagementTests
     /// Categories unit tests.
     /// </summary>
     [TestFixture]
-    public class CategoriesUnitTests
+    public class DomainsUnitTests
     {
         private DomainsService domainsService;
 
