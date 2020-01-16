@@ -82,6 +82,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app.Designer.cs">
@@ -103,7 +104,7 @@
     <None Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PublicLibrary\LibraryManagement.csproj">
+    <ProjectReference Include="..\LibraryManagement\LibraryManagement.csproj">
       <Project>{1159092F-DB80-4737-999E-59AD17C17488}</Project>
       <Name>LibraryManagement</Name>
     </ProjectReference>
