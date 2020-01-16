@@ -2,11 +2,11 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary.BusinessLayer
+namespace LibraryManagement.BusinessLayer
 {
     using System.Linq;
     using Castle.Core.Internal;
-    using PublicLibrary.Data_Mapper;
+    using LibraryManagement.Data_Mapper;
 
     /// <summary>
     /// The author service.

@@ -2,7 +2,7 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary
+namespace LibraryManagement
 {
     /// <summary>
     /// Program starter.

@@ -2,10 +2,10 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary.Data_Mapper
+namespace LibraryManagement.Data_Mapper
 {
     using System.Linq;
-    using PublicLibrary.Domain_Model;
+    using LibraryManagement.Domain_Model;
 
     /// <summary>
     /// The categories repository.

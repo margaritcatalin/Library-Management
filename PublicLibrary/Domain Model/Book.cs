@@ -2,12 +2,12 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary.Data_Mapper
+namespace LibraryManagement.Data_Mapper
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using PublicLibrary.Domain_Model;
+    using LibraryManagement.Domain_Model;
 
     /// <summary>
     /// The book entity.

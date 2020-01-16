@@ -2,13 +2,13 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibraryDbContextTests
+namespace LibraryManagementDatabaseTests
 {
     using System.Collections.Generic;
     using NUnit.Framework;
-    using PublicLibrary.BusinessLayer;
-    using PublicLibrary.Data_Mapper;
-    using PublicLibrary.Domain_Model;
+    using LibraryManagement.BusinessLayer;
+    using LibraryManagement.Data_Mapper;
+    using LibraryManagement.Domain_Model;
 
     /// <summary>
     /// The database insertion test.

@@ -2,10 +2,10 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary.Domain_Model
+namespace LibraryManagement.Domain_Model
 {
     using System.Collections.Generic;
-    using PublicLibrary.Data_Mapper;
+    using LibraryManagement.Data_Mapper;
 
     /// <summary>
     /// Edition entity.

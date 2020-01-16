@@ -2,9 +2,9 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary.Domain_Model
+namespace LibraryManagement.Domain_Model
 {
-    using PublicLibrary.Data_Mapper;
+    using LibraryManagement.Data_Mapper;
 
     /// <summary>
     /// The borrowed book entity.

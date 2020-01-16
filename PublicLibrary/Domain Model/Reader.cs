@@ -2,7 +2,7 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary.Domain_Model
+namespace LibraryManagement.Domain_Model
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

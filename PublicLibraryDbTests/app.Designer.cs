@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicLibraryDbContextTests {
+namespace LibraryManagementDatabaseTests {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

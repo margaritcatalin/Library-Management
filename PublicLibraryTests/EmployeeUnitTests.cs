@@ -2,12 +2,12 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibraryTests
+namespace LibraryManagementTests
 {
     using System.Linq;
     using NUnit.Framework;
-    using PublicLibrary.BusinessLayer;
-    using PublicLibrary.Data_Mapper;
+    using LibraryManagement.BusinessLayer;
+    using LibraryManagement.Data_Mapper;
     using Telerik.JustMock.EntityFramework;
 
     /// <summary>

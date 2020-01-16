@@ -2,7 +2,7 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary.Data_Mapper
+namespace LibraryManagement.Data_Mapper
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

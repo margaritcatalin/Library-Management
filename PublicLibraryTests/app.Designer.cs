@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicLibraryTests {
+namespace LibraryManagementTests {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

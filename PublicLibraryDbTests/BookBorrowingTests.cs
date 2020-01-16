@@ -2,15 +2,15 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibraryDbContextTests
+namespace LibraryManagementDatabaseTests
 {
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using NUnit.Framework;
-    using PublicLibrary.BusinessLayer;
-    using PublicLibrary.Data_Mapper;
-    using PublicLibrary.Domain_Model;
+    using LibraryManagement.BusinessLayer;
+    using LibraryManagement.Data_Mapper;
+    using LibraryManagement.Domain_Model;
     using Assert = NUnit.Framework.Assert;
 
     /// <summary>

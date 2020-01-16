@@ -2,10 +2,10 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary.Data_Mapper
+namespace LibraryManagement.Data_Mapper
 {
     using System.Data.Entity;
-    using PublicLibrary.Domain_Model;
+    using LibraryManagement.Domain_Model;
 
     /// <summary>
     /// The library database manager.
@@ -14,7 +14,7 @@ namespace PublicLibrary.Data_Mapper
     {
         // Your context has been configured to use a 'LibraryDbContext' connection string from your application's
         // configuration file (App.config or Web.config). By default, this connection string targets the
-        // 'PublicLibrary.Data_Mapper.LibraryDbContext' database on your LocalDb instance.
+        // 'LibraryManagement.Data_Mapper.LibraryDbContext' database on your LocalDb instance.
         // If you wish to target a different database and/or database provider, modify the 'LibraryDbContext'
         // connection string in the application configuration file.
 

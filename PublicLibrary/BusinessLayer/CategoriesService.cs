@@ -2,13 +2,13 @@
 // Margarit Marian Catalin
 // </copyright>
 
-namespace PublicLibrary.BusinessLayer
+namespace LibraryManagement.BusinessLayer
 {
     using System.Collections.Generic;
     using System.Linq;
     using Castle.Core.Internal;
-    using PublicLibrary.Data_Mapper;
-    using PublicLibrary.Domain_Model;
+    using LibraryManagement.Data_Mapper;
+    using LibraryManagement.Domain_Model;
 
     /// <summary>
     /// The categories service.
