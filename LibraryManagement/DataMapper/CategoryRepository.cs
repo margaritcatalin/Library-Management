@@ -2,15 +2,14 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System.Collections.Generic;
-using System.Data.Entity;
-using LibraryManagement.Util;
-
 namespace LibraryManagement.DataMapper
 {
     using System.Linq;
     using System.Reflection;
     using LibraryManagement.DomainModel;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using LibraryManagement.Util;
 
     /// <summary>
     /// The Category repository.

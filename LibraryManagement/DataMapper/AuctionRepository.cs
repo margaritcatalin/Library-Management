@@ -2,16 +2,15 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Reflection;
-using LibraryManagement.DomainModel;
 
 namespace LibraryManagement.DataMapper
 {
     using LibraryManagement.Util;
-    using System.Data.Entity.Core.Objects;
     using System.Linq;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Reflection;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Auction repository.

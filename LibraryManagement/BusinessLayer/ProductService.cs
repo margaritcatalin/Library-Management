@@ -2,9 +2,6 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System.Collections.Generic;
-using LibraryManagement.DomainModel;
-using LibraryManagement.Util;
 
 namespace LibraryManagement.BusinessLayer
 {
@@ -12,6 +9,8 @@ namespace LibraryManagement.BusinessLayer
     using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
+    using System.Collections.Generic;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Product service.

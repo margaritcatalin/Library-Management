@@ -2,12 +2,6 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using LibraryManagement.DomainModel;
-using LibraryManagement.Util;
-
 namespace LibraryManagementTests
 {
     using System.Linq;
@@ -15,6 +9,10 @@ namespace LibraryManagementTests
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
     using Telerik.JustMock.EntityFramework;
+    using System;
+    using System.Configuration;
+    using LibraryManagement.DomainModel;
+    using LibraryManagement.Util;
 
     /// <summary>
     /// The auction unit tests.

@@ -1,8 +1,8 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-
-namespace LibraryManagement.Util
+﻿namespace LibraryManagement.Util
 {
+    using System.Data.Entity.Infrastructure;
+    using System.Data.Entity;
+
     public class DiscardChangesUtil
     {
         public static void UndoingChangesDbEntityLevel(DbContext context, object entity)

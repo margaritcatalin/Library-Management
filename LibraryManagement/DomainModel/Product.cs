@@ -7,8 +7,6 @@ namespace LibraryManagement.DomainModel
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Product entity.

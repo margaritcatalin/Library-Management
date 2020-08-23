@@ -2,11 +2,6 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System.Collections.Generic;
-using System.Configuration;
-using LibraryManagement.DomainModel;
-using LibraryManagement.Util;
-
 namespace LibraryManagementTests
 {
     using System.Linq;
@@ -14,6 +9,7 @@ namespace LibraryManagementTests
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
     using Telerik.JustMock.EntityFramework;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The category unit tests.

@@ -2,21 +2,16 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System;
-using System.Configuration;
-using System.Data.Entity;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using LibraryManagement.Util;
-
 namespace LibraryManagementDatabaseTests
 {
-    using System.Collections.Generic;
     using NUnit.Framework;
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
     using LibraryManagement.DomainModel;
+    using System;
+    using System.Configuration;
+    using System.Linq;
+    using LibraryManagement.Util;
 
     /// <summary>
     /// The the auction with db insersion.

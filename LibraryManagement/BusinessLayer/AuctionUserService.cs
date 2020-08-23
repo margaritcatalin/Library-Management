@@ -2,20 +2,16 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using LibraryManagement.DomainModel;
-using LibraryManagement.Util;
-using LibraryManagement.Util;
-
 namespace LibraryManagement.BusinessLayer
 {
     using System.Linq;
     using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
-    
+    using System.Collections.Generic;
+    using System.Configuration;
+    using LibraryManagement.DomainModel;
+    using LibraryManagement.Util;
 
     /// <summary>
     /// The AuctionUser service.

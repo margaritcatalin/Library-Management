@@ -2,12 +2,10 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System.Collections.Generic;
-using LibraryManagement.DataMapper;
-
 namespace LibraryManagement.DomainModel
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// The Auction entity.

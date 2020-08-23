@@ -2,11 +2,10 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System;
-using LibraryManagement.DataMapper;
-
 namespace LibraryManagement.DomainModel
 {
+    using System;
+
     /// <summary>
     /// Bid entity.
     /// </summary>
