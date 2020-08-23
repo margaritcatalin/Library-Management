@@ -4,7 +4,7 @@
 
 using System.Configuration;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagementTests
 {
@@ -33,7 +33,8 @@ namespace LibraryManagementTests
         {
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
             this.userReviewService = new UserReviewService(new UserReviewRepository(this.libraryContextMock));
-            this.auctionUserService = new AuctionUserService(new AuctionUserRepository(this.libraryContextMock), this.userReviewService);
+            this.auctionUserService = new AuctionUserService(new AuctionUserRepository(this.libraryContextMock),
+                this.userReviewService);
         }
 
         /// <summary>
@@ -673,7 +674,7 @@ namespace LibraryManagementTests
             var correctScore = review1.Score + review2.Score / 2;
             Assert.True(userScore == correctScore);
         }
-        
+
         /// <summary>
         /// Test get user score without reviews.
         /// </summary>

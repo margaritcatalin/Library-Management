@@ -23,7 +23,6 @@ namespace LibraryManagement.DomainModel
         /// <summary>
         /// Gets or sets Product name.
         /// </summary>
-        [Index("Id", IsUnique = true)]
         [StringLength(450)]
         public string Name { get; set; }
 
@@ -31,6 +30,5 @@ namespace LibraryManagement.DomainModel
         /// Gets or sets Product category.
         /// </summary>
         public virtual ICollection<Category> Categories { get; set; }
-
     }
 }

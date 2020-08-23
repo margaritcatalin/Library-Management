@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagementTests
 {
@@ -35,7 +35,6 @@ namespace LibraryManagementTests
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
             this.categoryService = new CategoryService(new CategoryRepository(this.libraryContextMock));
             this.productService = new ProductService(new ProductRepository(this.libraryContextMock));
-
         }
 
         /// <summary>
@@ -57,11 +56,11 @@ namespace LibraryManagementTests
         {
             var category = new Category {Name = "Legume"};
             var resultCategory = this.categoryService.AddCategory(category);
-            var subCategory = new Category {Name = "Radacinoase",ParentCategory = category};
+            var subCategory = new Category {Name = "Radacinoase", ParentCategory = category};
             var resultBubCategory = this.categoryService.AddCategory(subCategory);
             Assert.True(this.libraryContextMock.Categories.Count() == 1);
         }
-        
+
         /// <summary>
         /// Test add a null category.
         /// </summary>
@@ -111,7 +110,11 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddLongerFirstNameCategory()
         {
-            var category = new Category {Name = "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong"};
+            var category = new Category
+            {
+                Name =
+                    "LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong"
+            };
             var resultCategory = this.categoryService.AddCategory(category);
             Assert.True(!this.libraryContextMock.Categories.Any());
         }
@@ -126,7 +129,7 @@ namespace LibraryManagementTests
             var resultCategory = this.categoryService.AddCategory(category);
             Assert.True(!this.libraryContextMock.Categories.Any());
         }
-        
+
         /// <summary>
         /// Test get category.
         /// </summary>
@@ -200,7 +203,7 @@ namespace LibraryManagementTests
             var resultCategory = this.categoryService.AddCategory(category);
             var categories = this.categoryService.GetCategories();
             var currentCategory = categories.ToList()[0];
-            var categoryById = this.categoryService.GetCategoryById(currentCategory.Id+1);
+            var categoryById = this.categoryService.GetCategoryById(currentCategory.Id + 1);
             Assert.Null(categoryById);
         }
 
@@ -275,9 +278,9 @@ namespace LibraryManagementTests
             var category = new Category {Name = "Legume"};
             var resultCategory = this.categoryService.AddCategory(category);
             var category2 = new Category {Name = "Electronice"};
-            var resultCategory2 = this.categoryService.AddCategory(category2); 
+            var resultCategory2 = this.categoryService.AddCategory(category2);
             var result = this.categoryService.AddCategory(category);
-            category.ParentCategory =  category2;
+            category.ParentCategory = category2;
             var updateResult = this.categoryService.UpdateCategory(category);
             var categoryByName = this.categoryService.GetCategoryByName(category.Name);
             Assert.IsNotNull(categoryByName.ParentCategory);
@@ -291,10 +294,10 @@ namespace LibraryManagementTests
         {
             var category = new Category {Name = "Legume"};
             var resultCategory = this.categoryService.AddCategory(category);
-            var category2 = new Category {Name = "Electronice",ParentCategory = category};
-            var resultCategory2 = this.categoryService.AddCategory(category2); 
+            var category2 = new Category {Name = "Electronice", ParentCategory = category};
+            var resultCategory2 = this.categoryService.AddCategory(category2);
             var result = this.categoryService.AddCategory(category);
-            category2.ParentCategory =  null;
+            category2.ParentCategory = null;
             var updateResult = this.categoryService.UpdateCategory(category2);
             var categoryByName = this.categoryService.GetCategoryByName(category2.Name);
             Assert.IsNull(categoryByName);
@@ -322,10 +325,10 @@ namespace LibraryManagementTests
             var category = new Category {Name = "Legume"};
             var resultCategory = this.categoryService.AddCategory(category);
             var categoryByName = this.categoryService.GetCategoryByName(category.Name);
-            var deleteResult = this.categoryService.DeleteCategory(categoryByName.Id+1);
+            var deleteResult = this.categoryService.DeleteCategory(categoryByName.Id + 1);
             Assert.True(this.libraryContextMock.Categories.Count() == 1);
         }
-        
+
         /// <summary>
         /// Test Get all categories for product.
         /// </summary>
@@ -342,7 +345,7 @@ namespace LibraryManagementTests
             var productCategories = this.categoryService.GetAllCategoriesProduct(productById);
             Assert.True(productCategories.Count() == 1);
         }
-        
+
         /// <summary>
         /// Test Get all categories for product with roots.
         /// </summary>
@@ -361,7 +364,7 @@ namespace LibraryManagementTests
             var productCategories = this.categoryService.GetAllCategoriesProduct(productById);
             Assert.True(productCategories.Count() == 2);
         }
-        
+
         /// <summary>
         /// Test Get all categories for product with sub category.
         /// </summary>
@@ -370,7 +373,7 @@ namespace LibraryManagementTests
         {
             var category = new Category {Name = "Legume"};
             var resultCategory = this.categoryService.AddCategory(category);
-            var category2 = new Category {Name = "Legume",ParentCategory = category};
+            var category2 = new Category {Name = "Legume", ParentCategory = category};
             var resultCategory2 = this.categoryService.AddCategory(category2);
             var product = new Product {Name = "Varza", Categories = new[] {category2}};
             var result = this.productService.AddProduct(product);
@@ -380,7 +383,7 @@ namespace LibraryManagementTests
             var productCategories = this.categoryService.GetAllCategoriesProduct(productById);
             Assert.True(productCategories.Count() == 2);
         }
-        
+
         /// <summary>
         /// Test Get all categories for product with sub sub  category.
         /// </summary>
@@ -389,9 +392,9 @@ namespace LibraryManagementTests
         {
             var category = new Category {Name = "Legume"};
             var resultCategory = this.categoryService.AddCategory(category);
-            var category2 = new Category {Name = "Legume",ParentCategory = category};
+            var category2 = new Category {Name = "Legume", ParentCategory = category};
             var resultCategory2 = this.categoryService.AddCategory(category2);
-            var category3 = new Category {Name = "Legume",ParentCategory = category2};
+            var category3 = new Category {Name = "Legume", ParentCategory = category2};
             var resultCategory3 = this.categoryService.AddCategory(category3);
             var product = new Product {Name = "Varza", Categories = new[] {category3}};
             var result = this.productService.AddProduct(product);

@@ -21,7 +21,6 @@ namespace LibraryManagement.DomainModel
         /// <summary>
         /// Gets or sets UserReview Description.
         /// </summary>
-        [Index(IsUnique = true)]
         [StringLength(450)]
         public string Description { get; set; }
 
@@ -39,6 +38,5 @@ namespace LibraryManagement.DomainModel
         /// Gets or sets ReviewByUser.
         /// </summary>
         public AuctionUser ReviewByUser { get; set; }
-        
     }
 }

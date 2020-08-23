@@ -5,7 +5,7 @@
 using System;
 using System.Configuration;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagementTests
 {
@@ -107,7 +107,7 @@ namespace LibraryManagementTests
         public void TestAddLessThanMinPrice()
         {
             var minPrice = double.Parse(ConfigurationManager.AppSettings["MIN_PRICE"]);
-            var price = new Price {Currency = "Euro", Value = minPrice-1};
+            var price = new Price {Currency = "Euro", Value = minPrice - 1};
             var result = this.priceService.AddPrice(price);
             Assert.True(!this.libraryContextMock.Prices.Any());
         }
@@ -121,7 +121,7 @@ namespace LibraryManagementTests
             var price = new Price {Currency = "Euro", Value = 54.5};
             var result = this.priceService.AddPrice(price);
             var prices = this.priceService.GetPrices();
-            var priceId=prices.ToList()[0].Id;
+            var priceId = prices.ToList()[0].Id;
             var priceById = this.priceService.GetPriceById(priceId);
             Assert.NotNull(priceById);
         }
@@ -135,7 +135,7 @@ namespace LibraryManagementTests
             var price = new Price {Currency = "Euro", Value = 54.5};
             var result = this.priceService.AddPrice(price);
             var prices = this.priceService.GetPrices();
-            var priceId=prices.ToList()[0].Id;
+            var priceId = prices.ToList()[0].Id;
             var priceById = this.priceService.GetPriceById(priceId + 1);
             Assert.Null(priceById);
         }
@@ -177,7 +177,7 @@ namespace LibraryManagementTests
             var price = new Price {Currency = "Euro", Value = 54.5};
             var result = this.priceService.AddPrice(price);
             var prices = this.priceService.GetPrices();
-            var priceId=prices.ToList()[0].Id;
+            var priceId = prices.ToList()[0].Id;
             var priceById = this.priceService.GetPriceById(priceId);
             priceById.Currency = "Dolar";
             var updateResult = this.priceService.UpdatePrice(price);
@@ -194,9 +194,9 @@ namespace LibraryManagementTests
             var price = new Price {Currency = "Euro", Value = 54.5};
             var result = this.priceService.AddPrice(price);
             var prices = this.priceService.GetPrices();
-            var priceId=prices.ToList()[0].Id;
+            var priceId = prices.ToList()[0].Id;
             var priceById = this.priceService.GetPriceById(priceId);
-            priceById.Currency =string.Empty;
+            priceById.Currency = string.Empty;
             var updateResult = this.priceService.UpdatePrice(price);
             var priceUpdated = this.priceService.GetPriceById(priceId);
             Assert.IsFalse(priceUpdated.Currency.Equals("Dolar"));
@@ -211,7 +211,7 @@ namespace LibraryManagementTests
             var price = new Price {Currency = "Euro", Value = 54.5};
             var result = this.priceService.AddPrice(price);
             var prices = this.priceService.GetPrices();
-            var priceId=prices.ToList()[0].Id;
+            var priceId = prices.ToList()[0].Id;
             var priceById = this.priceService.GetPriceById(priceId);
             priceById.Value = 99.3;
             var updateResult = this.priceService.UpdatePrice(priceById);
@@ -228,14 +228,14 @@ namespace LibraryManagementTests
             var price = new Price {Currency = "Euro", Value = 54.5};
             var result = this.priceService.AddPrice(price);
             var prices = this.priceService.GetPrices();
-            var priceId=prices.ToList()[0].Id;
+            var priceId = prices.ToList()[0].Id;
             var priceById = this.priceService.GetPriceById(priceId);
             priceById.Value = 0.0;
             var updateResult = this.priceService.UpdatePrice(priceById);
             var priceUpdated = this.priceService.GetPriceById(priceId);
             Assert.IsFalse(double.Equals(priceUpdated.Value, 0.0));
         }
-        
+
         /// <summary>
         /// Test delete Price.
         /// </summary>
@@ -245,7 +245,7 @@ namespace LibraryManagementTests
             var price = new Price {Currency = "Euro", Value = 54.5};
             var result = this.priceService.AddPrice(price);
             var prices = this.priceService.GetPrices();
-            var priceId=prices.ToList()[0].Id;
+            var priceId = prices.ToList()[0].Id;
             var deleteResult = this.priceService.DeletePrice(priceId);
             Assert.True(!this.libraryContextMock.Prices.Any());
         }
@@ -259,10 +259,9 @@ namespace LibraryManagementTests
             var price = new Price {Currency = "Euro", Value = 54.5};
             var result = this.priceService.AddPrice(price);
             var prices = this.priceService.GetPrices();
-            var priceId=prices.ToList()[0].Id;
-            var deleteResult = this.priceService.DeletePrice(priceId+1);
+            var priceId = prices.ToList()[0].Id;
+            var deleteResult = this.priceService.DeletePrice(priceId + 1);
             Assert.True(this.libraryContextMock.Prices.Count() == 1);
         }
-        
     }
 }

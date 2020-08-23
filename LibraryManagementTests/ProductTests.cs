@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagementTests
 {
@@ -35,7 +35,6 @@ namespace LibraryManagementTests
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
             this.productService = new ProductService(new ProductRepository(this.libraryContextMock));
             this.categoryService = new CategoryService(new CategoryRepository(this.libraryContextMock));
-
         }
 
         /// <summary>
@@ -71,7 +70,7 @@ namespace LibraryManagementTests
             var result = this.productService.AddProduct(product);
             Assert.True(!this.libraryContextMock.Products.Any());
         }
-        
+
         /// <summary>
         /// Test add a new product with null categories.
         /// </summary>
@@ -84,7 +83,7 @@ namespace LibraryManagementTests
             var result = this.productService.AddProduct(product);
             Assert.True(!this.libraryContextMock.Products.Any());
         }
-        
+
         /// <summary>
         /// Test add an product with null name.
         /// </summary>
@@ -93,7 +92,7 @@ namespace LibraryManagementTests
         {
             var category = new Category {Name = "Legume"};
             var resultCategory = this.categoryService.AddCategory(category);
-            var product = new Product {Name = null , Categories = new[] {category}};
+            var product = new Product {Name = null, Categories = new[] {category}};
             var result = this.productService.AddProduct(product);
             Assert.True(!this.libraryContextMock.Products.Any());
         }
@@ -183,7 +182,7 @@ namespace LibraryManagementTests
             var result = this.productService.AddProduct(product);
             var products = this.productService.GetProducts();
             var currentProduct = products.ToList()[0];
-            var productById = this.productService.GetProductById(currentProduct.Id+1);
+            var productById = this.productService.GetProductById(currentProduct.Id + 1);
             Assert.Null(productById);
         }
 
@@ -269,7 +268,7 @@ namespace LibraryManagementTests
             var resultCategory2 = this.categoryService.AddCategory(category2);
             var product = new Product {Name = "Varza", Categories = new[] {category}};
             var result = this.productService.AddProduct(product);
-            product.Categories =  new[] {category2};
+            product.Categories = new[] {category2};
             var updateResult = this.productService.UpdateProduct(product);
             var products = this.productService.GetProducts();
             var currentProduct = products.ToList()[0];
@@ -289,7 +288,7 @@ namespace LibraryManagementTests
             var resultCategory2 = this.categoryService.AddCategory(category2);
             var product = new Product {Name = "Varza", Categories = new[] {category}};
             var result = this.productService.AddProduct(product);
-            product.Categories =   new List<Category>();
+            product.Categories = new List<Category>();
             var updateResult = this.productService.UpdateProduct(product);
             var products = this.productService.GetProducts();
             var currentProduct = products.ToList()[0];
@@ -325,7 +324,7 @@ namespace LibraryManagementTests
             var result = this.productService.AddProduct(product);
             var products = this.productService.GetProducts();
             var currentProduct = products.ToList()[0];
-            var deleteResult = this.productService.DeleteProduct(currentProduct.Id+1);
+            var deleteResult = this.productService.DeleteProduct(currentProduct.Id + 1);
             Assert.True(this.libraryContextMock.Products.Count() == 1);
         }
     }

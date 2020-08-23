@@ -36,33 +36,33 @@ namespace LibraryManagement.DataMapper
         /// Gets or sets AuctionUsers.
         /// </summary>
         public DbSet<AuctionUser> AuctionUsers { get; set; }
-        
+
         /// <summary>
         /// Gets or sets Auctions.
         /// </summary>
         public DbSet<Auction> Auctions { get; set; }
-        
+
         /// <summary>
         /// Gets or sets Bids.
         /// </summary>
         public DbSet<Bid> Bids { get; set; }
-        
+
         /// <summary>
         /// Gets or sets Categories.
         /// </summary>
         public DbSet<Category> Categories { get; set; }
-        
+
         /// <summary>
         /// Gets or sets Prices.
         /// </summary>
         public DbSet<Price> Prices { get; set; }
-        
+
         /// <summary>
         /// Gets or sets UserReviews.
         /// </summary>
         public DbSet<UserReview> UserReviews { get; set; }
-        
-        
+
+
         // Add a DbSet for each entity type that you want to include in your model. For more information
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
 

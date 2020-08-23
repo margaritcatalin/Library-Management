@@ -9,6 +9,7 @@ using LibraryManagement.DomainModel;
 
 namespace LibraryManagement.DataMapper
 {
+    using LibraryManagement.Util;
     using System.Linq;
 
     /// <summary>
@@ -35,6 +36,9 @@ namespace LibraryManagement.DataMapper
         /// <returns>An AuctionUser.</returns>
         public AuctionUser GetAuctionUser(string firstName, string lastName)
         {
+            var entity = this.libraryContext.AuctionUsers.FirstOrDefault(
+                a => a.FirstName.Equals(firstName) && a.LastName.Equals(lastName));
+            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
             return this.libraryContext.AuctionUsers.FirstOrDefault(
                 a => a.FirstName.Equals(firstName) && a.LastName.Equals(lastName));
         }
@@ -50,63 +54,69 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"AuctionUser added successfully : {auctionUser.FirstName} ", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"AuctionUser added successfully : {auctionUser.FirstName} ",
+                    MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to add to db : {auctionUser.FirstName}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"AuctionUser failed to add to db : {auctionUser.FirstName}",
+                    MethodBase.GetCurrentMethod());
             }
 
             return successful;
         }
-        
+
         /// <summary>
         /// Get All AuctionUsers.
         /// </summary>
         /// <returns>All AuctionUsers.</returns>
-        public IEnumerable<AuctionUser> GetAuctionUsers()  
-        {  
-            return  this.libraryContext.AuctionUsers.ToList();  
-        }  
-        
+        public IEnumerable<AuctionUser> GetAuctionUsers()
+        {
+            return this.libraryContext.AuctionUsers.ToList();
+        }
+
         /// <summary>
         /// Get AuctionUser by AuctionUser id.
         /// </summary>
         /// <param name="id">The AuctionUser id.</param>
         /// <returns>An AuctionUser.</returns>
-        public AuctionUser GetAuctionUserById(int id)  
-        {  
-            return this.libraryContext.AuctionUsers.Find(id);  
-        }  
-        
+        public AuctionUser GetAuctionUserById(int id)
+        {
+            var entity = this.libraryContext.AuctionUsers.Find(id);
+            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
+            return this.libraryContext.AuctionUsers.Find(id);
+        }
+
         /// <summary>
         /// Update an AuctionUser.
         /// </summary>
         /// <param name="auctionUser">The AuctionUser.</param>
         /// <returns>If auctionUser was updated.</returns>
-        public bool UpdateAuctionUser(AuctionUser auctionUser)  
-        {  
-            this.libraryContext.Entry(auctionUser).State = EntityState.Modified;  
+        public bool UpdateAuctionUser(AuctionUser auctionUser)
+        {
+            this.libraryContext.Entry(auctionUser).State = EntityState.Modified;
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"AuctionUser was updated successfully : {auctionUser.FirstName} ", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"AuctionUser was updated successfully : {auctionUser.FirstName} ",
+                    MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to update to db : {auctionUser.FirstName}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"AuctionUser failed to update to db : {auctionUser.FirstName}",
+                    MethodBase.GetCurrentMethod());
             }
 
             return successful;
-        }  
-   
+        }
+
         /// <summary>
         /// Delete auctionUser.
         /// </summary>
         /// <param name="id">The auctionUser id.</param>
         /// <returns>If auctionUser was deleted.</returns>
-        public bool DeleteAuctionUser(int id)  
-        {  
+        public bool DeleteAuctionUser(int id)
+        {
             var auctionUser = this.libraryContext.AuctionUsers.Find(id);
             if (auctionUser != null)
             {
@@ -114,9 +124,11 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to delete from db. We don't found an user with id: {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"AuctionUser failed to delete from db. We don't found an user with id: {id}",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
@@ -128,6 +140,6 @@ namespace LibraryManagement.DataMapper
             }
 
             return successful;
-        }  
+        }
     }
 }

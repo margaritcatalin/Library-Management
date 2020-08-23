@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagementTests
 {

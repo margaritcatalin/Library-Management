@@ -23,14 +23,12 @@ namespace LibraryManagement.DomainModel
         /// <summary>
         /// Gets or sets AuctionUser firstName.
         /// </summary>
-        [Index(IsUnique = true)]
         [StringLength(450)]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets AuctionUser lastName.
         /// </summary>
-        [Index(IsUnique = true)]
         [StringLength(450)]
         public string LastName { get; set; }
 
@@ -68,6 +66,5 @@ namespace LibraryManagement.DomainModel
         /// Gets or sets AuctionUser given reviews.
         /// </summary>
         public ICollection<UserReview> GivenReviews { get; set; }
-        
     }
 }

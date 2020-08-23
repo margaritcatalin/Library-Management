@@ -31,7 +31,7 @@ namespace LibraryManagement.DomainModel
         /// Gets or sets BidUser.
         /// </summary>
         public AuctionUser BidUser { get; set; }
-        
+
         /// <summary>
         /// Gets or sets bid date.
         /// </summary>

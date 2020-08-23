@@ -9,6 +9,7 @@ using LibraryManagement.DomainModel;
 
 namespace LibraryManagement.DataMapper
 {
+    using LibraryManagement.Util;
     using System.Linq;
 
     /// <summary>
@@ -47,34 +48,36 @@ namespace LibraryManagement.DataMapper
 
             return successful;
         }
-        
+
         /// <summary>
         /// Get All Bids.
         /// </summary>
         /// <returns>All Bids.</returns>
-        public IEnumerable<Bid> GetBids()  
-        {  
-            return  this.libraryContext.Bids.ToList();  
-        }  
-        
+        public IEnumerable<Bid> GetBids()
+        {
+            return this.libraryContext.Bids.ToList();
+        }
+
         /// <summary>
         /// Get Bid by id.
         /// </summary>
         /// <param name="id">The Bid id.</param>
         /// <returns>A Bid.</returns>
-        public Bid GetBidById(int id)  
-        {  
-            return this.libraryContext.Bids.Find(id);  
-        }  
-        
+        public Bid GetBidById(int id)
+        {
+            var entity = this.libraryContext.Bids.Find(id);
+            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
+            return this.libraryContext.Bids.Find(id);
+        }
+
         /// <summary>
         /// Update a Bid.
         /// </summary>
         /// <param name="bid">The Bid.</param>
         /// <returns>If Bid was updated.</returns>
-        public bool UpdateBid(Bid bid)  
-        {  
-            this.libraryContext.Entry(bid).State = EntityState.Modified;  
+        public bool UpdateBid(Bid bid)
+        {
+            this.libraryContext.Entry(bid).State = EntityState.Modified;
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
@@ -86,23 +89,27 @@ namespace LibraryManagement.DataMapper
             }
 
             return successful;
-        }  
-   
+        }
+
         /// <summary>
         /// Delete a Bid.
         /// </summary>
         /// <param name="id">The Bid id.</param>
         /// <returns>If Bid was deleted.</returns>
-        public bool DeleteBid(int id)  
-        {  
+        public bool DeleteBid(int id)
+        {
             var bid = this.libraryContext.Bids.Find(id);
             if (bid != null)
             {
                 this.libraryContext.Bids.Remove(bid);
-            } else {
-                LoggerUtil.LogError($"Bid failed to delete from db. We don't found a bid with id: {id}", MethodBase.GetCurrentMethod());
+            }
+            else
+            {
+                LoggerUtil.LogError($"Bid failed to delete from db. We don't found a bid with id: {id}",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
@@ -114,7 +121,6 @@ namespace LibraryManagement.DataMapper
             }
 
             return successful;
-            
-        }  
+        }
     }
 }

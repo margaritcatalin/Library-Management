@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagement.BusinessLayer
 {

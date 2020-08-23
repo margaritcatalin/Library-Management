@@ -21,7 +21,6 @@ namespace LibraryManagement.DomainModel
         /// <summary>
         /// Gets or sets Price name.
         /// </summary>
-        [Index(IsUnique = true)]
         [StringLength(450)]
         public string Currency { get; set; }
 
@@ -29,6 +28,5 @@ namespace LibraryManagement.DomainModel
         /// Gets or sets Price name.
         /// </summary>
         public double Value { get; set; }
-        
     }
 }

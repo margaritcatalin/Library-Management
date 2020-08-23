@@ -22,7 +22,6 @@ namespace LibraryManagement.DomainModel
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [Index(IsUnique = true)]
         [StringLength(450)]
         public string Name { get; set; }
 

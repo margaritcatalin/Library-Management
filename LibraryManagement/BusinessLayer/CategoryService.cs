@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagement.BusinessLayer
 {
@@ -26,8 +26,8 @@ namespace LibraryManagement.BusinessLayer
         {
             this.categoryRepository = categoryRepository;
         }
-        
-        
+
+
         /// <summary>
         /// Add a new Category.
         /// </summary>
@@ -39,34 +39,35 @@ namespace LibraryManagement.BusinessLayer
             {
                 return this.categoryRepository.AddCategory(category);
             }
+
             return false;
         }
-        
+
         /// <summary>
         /// Get All AuctionUsers.
         /// </summary>
         /// <returns>All AuctionUsers.</returns>
-        public IEnumerable<Category> GetCategories()  
-        {  
-            return this.categoryRepository.GetCategories();  
-        }  
-        
+        public IEnumerable<Category> GetCategories()
+        {
+            return this.categoryRepository.GetCategories();
+        }
+
         /// <summary>
         /// Get Category by Category id.
         /// </summary>
         /// <param name="id">The Category id.</param>
         /// <returns>An Category.</returns>
-        public Category GetCategoryById(int id)  
+        public Category GetCategoryById(int id)
         {
-            return this.categoryRepository.GetCategoryById(id);  
-        }  
-        
+            return this.categoryRepository.GetCategoryById(id);
+        }
+
         /// <summary>
         /// Update an Category.
         /// </summary>
         /// <param name="category">The Category.</param>
         /// <returns>If Category was updated.</returns>
-        public bool UpdateCategory(Category category)  
+        public bool UpdateCategory(Category category)
         {
             if (ValidateCategory(category))
             {
@@ -74,15 +75,15 @@ namespace LibraryManagement.BusinessLayer
             }
 
             return false;
-        }  
-   
+        }
+
         /// <summary>
         /// Delete Category.
         /// </summary>
         /// <param name="id">The Category id.</param>
         /// <returns>If Category was deleted.</returns>
-        public bool DeleteCategory(int id)  
-        {  
+        public bool DeleteCategory(int id)
+        {
             return this.categoryRepository.DeleteCategory(id);
         }
 
@@ -104,12 +105,14 @@ namespace LibraryManagement.BusinessLayer
                     {
                         allProductCategories.Add(currentCategory);
                     }
+
                     currentCategory = currentCategory.ParentCategory;
                 }
             }
+
             return allProductCategories;
         }
-        
+
         /// <summary>
         /// Get Category by category name.
         /// </summary>
@@ -117,14 +120,14 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>A role.</returns>
         public Category GetCategoryByName(string categoryName)
         {
-           if(ValidateCategoryName(categoryName))
-           {
-               return this.categoryRepository.GetCategoryByName(categoryName);
-           }
+            if (ValidateCategoryName(categoryName))
+            {
+                return this.categoryRepository.GetCategoryByName(categoryName);
+            }
 
-           return null;
+            return null;
         }
-        
+
         /// <summary>
         /// Validation for Category user.
         /// </summary>
@@ -134,22 +137,28 @@ namespace LibraryManagement.BusinessLayer
         {
             if (category == null)
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an null Category.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an null Category.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             if (!ValidateCategoryName(category.Name))
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with a wrong Name.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with a wrong Name.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
-            if (category.ParentCategory!= null && category.Id == category.ParentCategory.Id)
+
+            if (category.ParentCategory != null && category.Id == category.ParentCategory.Id)
             {
-                LoggerUtil.LogInfo($"Your Category is invalid. Category is the same with parent category.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Your Category is invalid. Category is the same with parent category.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             return true;
         }
-        
+
         /// <summary>
         /// Validation for categoryName.
         /// </summary>
@@ -159,19 +168,25 @@ namespace LibraryManagement.BusinessLayer
         {
             if (categoryName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with null empty name.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with null empty name.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             if ((categoryName.Length < 3) || (categoryName.Length > 100))
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with invalid lenght name.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with invalid lenght name.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             if (char.IsLower(categoryName.First()))
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with name with lower case.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with name with lower case.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             return true;
         }
     }

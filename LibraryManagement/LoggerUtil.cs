@@ -11,7 +11,8 @@ namespace LibraryManagement
     /// </summary>
     public class LoggerUtil
     {
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog Log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Log a new message.
@@ -22,7 +23,7 @@ namespace LibraryManagement
             string methodName = method.DeclaringType.Name + "." + method.Name;
             if (Log.IsInfoEnabled)
             {
-                Log.Info("[" + methodName + "]:" +message);
+                Log.Info("[" + methodName + "]:" + message);
             }
         }
 

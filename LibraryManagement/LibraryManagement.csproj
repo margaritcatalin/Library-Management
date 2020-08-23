@@ -18,6 +18,21 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -165,8 +180,30 @@
     <Compile Include="DomainModel\Auction.cs" />
     <Compile Include="DomainModel\Price.cs" />
     <Compile Include="DomainModel\UserReview.cs" />
-    <Compile Include="DomainModel\Util\Role.cs" />
+    <Compile Include="Util\DiscardChangesUtil.cs" />
+    <Compile Include="Util\Role.cs" />
     <Compile Include="LoggerUtil.cs" />
+    <Compile Include="Migrations\202008231741113_InitialCreate.cs" />
+    <Compile Include="Migrations\202008231741113_InitialCreate.designer.cs">
+      <DependentUpon>202008231741113_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008231754330_test-col.cs" />
+    <Compile Include="Migrations\202008231754330_test-col.designer.cs">
+      <DependentUpon>202008231754330_test-col.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008231758359_test-col2.cs" />
+    <Compile Include="Migrations\202008231758359_test-col2.designer.cs">
+      <DependentUpon>202008231758359_test-col2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008231854326_test-col3.cs" />
+    <Compile Include="Migrations\202008231854326_test-col3.designer.cs">
+      <DependentUpon>202008231854326_test-col3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008231900511_test-coly.cs" />
+    <Compile Include="Migrations\202008231900511_test-coly.designer.cs">
+      <DependentUpon>202008231900511_test-coly.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -180,6 +217,44 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202008231741113_InitialCreate.resx">
+      <DependentUpon>202008231741113_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008231754330_test-col.resx">
+      <DependentUpon>202008231754330_test-col.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008231758359_test-col2.resx">
+      <DependentUpon>202008231758359_test-col2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008231854326_test-col3.resx">
+      <DependentUpon>202008231854326_test-col3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008231900511_test-coly.resx">
+      <DependentUpon>202008231900511_test-coly.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Database1.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database1_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>Database1.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

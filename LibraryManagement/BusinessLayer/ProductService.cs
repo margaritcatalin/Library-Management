@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagement.BusinessLayer
 {
@@ -26,8 +26,8 @@ namespace LibraryManagement.BusinessLayer
         {
             this.productRepository = productRepository;
         }
-        
-        
+
+
         /// <summary>
         /// Add a new Product.
         /// </summary>
@@ -39,34 +39,35 @@ namespace LibraryManagement.BusinessLayer
             {
                 return this.productRepository.AddProduct(product);
             }
+
             return false;
         }
-        
+
         /// <summary>
         /// Get All AuctionUsers.
         /// </summary>
         /// <returns>All AuctionUsers.</returns>
-        public IEnumerable<Product> GetProducts()  
-        {  
-            return this.productRepository.GetProducts();  
-        }  
-        
+        public IEnumerable<Product> GetProducts()
+        {
+            return this.productRepository.GetProducts();
+        }
+
         /// <summary>
         /// Get Product by Product id.
         /// </summary>
         /// <param name="id">The Product id.</param>
         /// <returns>An Product.</returns>
-        public Product GetProductById(int id)  
+        public Product GetProductById(int id)
         {
-            return this.productRepository.GetProductById(id);  
-        }  
-        
+            return this.productRepository.GetProductById(id);
+        }
+
         /// <summary>
         /// Update an Product.
         /// </summary>
         /// <param name="product">The Product.</param>
         /// <returns>If Product was updated.</returns>
-        public bool UpdateProduct(Product product)  
+        public bool UpdateProduct(Product product)
         {
             if (ValidateProduct(product))
             {
@@ -74,15 +75,15 @@ namespace LibraryManagement.BusinessLayer
             }
 
             return false;
-        }  
-   
+        }
+
         /// <summary>
         /// Delete Product.
         /// </summary>
         /// <param name="id">The Product id.</param>
         /// <returns>If Product was deleted.</returns>
-        public bool DeleteProduct(int id)  
-        {  
+        public bool DeleteProduct(int id)
+        {
             return this.productRepository.DeleteProduct(id);
         }
 
@@ -95,33 +96,40 @@ namespace LibraryManagement.BusinessLayer
         {
             if (product == null)
             {
-                LoggerUtil.LogInfo($"Product is invalid. You tried to add a null Product.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You tried to add a null Product.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             if (product.Categories.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Product is invalid. You need to add a category to product.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You need to add a category to product.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             if (product.Name.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with null empty name.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with null empty name.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((product.Name.Length < 3) || (product.Name.Length > 100))
             {
-                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with invalid lenght name.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with invalid lenght name.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(product.Name.First()))
             {
-                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with name with lower case.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with name with lower case.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             return true;
         }
-        
     }
 }

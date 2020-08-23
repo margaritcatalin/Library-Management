@@ -1,0 +1,855 @@
+﻿// <copyright file="TestsUserWithDB.cs" company="Transilvania University of Brasov">
+// Margarit Marian Catalin
+// </copyright>
+
+using System;
+using System.Configuration;
+using System.Data.Entity;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using LibraryManagement.Util;
+
+namespace LibraryManagementDatabaseTests
+{
+    using System.Collections.Generic;
+    using NUnit.Framework;
+    using LibraryManagement.BusinessLayer;
+    using LibraryManagement.DataMapper;
+    using LibraryManagement.DomainModel;
+
+    /// <summary>
+    /// The the auction with db insersion.
+    /// </summary>
+    [TestFixture]
+    public class TestsAuctionWithDB
+    {
+        private LibraryDbContext libraryContext;
+        private BidService bidService;
+        private ProductService productService;
+        private AuctionUserService auctionUserService;
+        private AuctionService auctionService;
+        private CategoryService categoryService;
+        private PriceService priceService;
+        private UserReviewService userReviewService;
+
+        /// <summary>
+        /// The test setup.
+        /// </summary>
+        [SetUp]
+        public void SetUp()
+        {
+            this.libraryContext = new LibraryDbContext();
+            this.productService = new ProductService(new ProductRepository(this.libraryContext));
+            this.priceService = new PriceService(new PriceRepository(this.libraryContext));
+            this.userReviewService = new UserReviewService(new UserReviewRepository(this.libraryContext));
+            this.auctionUserService =
+                new AuctionUserService(new AuctionUserRepository(this.libraryContext), this.userReviewService);
+            this.categoryService = new CategoryService(new CategoryRepository(this.libraryContext));
+            this.auctionService = new AuctionService(new AuctionRepository(this.libraryContext),
+                this.categoryService, this.auctionUserService);
+            this.bidService = new BidService(new BidRepository(this.libraryContext), this.auctionService);
+        }
+
+        /// <summary>
+        /// Clean database after tests.
+        /// </summary>
+        [TearDown]
+        public void Cleanup()
+        {
+            this.libraryContext.Database.Delete();
+        }
+
+        private void ClearDatabase()
+        {
+            this.libraryContext.Auctions.RemoveRange(this.libraryContext.Auctions);
+            this.libraryContext.AuctionUsers.RemoveRange(this.libraryContext.AuctionUsers);
+            this.libraryContext.Categories.RemoveRange(this.libraryContext.Categories);
+            this.libraryContext.Products.RemoveRange(this.libraryContext.Products);
+            this.libraryContext.Prices.RemoveRange(this.libraryContext.Prices);
+            this.libraryContext.UserReviews.RemoveRange(this.libraryContext.UserReviews);
+            this.libraryContext.Bids.RemoveRange(this.libraryContext.Bids);
+        }
+
+        /// <summary>
+        /// Test check if auction is ended.
+        /// </summary>
+        [Test]
+        public void TestCheckIfAuctionIsEnded()
+        {
+            ClearDatabase();
+            var auctionId = 1;
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var startDate = DateTime.Now;
+            var endDate = DateTime.Now.AddDays(5);
+            var auction = new Auction
+            {
+                Id = auctionId,
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = endDate,
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserSaved =
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
+                    auctionUser.LastName);
+            var endResult = this.auctionService.EndAuctionByUser(auction, auctionUser);
+            var isEnded = this.auctionService.CheckIfAuctionIsEnded(auction);
+            Assert.IsTrue(isEnded);
+        }
+
+        /// <summary>
+        /// Test End auction by user and it is already ended
+        /// </summary>
+        [Test]
+        public void TestEndAuctionByUserAlreadyEnded()
+        {
+            ClearDatabase();
+            var auctionId = 1;
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            auctionUser =
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
+                    auctionUser.LastName);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Id = auctionId,
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionById = this.auctionService.GetAuctionById(auctionId);
+            var isEnded = this.auctionService.EndAuctionByUser(auctionById, auctionUser);
+            auctionById = this.auctionService.GetAuctionById(auctionId);
+            var isEnded2 = this.auctionService.EndAuctionByUser(auctionById, auctionUser);
+            Assert.IsFalse(isEnded2);
+        }
+
+        /// <summary>
+        /// Test End auction by user
+        /// </summary>
+        [Test]
+        public void TestEndAuctionByAnotherUser()
+        {
+            ClearDatabase();
+            var auctionId = 1;
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            auctionUser =
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
+                    auctionUser.LastName);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Id = auctionId,
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionById = this.auctionService.GetAuctionById(auctionId);
+            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Manuel", LastName = "Grigore", Gender = "M"};
+            var resultU2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Seller);
+            auctionUser2 =
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
+                    auctionUser2.LastName);
+            var isEnded = this.auctionService.EndAuctionByUser(auctionById, auctionUser2);
+            auctionById = this.auctionService.GetAuctionById(auctionId);
+            Assert.IsFalse(auctionById.Ended);
+        }
+
+        /// <summary>
+        /// Test End auction by user
+        /// </summary>
+        [Test]
+        public void TestEndAuctionByUser()
+        {
+            ClearDatabase();
+            var auctionId = 1;
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            auctionUser =
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
+                    auctionUser.LastName);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Id = auctionId,
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionById = this.auctionService.GetAuctionById(auctionId);
+            var isEnded = this.auctionService.EndAuctionByUser(auctionById, auctionUser);
+            auctionById = this.auctionService.GetAuctionById(auctionId);
+            Assert.IsTrue(auctionById.Ended);
+        }
+
+        /// <summary>
+        /// Test Get Number of all started auction for user.
+        /// </summary>
+        [Test]
+        public void TestGetAllAuctionsUnderEndOne()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var maxNumberOfMonths = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_MONTHS"]);
+            var startDate = DateTime.Now;
+            for (var i = 1; i <= 4; i++)
+            {
+                var category = new Category {Name = "Legume" + i};
+                var categoryResult = this.categoryService.AddCategory(category);
+                var product = new Product {Name = "Fasole" + i, Categories = new[] {category}};
+                var productResult = this.productService.AddProduct(product);
+                var auction = new Auction
+                {
+                    Auctioneer = auctionUser,
+                    Product = product,
+                    StartPrice = startPrice,
+                    StartDate = startDate,
+                    EndDate = startDate.AddDays(6),
+                    Ended = false,
+                };
+                this.auctionService.AddAuction(auction);
+            }
+
+            var auctions = this.auctionService.GetAuctions();
+            var endResult = this.auctionService.EndAuctionByUser(auctions.ToList()[0], auctionUser);
+            auctions = this.auctionService.GetAuctions();
+            Assert.True(auctions.Count() == 4);
+        }
+
+        /// <summary>
+        /// Test Get Auction last price
+        /// </summary>
+        [Test]
+        public void TestGetAuctionLastPriceWithBids()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            var auctionUser2 = new AuctionUser {FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
+            var resultAuctionUser2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
+            var reviewUser = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ioana", "Pascu");
+
+            var bidPrice = new Price {Currency = "Euro", Value = 108.5};
+            var bidPriceResult = this.priceService.AddPrice(bidPrice);
+            var bid = new Bid {Auction = auction, BidUser = reviewUser, BidPrice = bidPrice, BidDate = DateTime.Now};
+            var resultBid = this.bidService.AddBid(bid);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            var lastPrice = this.auctionService.GetAuctionLastPrice(auctionUserById);
+            Assert.IsTrue(lastPrice.Id == bidPrice.Id);
+        }
+
+        /// <summary>
+        /// Test get last auctions with one of it ended.
+        /// </summary>
+        [Test]
+        public void TestGetLastAuctionForUserWithEndedOne()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var startDate = DateTime.Now;
+            var endDate = DateTime.Now.AddDays(3);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = endDate,
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+
+            var startPrice2 = new Price {Currency = "Euro", Value = 848.5};
+            var priceResult2 = this.priceService.AddPrice(startPrice2);
+            var category2 = new Category {Name = "Mere"};
+            var categoryResult2 = this.categoryService.AddCategory(category2);
+            var product2 = new Product {Name = "Caise", Categories = new[] {category2}};
+            var productResult2 = this.productService.AddProduct(product2);
+            var startDate2 = DateTime.Now;
+            var endDate2 = DateTime.Now.AddDays(4);
+            var auction2 = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product2,
+                StartPrice = startPrice2,
+                StartDate = startDate2,
+                EndDate = endDate2,
+                Ended = false,
+            };
+            var auctionResult2 = this.auctionService.AddAuction(auction2);
+            var isEnded = this.auctionService.EndAuctionByUser(auction2, auctionUser);
+            var lastAuction = this.auctionService.GetLastAuctionForUser(auctionUser);
+            Assert.IsTrue(lastAuction.Id == auction.Id);
+        }
+
+
+        /// <summary>
+        /// Test get last auctions with more than one.
+        /// </summary>
+        [Test]
+        public void TestGetLastAuctionForUserWithMoreThanOneAuctions()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var startDate = DateTime.Now;
+            var endDate = DateTime.Now.AddDays(3);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = endDate,
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+
+            var startPrice2 = new Price {Currency = "Euro", Value = 848.5};
+            var priceResult2 = this.priceService.AddPrice(startPrice2);
+            var category2 = new Category {Name = "Mere"};
+            var categoryResult2 = this.categoryService.AddCategory(category2);
+            var product2 = new Product {Name = "Caise", Categories = new[] {category2}};
+            var productResult2 = this.productService.AddProduct(product2);
+            var startDate2 = DateTime.Now;
+            var endDate2 = DateTime.Now.AddDays(4);
+            var auction2 = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product2,
+                StartPrice = startPrice2,
+                StartDate = startDate2,
+                EndDate = endDate2,
+                Ended = false,
+            };
+            var auctionResult2 = this.auctionService.AddAuction(auction2);
+            var lastAuction = this.auctionService.GetLastAuctionForUser(auctionUser);
+            Assert.IsTrue(lastAuction.Id == auction2.Id);
+        }
+
+        /// <summary>
+        /// Test Get All started auction for user in a specific category.
+        /// </summary>
+        [Test]
+        public void TestGetStartedAuctionByUserAndCategoryUnderEndOne()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var maxNumberOfMonths = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_MONTHS"]);
+            var startDate = DateTime.Now;
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            for (var i = 1; i <= 3; i++)
+            {
+                var product = new Product {Name = "Fasole" + i, Categories = new[] {category}};
+                var productResult = this.productService.AddProduct(product);
+                var auction = new Auction
+                {
+                    Auctioneer = auctionUser,
+                    Product = product,
+                    StartPrice = startPrice,
+                    StartDate = startDate,
+                    EndDate = startDate.AddDays(6),
+                    Ended = false,
+                };
+                this.auctionService.AddAuction(auction);
+            }
+
+            var startedAuctions = this.auctionService.GetStartedAuctionsByUserAndCategory(auctionUser, category);
+            var endResult = this.auctionService.EndAuctionByUser(startedAuctions.ToList()[0], auctionUser);
+            startedAuctions = this.auctionService.GetStartedAuctionsByUserAndCategory(auctionUser, category);
+            Assert.True(startedAuctions.Count() == 2);
+        }
+
+        /// <summary>
+        /// Test Get Number of all started auction for user.
+        /// </summary>
+        [Test]
+        public void TestGetStartedAuctionByUserUnderEndOne()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var maxNumberOfMonths = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_MONTHS"]);
+            var startDate = DateTime.Now;
+            for (var i = 1; i <= 4; i++)
+            {
+                var category = new Category {Name = "Legume" + i};
+                var categoryResult = this.categoryService.AddCategory(category);
+                var product = new Product {Name = "Fasole" + i, Categories = new[] {category}};
+                var productResult = this.productService.AddProduct(product);
+                var auction = new Auction
+                {
+                    Auctioneer = auctionUser,
+                    Product = product,
+                    StartPrice = startPrice,
+                    StartDate = startDate,
+                    EndDate = startDate.AddDays(6),
+                    Ended = false,
+                };
+                this.auctionService.AddAuction(auction);
+            }
+
+            var startedAuctions = this.auctionService.GetStartedAuctionsByUser(auctionUser);
+            var endResult = this.auctionService.EndAuctionByUser(startedAuctions.ToList()[0], auctionUser);
+            startedAuctions = this.auctionService.GetStartedAuctionsByUser(auctionUser);
+            Assert.True(startedAuctions.Count() == 3);
+        }
+
+        /// <summary>
+        /// Test Update auction startPrice until bid.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionStartPriceUnderBid()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            var auctionUser2 = new AuctionUser {FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
+            var resultAuctionUser2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
+            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
+                auctionUser2.LastName);
+            var bidPrice = new Price {Currency = "Euro", Value = 108.5};
+            var bidPriceResult = this.priceService.AddPrice(bidPrice);
+            var bid = new Bid {Auction = auction, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now};
+            var resultBid = this.bidService.AddBid(bid);
+            var startPrice2 = new Price {Currency = "Dolar", Value = 444.5};
+            var priceResult2 = this.priceService.AddPrice(startPrice2);
+            auctionUserById.StartPrice = startPrice2;
+            this.auctionService.UpdateAuction(auctionUserById);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsFalse(auctionUserById.StartPrice.Id == startPrice2.Id);
+        }
+
+        /// <summary>
+        /// Test Update auction start date.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionStartDate()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var startDate = DateTime.Now;
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            auctionUserById.StartDate = DateTime.Now.AddDays(2);
+            this.auctionService.UpdateAuction(auctionUserById);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsFalse(DateTime.Compare(auctionUserById.StartDate, startDate) == 0);
+        }
+
+        /// <summary>
+        /// Test Update auction bad start date.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionBadStartDate()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var startDate = DateTime.Now;
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            auctionUserById.StartDate = DateTime.Now.AddDays(7);
+            this.auctionService.UpdateAuction(auctionUserById);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsTrue(DateTime.Compare(auctionUserById.StartDate, startDate) == 0);
+        }
+
+        /// <summary>
+        /// Test Update auction end date.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionEbdDate()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var startDate = DateTime.Now;
+            var endDate = DateTime.Now.AddDays(5);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = endDate,
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            auctionUserById.EndDate = DateTime.Now.AddDays(2);
+            this.auctionService.UpdateAuction(auctionUserById);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsFalse(DateTime.Compare(auctionUserById.EndDate, endDate) == 0);
+        }
+
+        /// <summary>
+        /// Test Update auction startPrice.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionStartPrice()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            var startPrice2 = new Price {Id = 5, Currency = "Euro", Value = 444.5};
+            var priceResult2 = this.priceService.AddPrice(startPrice2);
+            auctionUserById.StartPrice = startPrice2;
+            this.auctionService.UpdateAuction(auctionUserById);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsTrue(auctionUserById.StartPrice.Id == startPrice2.Id);
+        }
+
+        /// <summary>
+        /// Test Update auction product.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionProduct()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            var product2 = new Product {Id = 3, Name = "Macaroane", Categories = new[] {category}};
+            var productResult2 = this.productService.AddProduct(product2);
+            auctionUserById.Product = product2;
+            this.auctionService.UpdateAuction(auctionUserById);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsTrue(auctionUserById.Product.Id == product2.Id);
+        }
+
+        /// <summary>
+        /// Test Update auction bad product.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionBadProduct()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            var product2 = new Product {Id = 3, Name = string.Empty, Categories = new[] {category}};
+            var productResult2 = this.productService.AddProduct(product2);
+            auctionUserById.Product = product2;
+            this.auctionService.UpdateAuction(auctionUserById);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsFalse(auctionUserById.Auctioneer.Id == product2.Id);
+        }
+
+        /// <summary>
+        /// Test Update auction with bad user.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionBadUser()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            var auctionUser2 = new AuctionUser {FirstName = "Marcu", LastName = "Andrei", Gender = "M"};
+            var resultUser2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
+            auctionUserById.Auctioneer = auctionUser2;
+            this.auctionService.UpdateAuction(auctionUserById);
+            var dbAuction = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsFalse(dbAuction.Auctioneer.Id == auctionUser2.Id);
+        }
+
+
+        /// <summary>
+        /// Test delete auction.
+        /// </summary>
+        [Test]
+        public void TestDeleteAuction()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var startDate = DateTime.Now;
+            var endDate = DateTime.Now.AddDays(5);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = endDate,
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var deleteResult = this.auctionService.DeleteAuction(auction.Id);
+            Assert.True(!this.libraryContext.Auctions.Any());
+        }
+
+        /// <summary>
+        /// Test Update auction user.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionUser()
+        {
+            ClearDatabase();
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Marcu", LastName = "Andrei", Gender = "M"};
+            var resultUser2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Seller);
+            auctionUserById.Auctioneer = auctionUser2;
+            this.auctionService.UpdateAuction(auctionUserById);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsTrue(auctionUserById.Auctioneer.Id == auctionUser2.Id);
+        }
+
+        /// <summary>
+        /// Test Update auction bad start date.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionBadEndDate()
+        {
+            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category {Name = "Legume"};
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product {Name = "Fasole", Categories = new[] {category}};
+            var productResult = this.productService.AddProduct(product);
+            var startDate = DateTime.Now;
+            var maxM = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_MONTHS"]);
+            var endDate = DateTime.Now.AddMonths(2);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = endDate,
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            auctionUserById.EndDate = endDate.AddMonths(maxM + 1);
+            this.auctionService.UpdateAuction(auctionUserById);
+            auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            Assert.IsTrue(DateTime.Compare(auctionUserById.EndDate, endDate) == 0);
+        }
+    }
+}

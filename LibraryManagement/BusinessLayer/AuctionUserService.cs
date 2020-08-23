@@ -6,7 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagement.BusinessLayer
 {
@@ -14,6 +15,7 @@ namespace LibraryManagement.BusinessLayer
     using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
+    
 
     /// <summary>
     /// The AuctionUser service.
@@ -26,12 +28,10 @@ namespace LibraryManagement.BusinessLayer
         /// <summary>Initializes a new instance of the <see cref="AuctionUserService"/> class.</summary>
         /// <param name="auctionUserRepository">The AuctionUser repository.</param>
         /// <param name="userReviewService">The userReview Service .</param>
-
         public AuctionUserService(AuctionUserRepository auctionUserRepository, UserReviewService userReviewService)
         {
             this.auctionUserRepository = auctionUserRepository;
             this.userReviewService = userReviewService;
-
         }
 
         /// <summary>
@@ -44,14 +44,17 @@ namespace LibraryManagement.BusinessLayer
         {
             if (role == null)
             {
-                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with null empty role.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with null empty role.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             auctionUser.Role = role.Value;
             if (ValidateAuctionUser(auctionUser))
             {
                 return this.auctionUserRepository.AddAuctionUser(auctionUser);
             }
+
             return false;
         }
 
@@ -59,21 +62,21 @@ namespace LibraryManagement.BusinessLayer
         /// Get All AuctionUsers.
         /// </summary>
         /// <returns>All AuctionUsers.</returns>
-        public IEnumerable<AuctionUser> GetAuctionUsers()  
-        {  
-            return this.auctionUserRepository.GetAuctionUsers();  
-        }  
-        
+        public IEnumerable<AuctionUser> GetAuctionUsers()
+        {
+            return this.auctionUserRepository.GetAuctionUsers();
+        }
+
         /// <summary>
         /// Get AuctionUser by AuctionUser id.
         /// </summary>
         /// <param name="id">The AuctionUser id.</param>
         /// <returns>An AuctionUser.</returns>
-        public AuctionUser GetAuctionUserById(int id)  
+        public AuctionUser GetAuctionUserById(int id)
         {
-            return this.auctionUserRepository.GetAuctionUserById(id);  
-        }  
-        
+            return this.auctionUserRepository.GetAuctionUserById(id);
+        }
+
         /// <summary>
         /// Get AuctionUser by firstname and lastname.
         /// </summary>
@@ -93,15 +96,16 @@ namespace LibraryManagement.BusinessLayer
                 LoggerUtil.LogInfo($"Param lastName is required.", MethodBase.GetCurrentMethod());
                 return null;
             }
-            return  this.auctionUserRepository.GetAuctionUser(firstName, lastName);
+
+            return this.auctionUserRepository.GetAuctionUser(firstName, lastName);
         }
-        
+
         /// <summary>
         /// Update an AuctionUser.
         /// </summary>
         /// <param name="auctionUser">The AuctionUser.</param>
         /// <returns>If auctionUser was updated.</returns>
-        public bool UpdateAuctionUser(AuctionUser auctionUser)  
+        public bool UpdateAuctionUser(AuctionUser auctionUser)
         {
             if (ValidateAuctionUser(auctionUser))
             {
@@ -109,15 +113,15 @@ namespace LibraryManagement.BusinessLayer
             }
 
             return false;
-        }  
-   
+        }
+
         /// <summary>
         /// Delete auctionUser.
         /// </summary>
         /// <param name="id">The auctionUser id.</param>
         /// <returns>If auctionUser was deleted.</returns>
-        public bool DeleteAuctionUser(int id)  
-        {  
+        public bool DeleteAuctionUser(int id)
+        {
             return this.auctionUserRepository.DeleteAuctionUser(id);
         }
 
@@ -126,8 +130,8 @@ namespace LibraryManagement.BusinessLayer
         /// </summary>
         /// <param name="id">The auctionUser id.</param>
         /// <returns>Value of user score.</returns>
-        public int GetAuctionUserScore(int id)  
-        {  
+        public int GetAuctionUserScore(int id)
+        {
             AuctionUser user = this.GetAuctionUserById(id);
             var userReviews = this.userReviewService.GetUserReviewsForUser(user);
             var defaultScore = int.Parse(ConfigurationManager.AppSettings["DEFAULT_SCORE"]);
@@ -152,7 +156,7 @@ namespace LibraryManagement.BusinessLayer
             {
                 for (int index = 0; index <= averageOf; index++)
                 {
-                    sum+= enumerable.ToArray()[index].Score;
+                    sum += enumerable.ToArray()[index].Score;
                 }
 
                 return sum / averageOf;
@@ -170,67 +174,84 @@ namespace LibraryManagement.BusinessLayer
         {
             if (auctionUser == null)
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an null auctionUser.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an null auctionUser.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (auctionUser.FirstName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an author with null empty firstName.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an author with null empty firstName.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((auctionUser.FirstName.Length < 3) || (auctionUser.FirstName.Length > 100))
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with invalid lenght firstName.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo(
+                    $"AuctionUser is invalid. You tried to add an auctionUser with invalid lenght firstName.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!auctionUser.FirstName.All(a => char.IsLetter(a) || char.IsWhiteSpace(a) || (a == '-')))
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with invalid character in FirstName.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo(
+                    $"AuctionUser is invalid. You tried to add an auctionUser with invalid character in FirstName.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(auctionUser.FirstName.First()))
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with firstName with lower case.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo(
+                    $"AuctionUser is invalid. You tried to add an auctionUser with firstName with lower case.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (auctionUser.LastName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with last name null or empty.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo(
+                    $"AuctionUser is invalid. You tried to add an auctionUser with last name null or empty.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((auctionUser.LastName.Length < 3) || (auctionUser.LastName.Length > 100))
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with invalid length for lastName.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo(
+                    $"AuctionUser is invalid. You tried to add an auctionUser with invalid length for lastName.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!auctionUser.LastName.All(a => char.IsLetter(a) || char.IsWhiteSpace(a) || (a == '-')))
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with invalid characters.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with invalid characters.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(auctionUser.LastName.First()))
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with lower case LastName.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with lower case LastName.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (auctionUser.Gender.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an auctionUser with null or empty gender.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo(
+                    $"AuctionUser is invalid. You tried to add an auctionUser with null or empty gender.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!(auctionUser.Gender.Equals("M") || auctionUser.Gender.Equals("F")))
             {
-                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an author with invalid gender.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an author with invalid gender.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -241,35 +262,44 @@ namespace LibraryManagement.BusinessLayer
 
             return true;
         }
+
         private bool ValidateUserRoleName(string roleName)
         {
             if (roleName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with null empty role.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with null empty role.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
-            
+
             if ((roleName.Length < 3) || (roleName.Length > 10))
             {
-                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with invalid lenght role.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with invalid lenght role.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!roleName.All(a => char.IsLetter(a) || char.IsWhiteSpace(a) || (a == '-')))
             {
-                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with invalid character in role.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with invalid character in role.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             if (char.IsLower(roleName.First()))
             {
-                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with role with lower case.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with role with lower case.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             if (!roleName.Equals(Role.Buyer.Value) && !roleName.Equals(Role.Seller.Value))
             {
-                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with invalid role.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with invalid role.",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             return true;
         }
     }

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagement.BusinessLayer
 {
@@ -28,7 +28,8 @@ namespace LibraryManagement.BusinessLayer
         /// <param name="auctionRepository">The Auction repository.</param>
         /// <param name="categoryService">The Auction category Service.</param>
         /// <param name="auctionUserService">The Auction user Service.</param>
-        public AuctionService(AuctionRepository auctionRepository, CategoryService categoryService, AuctionUserService auctionUserService)
+        public AuctionService(AuctionRepository auctionRepository, CategoryService categoryService,
+            AuctionUserService auctionUserService)
         {
             this.auctionRepository = auctionRepository;
             this.categoryService = categoryService;
@@ -47,14 +48,17 @@ namespace LibraryManagement.BusinessLayer
             {
                 if (!CheckIfUserCanOpenANewAuction(auction.Auctioneer))
                 {
-                    LoggerUtil.LogInfo($"Your score is too small.You need to wait some days.", MethodBase.GetCurrentMethod());
+                    LoggerUtil.LogInfo($"Your score is too small.You need to wait some days.",
+                        MethodBase.GetCurrentMethod());
                     return false;
                 }
+
                 if (CheckIfUserHasMaxNumberOfStartedAuction(auction.Auctioneer))
                 {
                     LoggerUtil.LogInfo($"You already have a lot of started auctions.", MethodBase.GetCurrentMethod());
                     return false;
                 }
+
                 var productsCategories =
                     categoryService.GetAllCategoriesProduct(auction.Product);
                 if (CheckIfUserHasMaxNumberOfStartedAuctionInCategory(auction.Auctioneer, productsCategories))
@@ -63,6 +67,7 @@ namespace LibraryManagement.BusinessLayer
                         MethodBase.GetCurrentMethod());
                     return false;
                 }
+
                 return auctionRepository.AddAuction(auction);
             }
 
@@ -138,6 +143,7 @@ namespace LibraryManagement.BusinessLayer
                         return false;
                     }
                 }
+
                 return auctionRepository.UpdateAuction(auction);
             }
 
@@ -192,9 +198,10 @@ namespace LibraryManagement.BusinessLayer
                 if (lastAuction != null)
                 {
                     var blockUntil = lastAuction.EndDate.AddDays(blockDays);
-                    return DateTime.Compare(lastAuction.EndDate, blockUntil)>0;
+                    return DateTime.Compare(lastAuction.EndDate, blockUntil) > 0;
                 }
             }
+
             return true;
         }
 
@@ -208,16 +215,17 @@ namespace LibraryManagement.BusinessLayer
             var allAuctions = this.GetAuctions();
             var filteredAuctions =
                 from auction in allAuctions
-                where auction.Auctioneer.Id== auctionUser.Id
+                where auction.Auctioneer.Id == auctionUser.Id
                 select auction;
             var orderedAuction = filteredAuctions.OrderBy(auction => auction.EndDate).ToList();
             if (orderedAuction.Any())
             {
-                return orderedAuction.ToList()[orderedAuction.Count()-1];
+                return orderedAuction.ToList()[orderedAuction.Count() - 1];
             }
+
             return null;
         }
-        
+
         /// <summary>
         /// Get last auction price.
         /// </summary>
@@ -230,10 +238,11 @@ namespace LibraryManagement.BusinessLayer
             {
                 return auction.StartPrice;
             }
+
             var orderedBids = auctionBids.OrderBy(bid => bid.BidDate).ToList();
             return orderedBids[orderedBids.Count - 1].BidPrice;
         }
-        
+
         /// <summary>
         /// Check if user has max number of started auction in category.
         /// </summary>
@@ -252,6 +261,7 @@ namespace LibraryManagement.BusinessLayer
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -274,7 +284,8 @@ namespace LibraryManagement.BusinessLayer
                 LoggerUtil.LogInfo($"This auction is already ended.", MethodBase.GetCurrentMethod());
                 return false;
             }
-            auction.EndDate=DateTime.Now;
+
+            auction.EndDate = DateTime.Now;
             auction.Ended = true;
             UpdateAuction(auction);
             return true;

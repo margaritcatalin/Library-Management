@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using LibraryManagement.DomainModel;
-using LibraryManagement.DomainModel.Util;
+using LibraryManagement.Util;
 
 namespace LibraryManagement.BusinessLayer
 {
@@ -27,8 +27,8 @@ namespace LibraryManagement.BusinessLayer
         {
             this.priceRepository = priceRepository;
         }
-        
-        
+
+
         /// <summary>
         /// Add a new Price.
         /// </summary>
@@ -40,34 +40,35 @@ namespace LibraryManagement.BusinessLayer
             {
                 return this.priceRepository.AddPrice(price);
             }
+
             return false;
         }
-        
+
         /// <summary>
         /// Get All AuctionUsers.
         /// </summary>
         /// <returns>All AuctionUsers.</returns>
-        public IEnumerable<Price> GetPrices()  
-        {  
-            return this.priceRepository.GetPrices();  
-        }  
-        
+        public IEnumerable<Price> GetPrices()
+        {
+            return this.priceRepository.GetPrices();
+        }
+
         /// <summary>
         /// Get Price by Price id.
         /// </summary>
         /// <param name="id">The Price id.</param>
         /// <returns>An Price.</returns>
-        public Price GetPriceById(int id)  
+        public Price GetPriceById(int id)
         {
-            return this.priceRepository.GetPriceById(id);  
-        }  
-        
+            return this.priceRepository.GetPriceById(id);
+        }
+
         /// <summary>
         /// Update an Price.
         /// </summary>
         /// <param name="price">The Price.</param>
         /// <returns>If Price was updated.</returns>
-        public bool UpdatePrice(Price price)  
+        public bool UpdatePrice(Price price)
         {
             if (ValidatePrice(price))
             {
@@ -75,15 +76,15 @@ namespace LibraryManagement.BusinessLayer
             }
 
             return false;
-        }  
-   
+        }
+
         /// <summary>
         /// Delete Price.
         /// </summary>
         /// <param name="id">The Price id.</param>
         /// <returns>If Price was deleted.</returns>
-        public bool DeletePrice(int id)  
-        {  
+        public bool DeletePrice(int id)
+        {
             return this.priceRepository.DeletePrice(id);
         }
 
@@ -99,16 +100,20 @@ namespace LibraryManagement.BusinessLayer
                 LoggerUtil.LogInfo($"Price is invalid. You tried to add an null Price.", MethodBase.GetCurrentMethod());
                 return false;
             }
+
             if (price.Currency.IsNullOrEmpty())
             {
                 LoggerUtil.LogInfo($"Price is invalid. You need to add a currency.", MethodBase.GetCurrentMethod());
                 return false;
             }
-            if (price.Value <=0)
+
+            if (price.Value <= 0)
             {
-                LoggerUtil.LogInfo($"Price is invalid. Price value is need to be more than 0.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Price is invalid. Price value is need to be more than 0.",
+                    MethodBase.GetCurrentMethod());
                 return false;
-            } 
+            }
+
             var minPrice = double.Parse(ConfigurationManager.AppSettings["MIN_PRICE"]);
 
             if (price.Value < minPrice)
@@ -117,6 +122,7 @@ namespace LibraryManagement.BusinessLayer
                     MethodBase.GetCurrentMethod());
                 return false;
             }
+
             return true;
         }
     }

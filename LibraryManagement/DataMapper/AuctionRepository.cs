@@ -9,6 +9,8 @@ using LibraryManagement.DomainModel;
 
 namespace LibraryManagement.DataMapper
 {
+    using LibraryManagement.Util;
+    using System.Data.Entity.Core.Objects;
     using System.Linq;
 
     /// <summary>
@@ -47,34 +49,36 @@ namespace LibraryManagement.DataMapper
 
             return successful;
         }
-        
+
         /// <summary>
         /// Get All Auctions.
         /// </summary>
         /// <returns>All Auctions.</returns>
-        public IEnumerable<Auction> GetAuctions()  
-        {  
-            return  this.libraryContext.Auctions.ToList();  
-        }  
-        
+        public IEnumerable<Auction> GetAuctions()
+        {
+            return this.libraryContext.Auctions.ToList();
+        }
+
         /// <summary>
         /// Get Auction by id.
         /// </summary>
         /// <param name="id">The Auction id.</param>
         /// <returns>A Auction.</returns>
-        public Auction GetAuctionById(int id)  
-        {  
-            return this.libraryContext.Auctions.Find(id);  
-        }  
-        
+        public Auction GetAuctionById(int id)
+        {
+            var auction = this.libraryContext.Auctions.Find(id);
+            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, auction);
+            return this.libraryContext.Auctions.Find(id);
+        }
+
         /// <summary>
         /// Update a Auction.
         /// </summary>
         /// <param name="price">The Auction.</param>
         /// <returns>If Auction was updated.</returns>
-        public bool UpdateAuction(Auction auction)  
-        {  
-            this.libraryContext.Entry(auction).State = EntityState.Modified;  
+        public bool UpdateAuction(Auction auction)
+        {
+            this.libraryContext.Entry(auction).State = EntityState.Modified;
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
@@ -86,23 +90,27 @@ namespace LibraryManagement.DataMapper
             }
 
             return successful;
-        }  
-   
+        }
+
         /// <summary>
         /// Delete a Auction.
         /// </summary>
         /// <param name="id">The Auction id.</param>
         /// <returns>If Auction was deleted.</returns>
-        public bool DeleteAuction(int id)  
-        {  
+        public bool DeleteAuction(int id)
+        {
             var auction = this.libraryContext.Auctions.Find(id);
             if (auction != null)
             {
                 this.libraryContext.Auctions.Remove(auction);
-            } else {
-                LoggerUtil.LogError($"Auction failed to delete from db. We don't found a auction with id: {id}", MethodBase.GetCurrentMethod());
+            }
+            else
+            {
+                LoggerUtil.LogError($"Auction failed to delete from db. We don't found a auction with id: {id}",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
@@ -114,7 +122,6 @@ namespace LibraryManagement.DataMapper
             }
 
             return successful;
-            
-        }  
+        }
     }
 }

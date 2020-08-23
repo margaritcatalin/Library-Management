@@ -2,14 +2,15 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Reflection;
-using LibraryManagement.DomainModel;
 
 namespace LibraryManagement.DataMapper
 {
     using System.Linq;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Reflection;
+    using LibraryManagement.DomainModel;
+    using LibraryManagement.Util;
 
     /// <summary>
     /// The Price repository.
@@ -38,71 +39,81 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Price added successfully : {price.Value}{price.Currency} ", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Price added successfully : {price.Value}{price.Currency} ",
+                    MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to add to db : {price.Value}{price.Currency}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Price failed to add to db : {price.Value}{price.Currency}",
+                    MethodBase.GetCurrentMethod());
             }
 
             return successful;
         }
-        
+
         /// <summary>
         /// Get All prices.
         /// </summary>
         /// <returns>All prices.</returns>
-        public IEnumerable<Price> GetPrices()  
-        {  
-            return  this.libraryContext.Prices.ToList();  
-        }  
-        
+        public IEnumerable<Price> GetPrices()
+        {
+            return this.libraryContext.Prices.ToList();
+        }
+
         /// <summary>
         /// Get Price by id.
         /// </summary>
         /// <param name="id">The price id.</param>
         /// <returns>A price.</returns>
-        public Price GetPriceById(int id)  
-        {  
-            return this.libraryContext.Prices.Find(id);  
-        }  
-        
+        public Price GetPriceById(int id)
+        {
+            var entity = this.libraryContext.Prices.Find(id);
+            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
+            return this.libraryContext.Prices.Find(id);
+        }
+
         /// <summary>
         /// Update a price.
         /// </summary>
         /// <param name="price">The price.</param>
         /// <returns>If price was updated.</returns>
-        public bool UpdatePrice(Price price)  
-        {  
-            this.libraryContext.Entry(price).State = EntityState.Modified;  
+        public bool UpdatePrice(Price price)
+        {
+            this.libraryContext.Entry(price).State = EntityState.Modified;
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Price updated successfully : {price.Value}{price.Currency}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Price updated successfully : {price.Value}{price.Currency}",
+                    MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to update to db : {price.Value}{price.Currency}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Price failed to update to db : {price.Value}{price.Currency}",
+                    MethodBase.GetCurrentMethod());
             }
 
             return successful;
-        }  
-   
+        }
+
         /// <summary>
         /// Delete a price.
         /// </summary>
         /// <param name="id">The price id.</param>
         /// <returns>If price was deleted.</returns>
-        public bool DeletePrice(int id)  
-        {  
+        public bool DeletePrice(int id)
+        {
             var price = this.libraryContext.Prices.Find(id);
             if (price != null)
             {
                 this.libraryContext.Prices.Remove(price);
-            } else {
-                LoggerUtil.LogError($"Price failed to delete from db. We don't found a price with id: {id}", MethodBase.GetCurrentMethod());
+            }
+            else
+            {
+                LoggerUtil.LogError($"Price failed to delete from db. We don't found a price with id: {id}",
+                    MethodBase.GetCurrentMethod());
                 return false;
             }
+
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
@@ -114,7 +125,6 @@ namespace LibraryManagement.DataMapper
             }
 
             return successful;
-            
-        }  
+        }
     }
 }
