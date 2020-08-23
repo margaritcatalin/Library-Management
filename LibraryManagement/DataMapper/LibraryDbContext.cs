@@ -28,55 +28,41 @@ namespace LibraryManagement.DataMapper
         }
 
         /// <summary>
-        /// Gets or sets books.
+        /// Gets or sets Products.
         /// </summary>
-        public DbSet<Book> Books { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         /// <summary>
-        /// Gets or sets authors.
+        /// Gets or sets AuctionUsers.
         /// </summary>
-        public DbSet<Author> Authors { get; set; }
-
+        public DbSet<AuctionUser> AuctionUsers { get; set; }
+        
         /// <summary>
-        /// Gets or sets bookwithdrawl.
+        /// Gets or sets Auctions.
         /// </summary>
-        public DbSet<BookWithdrawal> BookWithdrawals { get; set; }
-
+        public DbSet<Auction> Auctions { get; set; }
+        
         /// <summary>
-        /// Gets or sets rented books.
+        /// Gets or sets Bids.
         /// </summary>
-        public DbSet<RentedBook> RentedBooks { get; set; }
-
+        public DbSet<Bid> Bids { get; set; }
+        
         /// <summary>
-        /// Gets or sets domains.
+        /// Gets or sets Categories.
         /// </summary>
-        public DbSet<Domain> Categories { get; set; }
-
+        public DbSet<Category> Categories { get; set; }
+        
         /// <summary>
-        /// Gets or sets editions.
+        /// Gets or sets Prices.
         /// </summary>
-        public DbSet<Edition> Editions { get; set; }
-
+        public DbSet<Price> Prices { get; set; }
+        
         /// <summary>
-        /// Gets or sets readers.
+        /// Gets or sets UserReviews.
         /// </summary>
-        public DbSet<Reader> Readers { get; set; }
-
-        /// <summary>
-        /// Gets or sets librarians.
-        /// </summary>
-        public DbSet<Librarian> Librarians { get; set; }
-
-        /// <summary>
-        /// Gets or sets bookstocks.
-        /// </summary>
-        public DbSet<BookStock> BookStocks { get; set; }
-
-        /// <summary>
-        /// Gets or sets extensions.
-        /// </summary>
-        public DbSet<Extension> Extensions { get; set; }
-
+        public DbSet<UserReview> UserReviews { get; set; }
+        
+        
         // Add a DbSet for each entity type that you want to include in your model. For more information
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
 

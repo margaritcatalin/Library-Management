@@ -1,4 +1,4 @@
-// <copyright file="Domain.cs" company="Transilvania University of Brasov">
+// <copyright file="Category.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
 
@@ -10,9 +10,9 @@ namespace LibraryManagement.DomainModel
     using LibraryManagement.DataMapper;
 
     /// <summary>
-    /// Domain entity.
+    /// Category entity.
     /// </summary>
-    public class Domain
+    public class Category
     {
         /// <summary>
         /// Gets or sets id.
@@ -27,13 +27,13 @@ namespace LibraryManagement.DomainModel
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets books.
+        /// Gets or sets products.
         /// </summary>
-        public virtual ICollection<Book> Books { get; set; }
+        public ICollection<Product> Products { get; set; }
 
         /// <summary>
-        /// Gets or sets parent domain.
+        /// Gets or sets parent category.
         /// </summary>
-        public Domain ParentDomain { get; set; }
+        public Category ParentCategory { get; set; }
     }
 }
