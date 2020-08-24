@@ -151,7 +151,7 @@ namespace LibraryManagement.BusinessLayer
                 return false;
             }
 
-            if (category.ParentCategory != null && category.Id == category.ParentCategory.Id)
+            if (category.ParentCategory_Id != null && category.Id == category.ParentCategory_Id)
             {
                 LoggerUtil.LogInfo($"Your Category is invalid. Category is the same with parent category.",
                     MethodBase.GetCurrentMethod());

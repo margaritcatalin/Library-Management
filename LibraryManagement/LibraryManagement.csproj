@@ -140,9 +140,6 @@
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
-    <Reference Include="StyleCop, Version=6.2.0.0, Culture=neutral, PublicKeyToken=f904653c63bc2738, processorArchitecture=MSIL">
-      <HintPath>..\packages\StyleCop.6.2.0\lib\net40\StyleCop.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -219,6 +216,19 @@
     <Compile Include="DomainModel\Auction.cs" />
     <Compile Include="DomainModel\Price.cs" />
     <Compile Include="DomainModel\UserReview.cs" />
+    <Compile Include="Migrations\202008241627414_InitialCreate.cs" />
+    <Compile Include="Migrations\202008241627414_InitialCreate.designer.cs">
+      <DependentUpon>202008241627414_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008241633520_InitialCreate2.cs" />
+    <Compile Include="Migrations\202008241633520_InitialCreate2.designer.cs">
+      <DependentUpon>202008241633520_InitialCreate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008241640266_InitialCreate21.cs" />
+    <Compile Include="Migrations\202008241640266_InitialCreate21.designer.cs">
+      <DependentUpon>202008241640266_InitialCreate21.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Util\Role.cs" />
     <Compile Include="LoggerUtil.cs" />
     <Compile Include="Program.cs" />
@@ -246,6 +256,17 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202008241627414_InitialCreate.resx">
+      <DependentUpon>202008241627414_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008241633520_InitialCreate2.resx">
+      <DependentUpon>202008241633520_InitialCreate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008241640266_InitialCreate21.resx">
+      <DependentUpon>202008241640266_InitialCreate21.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

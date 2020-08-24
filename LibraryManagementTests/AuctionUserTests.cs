@@ -11,7 +11,7 @@ namespace LibraryManagementTests
     using NUnit.Framework;
     using System.Configuration;
     using System.Linq;
-	using Telerik.JustMock.EntityFramework;
+    using Telerik.JustMock.EntityFramework;
 
     /// <summary>
     /// The auctionUser unit tests.
@@ -42,8 +42,7 @@ namespace LibraryManagementTests
         {
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
             this.userReviewService = new UserReviewService(new UserReviewRepository(this.libraryContextMock));
-            this.auctionUserService = new AuctionUserService(new AuctionUserRepository(this.libraryContextMock),
-                this.userReviewService);
+            this.auctionUserService = new AuctionUserService(new AuctionUserRepository(this.libraryContextMock), this.userReviewService);
         }
 
         /// <summary>
@@ -52,7 +51,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(this.libraryContextMock.AuctionUsers.Count() == 1);
         }
@@ -73,46 +72,46 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddAuctionUserWithNullRole()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, null);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
 
         /// <summary>
-        /// Test add an auctionUser with null firstname.
+        /// Test add an auctionUser with null first name.
         /// </summary>
         [Test]
         public void TestAddNullFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = null, LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = null, LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
 
         /// <summary>
-        /// Test add add auctionUser with empty firstName.
+        /// Test add add auctionUser with empty first Name.
         /// </summary>
         [Test]
         public void TestAddEmptyFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = string.Empty, LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = string.Empty, LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
 
         /// <summary>
-        /// Test add auctionUser with smaller firstName.
+        /// Test add auctionUser with smaller first Name.
         /// </summary>
         [Test]
         public void TestAddSmallerFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Aa", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Aa", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
 
         /// <summary>
-        /// Test add auctionUser with longer firstName.
+        /// Test add auctionUser with longer first Name.
         /// </summary>
         [Test]
         public void TestAddLongerFirstNameAuctionUser()
@@ -129,45 +128,45 @@ namespace LibraryManagementTests
         }
 
         /// <summary>
-        /// Test add auctionUser with lower firstname.
+        /// Test add auctionUser with lower first name.
         /// </summary>
         [Test]
         public void TestAddLowerFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
 
         /// <summary>
-        /// Add auctionUser with digit in firstName.
+        /// Add auctionUser with digit in first Name.
         /// </summary>
         [Test]
         public void TestAddDigitFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Al13Mihai", LastName = "Cioran", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Al13Mihai", LastName = "Cioran", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
 
         /// <summary>
-        /// Test add an auctionUser with firstname with symbols.
+        /// Test add an auctionUser with first name with symbols.
         /// </summary>
         [Test]
         public void TestAddSymbolFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Aly$^@*#^*", LastName = "Baba", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Aly$^@*#^*", LastName = "Baba", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(this.libraryContextMock.AuctionUsers.Count() == 0);
         }
 
         /// <summary>
-        /// Test add auctionUser with spaces in firstName.
+        /// Test add auctionUser with spaces in first Name.
         /// </summary>
         [Test]
         public void TestAddWhiteSpaceFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Aly Baba", LastName = "Ionel", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Aly Baba", LastName = "Ionel", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(this.libraryContextMock.AuctionUsers.Count() == 1);
         }
@@ -178,7 +177,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddDashFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Aly-Baba", LastName = "Kalu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Aly-Baba", LastName = "Kalu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(this.libraryContextMock.AuctionUsers.Count() == 1);
         }
@@ -189,7 +188,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddNullLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Horatiu", LastName = null, Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Horatiu", LastName = null, Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
@@ -200,7 +199,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddEmptyLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Horatiu", LastName = string.Empty, Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Horatiu", LastName = string.Empty, Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
@@ -211,7 +210,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddSmallerLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Horatiu", LastName = "small", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Horatiu", LastName = "small", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
@@ -239,7 +238,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddDigitLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Fratele", LastName = "Galusca5", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Fratele", LastName = "Galusca5", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
@@ -250,7 +249,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddSymbolLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Horatiu", LastName = "Vlad$@%^@#%$)_*", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Horatiu", LastName = "Vlad$@%^@#%$)_*", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
@@ -261,7 +260,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddLowercaseLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Case", LastName = "lower", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Case", LastName = "lower", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
@@ -272,7 +271,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddWhiteSpaceLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Estera", LastName = "Aly Baba", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Estera", LastName = "Aly Baba", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(this.libraryContextMock.AuctionUsers.Count() == 1);
         }
@@ -283,7 +282,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddDashLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Galusca", LastName = "Aly-Baba", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Galusca", LastName = "Aly-Baba", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(this.libraryContextMock.AuctionUsers.Count() == 1);
         }
@@ -294,7 +293,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddNullGenderAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = null};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = null };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
@@ -305,7 +304,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddEmptyGenderAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = string.Empty};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = string.Empty };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
@@ -316,7 +315,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddMGenderAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(this.libraryContextMock.AuctionUsers.Count() == 1);
         }
@@ -327,7 +326,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddFGenderAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "F"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "F" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(this.libraryContextMock.AuctionUsers.Count() == 1);
         }
@@ -338,7 +337,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddBadGenderAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "C"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "C" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             Assert.True(!this.libraryContextMock.AuctionUsers.Any());
         }
@@ -349,21 +348,20 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             auctionUser =
-                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                    auctionUser.LastName);
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName, auctionUser.LastName);
             Assert.NotNull(auctionUser);
         }
 
         /// <summary>
-        /// Test get auctionUser with null firstname.
+        /// Test get auctionUser with null first name.
         /// </summary>
         [Test]
         public void TestGetNullFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             auctionUser = this.auctionUserService.GetAuctionUserByFistNameAndLastName(null, auctionUser.LastName);
             Assert.Null(auctionUser);
@@ -375,7 +373,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetNullLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Estera", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Estera", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             auctionUser = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName, null);
             Assert.Null(auctionUser);
@@ -387,7 +385,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetEmptyFirstNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             auctionUser =
                 this.auctionUserService.GetAuctionUserByFistNameAndLastName(string.Empty, auctionUser.LastName);
@@ -400,7 +398,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetEmptyLastNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             auctionUser =
                 this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName, string.Empty);
@@ -413,7 +411,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetBadNameAuctionUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             auctionUser = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Teodorescu");
             Assert.Null(auctionUser);
@@ -425,7 +423,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetAuctionUserByGoodId()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var auctionUserById = this.auctionUserService.GetAuctionUserById(auctionUser.Id);
             Assert.NotNull(auctionUserById);
@@ -437,7 +435,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetAuctionUserByBadId()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             auctionUser = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
             var auctionUserById = this.auctionUserService.GetAuctionUserById(auctionUser.Id + 1);
@@ -450,8 +448,8 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetAllAuctionUsers()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var auctionUser2 = new AuctionUser {FirstName = "Popescu", LastName = "Andrei", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var auctionUser2 = new AuctionUser { FirstName = "Popescu", LastName = "Andrei", Gender = "M" };
 
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Seller);
@@ -466,8 +464,8 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetAllAuctionUsersWithAWrongUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var auctionUser2 = new AuctionUser {FirstName = null, LastName = "Andrei", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var auctionUser2 = new AuctionUser { FirstName = null, LastName = "Andrei", Gender = "M" };
 
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Seller);
@@ -482,7 +480,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestDeleteUser()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var user = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
             var deleteResult = this.auctionUserService.DeleteAuctionUser(user.Id);
@@ -495,7 +493,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestDeleteUserWithAWrongId()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var user = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
             var deleteResult = this.auctionUserService.DeleteAuctionUser(user.Id + 1);
@@ -508,7 +506,7 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetUserScoreWithoutReviews()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var user = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
             var userScore = this.auctionUserService.GetAuctionUserScore(user.Id);
@@ -522,23 +520,23 @@ namespace LibraryManagementTests
         [Test]
         public void TestGetUserScoreWithReviews()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {FirstName = "Popa", LastName = "Andrei", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var reviewUser = new AuctionUser { FirstName = "Popa", LastName = "Andrei", Gender = "M" };
             var resultUser1 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
             var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
             var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
 
             var review1 = new UserReview
-                {Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1};
+            { Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1 };
             var review2 = new UserReview
-                {Description = "He is a bad man", Score = 2, ReviewByUser = user2, ReviewForUser = user1};
+            { Description = "He is a bad man", Score = 2, ReviewByUser = user2, ReviewForUser = user1 };
             var resultReview1 = this.userReviewService.AddUserReview(review1);
             var resultReview2 = this.userReviewService.AddUserReview(review2);
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var user = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
             var userScore = this.auctionUserService.GetAuctionUserScore(user.Id);
-            var correctScore = review1.Score + review2.Score / 2;
+            int correctScore = review1.Score + review2.Score / 2;
             Assert.True(userScore == correctScore);
         }
     }

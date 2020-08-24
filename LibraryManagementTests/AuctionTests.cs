@@ -4,15 +4,15 @@
 
 namespace LibraryManagementTests
 {
-	using LibraryManagement.BusinessLayer;
+    using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
     using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
     using NUnit.Framework;
-    using Telerik.JustMock.EntityFramework;
-    using System.Linq;
     using System;
     using System.Configuration;
+    using System.Linq;
+    using Telerik.JustMock.EntityFramework;
 
     /// <summary>
     /// The auction unit tests.
@@ -70,14 +70,12 @@ namespace LibraryManagementTests
             this.productService = new ProductService(new ProductRepository(this.libraryContextMock));
             this.priceService = new PriceService(new PriceRepository(this.libraryContextMock));
             this.userReviewService = new UserReviewService(new UserReviewRepository(this.libraryContextMock));
-			this.auctionUserService = new AuctionUserService(new AuctionUserRepository(this.libraryContextMock),
-                this.userReviewService);
+            this.auctionUserService = new AuctionUserService(new AuctionUserRepository(this.libraryContextMock), this.userReviewService);
             this.categoryService = new CategoryService(new CategoryRepository(this.libraryContextMock));
-            this.auctionService = new AuctionService(new AuctionRepository(this.libraryContextMock),
-                this.categoryService, this.auctionUserService);
+            this.auctionService = new AuctionService(new AuctionRepository(this.libraryContextMock), this.categoryService, this.auctionUserService);
             this.bidService = new BidService(new BidRepository(this.libraryContextMock), this.auctionService);
         }
-        
+
         /// <summary>
         /// Test add an null auction.
         /// </summary>
@@ -94,11 +92,11 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddWithNullUserAuction()
         {
-			var startPrice = new Price { Currency = "Euro", Value = 88.5 };
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
-			var category = new Category { Name = "Legume" };
+            var category = new Category { Name = "Legume" };
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Name = "Fasole", Category = new[] {category}};
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -119,13 +117,13 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddWithWrongUserRoleAuction()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
-            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Name = "Legume"};
+            var category = new Category { Name = "Legume" };
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Name = "Fasole", Category = new[] {category}};
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -146,11 +144,11 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddWithNullProductAuction()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
-            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Name = "Legume"};
+            var category = new Category { Name = "Legume" };
             var categoryResult = this.categoryService.AddCategory(category);
             var auction = new Auction
             {
@@ -171,14 +169,14 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddWithNullStartPriceAuction()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
-            var category = new Category {Name = "Legume"};
+            var category = new Category { Name = "Legume" };
             var minPrice = double.Parse(ConfigurationManager.AppSettings["MIN_PRICE"]);
-            var startPrice = new Price {Currency = "Euro", Value = minPrice - 1};
+            var startPrice = new Price { Currency = "Euro", Value = minPrice - 1 };
             var priceResult = this.priceService.AddPrice(startPrice);
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Name = "Fasole", Category = new[] {category}};
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -199,11 +197,11 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddWithStartPriceLessThanMinPriceAuction()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
-            var category = new Category {Name = "Legume"};
+            var category = new Category { Name = "Legume" };
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Name = "Fasole", Category = new[] {category}};
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -224,13 +222,13 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddWithWrongStartDateAuction()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Name = "Legume"};
+            var category = new Category { Name = "Legume" };
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Name = "Fasole", Category = new[] {category}};
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -246,18 +244,18 @@ namespace LibraryManagementTests
         }
 
         /// <summary>
-        /// Test add auction wih wrong end date.
+        /// Test add auction  with  wrong end date.
         /// </summary>
         [Test]
         public void TestAddWithStartDateSameWithEndDateAuction()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Name = "Legume"};
+            var category = new Category { Name = "Legume" };
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Name = "Fasole", Category = new[] {category}};
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
             var productResult = this.productService.AddProduct(product);
             var startDate = DateTime.Now;
             var auction = new Auction
@@ -279,13 +277,13 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddWithStartDateMoreThanEndDateAuction()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Name = "Legume"};
+            var category = new Category { Name = "Legume" };
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Name = "Fasole", Category = new[] {category}};
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
             var productResult = this.productService.AddProduct(product);
             var startDate = DateTime.Now;
             var auction = new Auction
@@ -302,18 +300,18 @@ namespace LibraryManagementTests
         }
 
         /// <summary>
-        /// Test add auction wih wrong end date.
+        /// Test add auction  with  wrong end date.
         /// </summary>
         [Test]
         public void TestAddWithEndDateMoreThanMaxMonthsAuction()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var startPrice = new Price {Currency = "Euro", Value = 88.5};
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Name = "Legume"};
+            var category = new Category { Name = "Legume" };
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Name = "Fasole", Category = new[] {category}};
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
             var productResult = this.productService.AddProduct(product);
             var maxNumberOfMonths = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_MONTHS"]);
             var startDate = DateTime.Now;
@@ -329,14 +327,14 @@ namespace LibraryManagementTests
             var auctionResult = this.auctionService.AddAuction(auction);
             Assert.True(!this.libraryContextMock.Auctions.Any());
         }
-        
+
         /// <summary>
         /// Test Get last auction without auctions.
         /// </summary>
         [Test]
         public void TestGetLastAuctionForUserWithoutAuctions()
         {
-            var auctionUser = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var lastAuction = this.auctionService.GetLastAuctionForUser(auctionUser);
             Assert.IsNull(lastAuction);

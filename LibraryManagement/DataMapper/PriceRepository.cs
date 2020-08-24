@@ -5,7 +5,6 @@
 namespace LibraryManagement.DataMapper
 {
     using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
@@ -46,7 +45,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to add to db : {price.Value}{price.Currency}",
+                LoggerUtil.LogError($"Price failed to add to database : {price.Value}{price.Currency}",
                     MethodBase.GetCurrentMethod());
             }
 
@@ -88,7 +87,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to update to db : {price.Value}{price.Currency}",
+                LoggerUtil.LogError($"Price failed to update to database : {price.Value}{price.Currency}",
                     MethodBase.GetCurrentMethod());
             }
 
@@ -109,7 +108,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to delete from db. We don't found a price with id: {id}",
+                LoggerUtil.LogError($"Price failed to delete from database. We don't found a price with id: {id}",
                     MethodBase.GetCurrentMethod());
                 return false;
             }
@@ -121,7 +120,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to delete from db : {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Price failed to delete from database : {id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;

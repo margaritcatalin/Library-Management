@@ -5,7 +5,6 @@
 namespace LibraryManagement.DataMapper
 {
     using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
@@ -45,7 +44,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Bid failed to add to db : {bid.Id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Bid failed to add to database : {bid.Id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -85,7 +84,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Bid failed to update to db : {bid.Id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Bid failed to update to database : {bid.Id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -105,7 +104,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Bid failed to delete from db. We don't found a bid with id: {id}",
+                LoggerUtil.LogError($"Bid failed to delete from database. We don't found a bid with id: {id}",
                     MethodBase.GetCurrentMethod());
                 return false;
             }
@@ -117,7 +116,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Bid failed to delete from db : {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Bid failed to delete from database : {id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;

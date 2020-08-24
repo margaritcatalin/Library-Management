@@ -85,12 +85,12 @@ namespace LibraryManagement.BusinessLayer
             return false;
         }
 
-		/// <summary>
-		/// Get All Auction started by an specific user.
-		/// </summary>
-		/// <param name="user">The user.</param>
-		/// <returns>All Auction started by a user.</returns>
-		public IEnumerable<Auction> GetStartedAuctionsByUser(AuctionUser user)
+        /// <summary>
+        /// Get All Auction started by an specific user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns>All Auction started by a user.</returns>
+        public IEnumerable<Auction> GetStartedAuctionsByUser(AuctionUser user)
         {
             var auctions = GetAuctions();
             var filteredAuctions =

@@ -5,7 +5,6 @@
 namespace LibraryManagement.DataMapper
 {
     using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
@@ -58,7 +57,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to add to db : {auctionUser.FirstName}",
+                LoggerUtil.LogError($"AuctionUser failed to add to database : {auctionUser.FirstName}",
                     MethodBase.GetCurrentMethod());
             }
 
@@ -100,7 +99,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to update to db : {auctionUser.FirstName}",
+                LoggerUtil.LogError($"AuctionUser failed to update to database : {auctionUser.FirstName}",
                     MethodBase.GetCurrentMethod());
             }
 
@@ -121,7 +120,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to delete from db. We don't found an user with id: {id}",
+                LoggerUtil.LogError($"AuctionUser failed to delete from database. We don't found an user with id: {id}",
                     MethodBase.GetCurrentMethod());
                 return false;
             }
@@ -133,7 +132,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to delete from db : {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"AuctionUser failed to delete from database : {id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;

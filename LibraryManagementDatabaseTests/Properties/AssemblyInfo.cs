@@ -13,9 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 [assembly: ComVisible(false)]
-
 [assembly: Guid("efa886ac-8817-4b74-a25e-2caeced9979b")]
 
 // [assembly: AssemblyVersion("1.0.*")]

@@ -179,7 +179,6 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If auctionUser is valid or not.</returns>
         private bool ValidateAuctionUser(AuctionUser auctionUser)
         {
-
             if (auctionUser.FirstName.IsNullOrEmpty())
             {
                 LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an author with null empty firstName.", MethodBase.GetCurrentMethod());

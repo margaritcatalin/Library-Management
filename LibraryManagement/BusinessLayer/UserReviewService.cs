@@ -60,8 +60,8 @@ namespace LibraryManagement.BusinessLayer
 
             var allUserReviews = this.GetUserReviews();
             var filteredUserReviews = from review in allUserReviews
-                where review.ReviewForUser.Id == user.Id
-                select review;
+                                      where review.ReviewForUser.Id == user.Id
+                                      select review;
             return filteredUserReviews;
         }
 

@@ -5,7 +5,6 @@
 namespace LibraryManagement.DataMapper
 {
     using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
@@ -45,7 +44,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Auction failed to add to db ID: {auction.Id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Auction failed to add to database ID: {auction.Id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -85,7 +84,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Auction failed to update to db ID: {auction.Id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Auction failed to update to database ID: {auction.Id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -105,7 +104,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Auction failed to delete from db. We don't found a auction with id: {id}",
+                LoggerUtil.LogError($"Auction failed to delete from database. We don't found a auction with id: {id}",
                     MethodBase.GetCurrentMethod());
                 return false;
             }
@@ -117,7 +116,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Auction failed to delete from db : {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Auction failed to delete from database : {id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;

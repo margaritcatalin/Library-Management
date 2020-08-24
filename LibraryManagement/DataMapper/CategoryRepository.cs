@@ -5,7 +5,6 @@
 namespace LibraryManagement.DataMapper
 {
     using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
@@ -56,7 +55,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Category failed to add to db : {category.Name}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Category failed to add to database : {category.Name}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -96,7 +95,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Category failed to update to db : {category.Name}",
+                LoggerUtil.LogError($"Category failed to update to database : {category.Name}",
                     MethodBase.GetCurrentMethod());
             }
 
@@ -117,7 +116,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Category failed to delete from db. We don't found a category with id: {id}",
+                LoggerUtil.LogError($"Category failed to delete from database. We don't found a category with id: {id}",
                     MethodBase.GetCurrentMethod());
                 return false;
             }
@@ -129,7 +128,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Category failed to delete from db : {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Category failed to delete from database : {id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;

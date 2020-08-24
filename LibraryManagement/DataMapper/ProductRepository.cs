@@ -5,7 +5,6 @@
 namespace LibraryManagement.DataMapper
 {
     using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
@@ -46,7 +45,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Product failed to add to db : {product.Id},{product.Name}",
+                LoggerUtil.LogError($"Product failed to add to database : {product.Id},{product.Name}",
                     MethodBase.GetCurrentMethod());
             }
 
@@ -88,7 +87,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Product failed to update to db : {product.Id},{product.Name}",
+                LoggerUtil.LogError($"Product failed to update to database : {product.Id},{product.Name}",
                     MethodBase.GetCurrentMethod());
             }
 
@@ -109,7 +108,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Product failed to delete from db. We don't found a product with id: {id}",
+                LoggerUtil.LogError($"Product failed to delete from database. We don't found a product with id: {id}",
                     MethodBase.GetCurrentMethod());
                 return false;
             }
@@ -121,7 +120,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Product failed to delete from db : {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Product failed to delete from database : {id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;

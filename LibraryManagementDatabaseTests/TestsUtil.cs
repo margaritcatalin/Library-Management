@@ -1,7 +1,7 @@
 ﻿namespace LibraryManagementDatabaseTests
 {
-    using System.Data.Entity.Infrastructure;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
 
     public class TestsUtil
     {
@@ -13,12 +13,15 @@
                 case EntityState.Modified:
                     entry.State = EntityState.Unchanged;
                     break;
+
                 case EntityState.Added:
                     entry.State = EntityState.Detached;
                     break;
+
                 case EntityState.Deleted:
                     entry.Reload();
                     break;
+
                 default: break;
             }
         }

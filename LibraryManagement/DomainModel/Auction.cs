@@ -37,7 +37,6 @@ namespace LibraryManagement.DomainModel
         /// </summary>
         public DateTime StartDate { get; set; }
 
-
         /// <summary>
         /// Gets or sets end date.
         /// </summary>
