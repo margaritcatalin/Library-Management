@@ -1,6 +1,7 @@
 ﻿// <copyright file="CategoryRepository.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Category repository class.</summary>
 
 namespace LibraryManagement.DataMapper
 {

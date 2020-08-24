@@ -1,6 +1,7 @@
 ﻿// <copyright file="ProductService.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Product service class.</summary>
 
 namespace LibraryManagement.BusinessLayer
 {

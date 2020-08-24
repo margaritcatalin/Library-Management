@@ -1,6 +1,7 @@
 ﻿// <copyright file="PriceRepository.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Price repository class.</summary>
 
 namespace LibraryManagement.DataMapper
 {

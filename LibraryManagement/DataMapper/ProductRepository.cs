@@ -1,6 +1,7 @@
 ﻿// <copyright file="ProductRepository.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Product repository class.</summary>
 
 namespace LibraryManagement.DataMapper
 {

@@ -1,6 +1,7 @@
 // <copyright file="Product.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Product entity class.</summary>
 
 namespace LibraryManagement.DomainModel
 {
@@ -15,17 +16,26 @@ namespace LibraryManagement.DomainModel
         /// <summary>
         /// Gets or sets Product code.
         /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets Product name.
         /// </summary>
+        /// <value>
+        /// The product name.
+        /// </value>
         [StringLength(450)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets Product category.
         /// </summary>
+        /// <value>
+        /// The product category.
+        /// </value>
         public ICollection<Category> Category { get; set; }
     }
 }

@@ -4,13 +4,13 @@
 
 namespace LibraryManagementTests
 {
+    using System.Configuration;
+    using System.Linq;
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
     using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
     using NUnit.Framework;
-    using System.Configuration;
-    using System.Linq;
     using Telerik.JustMock.EntityFramework;
 
     /// <summary>
@@ -536,7 +536,7 @@ namespace LibraryManagementTests
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var user = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
             var userScore = this.auctionUserService.GetAuctionUserScore(user.Id);
-            int correctScore = review1.Score + review2.Score / 2;
+            int correctScore = (review1.Score + review2.Score) / 2;
             Assert.True(userScore == correctScore);
         }
     }

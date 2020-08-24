@@ -1,6 +1,7 @@
 ﻿// <copyright file="BidService.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Bid service class.</summary>
 
 namespace LibraryManagement.BusinessLayer
 {

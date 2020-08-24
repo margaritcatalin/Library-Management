@@ -1,6 +1,7 @@
 ﻿// <copyright file="PriceService.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Price service class.</summary>
 
 namespace LibraryManagement.BusinessLayer
 {

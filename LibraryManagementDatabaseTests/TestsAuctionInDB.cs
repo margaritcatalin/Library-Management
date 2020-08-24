@@ -1,17 +1,17 @@
-﻿// <copyright file="TestsUserWithDB.cs" company="Transilvania University of Brasov">
+﻿// <copyright file="TestsAuctionInDB.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
 
 namespace LibraryManagementDatabaseTests
 {
+    using System;
+    using System.Configuration;
+    using System.Linq;
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
     using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
     using NUnit.Framework;
-    using System;
-    using System.Configuration;
-    using System.Linq;
 
     /// <summary>
     /// The the auction with database insertion.
@@ -72,8 +72,7 @@ namespace LibraryManagementDatabaseTests
             this.auctionUserService =
                 new AuctionUserService(new AuctionUserRepository(this.libraryContext), this.userReviewService);
             this.categoryService = new CategoryService(new CategoryRepository(this.libraryContext));
-            this.auctionService = new AuctionService(new AuctionRepository(this.libraryContext),
-                this.categoryService, this.auctionUserService);
+            this.auctionService = new AuctionService(new AuctionRepository(this.libraryContext), this.categoryService, this.auctionUserService);
             this.bidService = new BidService(new BidRepository(this.libraryContext), this.auctionService);
         }
 
@@ -87,26 +86,12 @@ namespace LibraryManagementDatabaseTests
         }
 
         /// <summary>
-        /// The ClearDatabase.
-        /// </summary>
-        private void ClearDatabase()
-        {
-            this.libraryContext.Auctions.RemoveRange(this.libraryContext.Auctions);
-            this.libraryContext.AuctionUsers.RemoveRange(this.libraryContext.AuctionUsers);
-            this.libraryContext.Categories.RemoveRange(this.libraryContext.Categories);
-            this.libraryContext.Products.RemoveRange(this.libraryContext.Products);
-            this.libraryContext.Prices.RemoveRange(this.libraryContext.Prices);
-            this.libraryContext.UserReviews.RemoveRange(this.libraryContext.UserReviews);
-            this.libraryContext.Bids.RemoveRange(this.libraryContext.Bids);
-        }
-
-        /// <summary>
         /// Test check if auction is ended.
         /// </summary>
         [Test]
         public void TestCheckIfAuctionIsEnded()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionId = 1;
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
@@ -130,8 +115,7 @@ namespace LibraryManagementDatabaseTests
             };
             var auctionResult = this.auctionService.AddAuction(auction);
             var auctionUserSaved =
-                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                    auctionUser.LastName);
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName, auctionUser.LastName);
             var endResult = this.auctionService.EndAuctionByUser(auction, auctionUser);
             var isEnded = this.auctionService.CheckIfAuctionIsEnded(auction);
             Assert.IsTrue(isEnded);
@@ -143,13 +127,12 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestEndAuctionByUserAlreadyEnded()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionId = 1;
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             auctionUser =
-                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                    auctionUser.LastName);
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName, auctionUser.LastName);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category { Name = "Legume" };
@@ -180,13 +163,12 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestEndAuctionByAnotherUser()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionId = 1;
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             auctionUser =
-                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                    auctionUser.LastName);
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName, auctionUser.LastName);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category { Name = "Legume" };
@@ -208,8 +190,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUser2 = new AuctionUser { Id = 2, FirstName = "Manuel", LastName = "Grigore", Gender = "M" };
             var resultU2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Seller);
             auctionUser2 =
-                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
-                    auctionUser2.LastName);
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
             var isEnded = this.auctionService.EndAuctionByUser(auctionById, auctionUser2);
             auctionById = this.auctionService.GetAuctionById(auctionId);
             Assert.IsFalse(auctionById.Ended);
@@ -221,13 +202,12 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestEndAuctionByUser()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionId = 1;
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             auctionUser =
-                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                    auctionUser.LastName);
+                this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName, auctionUser.LastName);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category { Name = "Legume" };
@@ -257,7 +237,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetAllAuctionsUnderEndOne()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -294,7 +274,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetAuctionLastPriceWithBids()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -333,7 +313,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetLastAuctionForUserWithEndedOne()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -384,7 +364,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetLastAuctionForUserWithMoreThanOneAuctions()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -434,7 +414,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetStartedAuctionByUserAndCategoryUnderEndOne()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -471,7 +451,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetStartedAuctionByUserUnderEndOne()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -508,7 +488,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestUpdateAuctionStartPriceUnderBid()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -530,8 +510,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
             var auctionUser2 = new AuctionUser { FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var resultAuctionUser2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
-            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
-                auctionUser2.LastName);
+            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
             var bidPrice = new Price { Currency = "Euro", Value = 108.5 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var bid = new Bid { Auction = auction, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now };
@@ -549,7 +528,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestUpdateAuctionStartDate()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -582,7 +561,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestUpdateAuctionBadStartDate()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -616,7 +595,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestUpdateAuctionEbdDate()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -650,7 +629,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestUpdateAuctionStartPrice()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -684,7 +663,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestUpdateAuctionProduct()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -718,7 +697,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestUpdateAuctionBadProduct()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -752,7 +731,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestUpdateAuctionBadUser()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -785,7 +764,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestDeleteAuction()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -816,7 +795,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestUpdateAuctionUser()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -885,7 +864,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestAddAuction()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -908,12 +887,12 @@ namespace LibraryManagementDatabaseTests
         }
 
         /// <summary>
-        /// Test add auction wih wrong end date.
+        /// Test add auction with wrong end date.
         /// </summary>
         [Test]
         public void TestAddMoreThanMaxNumberOfAuctionInSameCategory()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -943,12 +922,12 @@ namespace LibraryManagementDatabaseTests
         }
 
         /// <summary>
-        /// Test add auction wih wrong end date.
+        /// Test add auction with wrong end date.
         /// </summary>
         [Test]
         public void TestAddMoreThanMaxNumberOfAuctionInSameRoot()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -980,12 +959,12 @@ namespace LibraryManagementDatabaseTests
         }
 
         /// <summary>
-        /// Test add auction wih wrong end date.
+        /// Test add auction with wrong end date.
         /// </summary>
         [Test]
         public void TestAddMoreThanMaxNumberOfAuctionInMoreCategories()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -1020,7 +999,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetStartedAuctionByUser()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -1044,6 +1023,7 @@ namespace LibraryManagementDatabaseTests
                 };
                 this.auctionService.AddAuction(auction);
             }
+
             var startedAuctions = this.auctionService.GetStartedAuctionsByUser(auctionUser);
             Assert.True(startedAuctions.Count() == 4);
         }
@@ -1054,7 +1034,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetStartedAuctionByUserAndCategory()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -1078,6 +1058,7 @@ namespace LibraryManagementDatabaseTests
                 };
                 this.auctionService.AddAuction(auction);
             }
+
             var startedAuctions = this.auctionService.GetStartedAuctionsByUserAndCategory(auctionUser, category);
             Assert.True(startedAuctions.Count() == 3);
         }
@@ -1088,7 +1069,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetAllAuctions()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -1112,6 +1093,7 @@ namespace LibraryManagementDatabaseTests
                 };
                 this.auctionService.AddAuction(auction);
             }
+
             var auctions = this.auctionService.GetAuctions();
             Assert.True(auctions.Count() == 4);
         }
@@ -1122,7 +1104,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetAuctionByGoodId()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -1151,7 +1133,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetAuctionByBadId()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -1240,7 +1222,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetLastAuctionForUser()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -1290,7 +1272,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestGetAuctionLastPriceNoBids()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -1320,7 +1302,7 @@ namespace LibraryManagementDatabaseTests
         [Test]
         public void TestAddAuctionWithAnBlockedUser()
         {
-            ClearDatabase();
+            this.ClearDatabase();
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var startPrice = new Price { Currency = "Euro", Value = 88.5 };
@@ -1357,6 +1339,20 @@ namespace LibraryManagementDatabaseTests
             };
             var auction2Result = this.auctionService.AddAuction(auction);
             Assert.True(this.libraryContext.Auctions.Count() == 1);
+        }
+
+        /// <summary>
+        /// The ClearDatabase.
+        /// </summary>
+        private void ClearDatabase()
+        {
+            this.libraryContext.Auctions.RemoveRange(this.libraryContext.Auctions);
+            this.libraryContext.AuctionUsers.RemoveRange(this.libraryContext.AuctionUsers);
+            this.libraryContext.Categories.RemoveRange(this.libraryContext.Categories);
+            this.libraryContext.Products.RemoveRange(this.libraryContext.Products);
+            this.libraryContext.Prices.RemoveRange(this.libraryContext.Prices);
+            this.libraryContext.UserReviews.RemoveRange(this.libraryContext.UserReviews);
+            this.libraryContext.Bids.RemoveRange(this.libraryContext.Bids);
         }
     }
 }

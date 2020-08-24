@@ -1,6 +1,7 @@
 ﻿// <copyright file="AuctionRepository.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Auction repository class.</summary>
 
 namespace LibraryManagement.DataMapper
 {

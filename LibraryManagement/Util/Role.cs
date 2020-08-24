@@ -1,6 +1,7 @@
-﻿// <copyright file="LibraryDbContext.cs" company="Transilvania University of Brasov">
+﻿// <copyright file="Role.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Role class.</summary>
 
 namespace LibraryManagement.Util
 {
@@ -10,22 +11,20 @@ namespace LibraryManagement.Util
     public class Role
     {
         /// <summary>
-        /// Prevents a default instance of the <see cref="Role"/> class from being created.
+        /// Initializes a new instance of the <see cref="Role" /> class.
         /// </summary>
-        /// <param name="value">The value<see cref="string"/>.</param>
+        /// <param name="value">The value.</param>
         private Role(string value)
         {
-            Value = value;
+            this.Value = value;
         }
-
-        /// <summary>
-        /// Gets or sets the Value.
-        /// </summary>
-        public string Value { get; set; }
 
         /// <summary>
         /// Gets the Seller.
         /// </summary>
+        /// <value>
+        /// The seller role.
+        /// </value>
         public static Role Seller
         {
             get { return new Role("Seller"); }
@@ -34,9 +33,20 @@ namespace LibraryManagement.Util
         /// <summary>
         /// Gets the Buyer.
         /// </summary>
+        /// <value>
+        /// The buyer role.
+        /// </value>
         public static Role Buyer
         {
             get { return new Role("Buyer"); }
         }
+
+        /// <summary>
+        /// Gets or sets the Value.
+        /// </summary>
+        /// <value>
+        /// The value.
+        /// </value>
+        public string Value { get; set; }
     }
 }

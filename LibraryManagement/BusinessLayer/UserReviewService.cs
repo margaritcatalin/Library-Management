@@ -1,6 +1,7 @@
 ﻿// <copyright file="UserReviewService.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the UserReview service class.</summary>
 
 namespace LibraryManagement.BusinessLayer
 {

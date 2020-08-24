@@ -4,11 +4,11 @@
 
 namespace LibraryManagementTests
 {
+    using System.Linq;
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
     using LibraryManagement.DomainModel;
     using NUnit.Framework;
-    using System.Linq;
     using Telerik.JustMock.EntityFramework;
 
     /// <summary>

@@ -1,6 +1,7 @@
 ﻿// <copyright file="AuctionUserService.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the auction user service class.</summary>
 
 namespace LibraryManagement.BusinessLayer
 {

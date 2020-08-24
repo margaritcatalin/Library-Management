@@ -120,7 +120,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestUpdateActions.cs" />
+    <Compile Include="TestsUpdateActionsInDB.cs" />
     <Compile Include="TestsAuctionInDB.cs" />
     <Compile Include="TestsUtil.cs" />
   </ItemGroup>

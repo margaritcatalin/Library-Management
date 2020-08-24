@@ -4,12 +4,12 @@
 
 namespace LibraryManagementTests
 {
+    using System.Linq;
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
     using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
     using NUnit.Framework;
-    using System.Linq;
     using Telerik.JustMock.EntityFramework;
 
     /// <summary>
@@ -42,8 +42,7 @@ namespace LibraryManagementTests
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
             EntityFrameworkMock.PrepareMock(this.libraryContextMock);
             this.userReviewService = new UserReviewService(new UserReviewRepository(this.libraryContextMock));
-            this.auctionUserService = new AuctionUserService(new AuctionUserRepository(this.libraryContextMock),
-                this.userReviewService);
+            this.auctionUserService = new AuctionUserService(new AuctionUserRepository(this.libraryContextMock), this.userReviewService);
         }
 
         /// <summary>

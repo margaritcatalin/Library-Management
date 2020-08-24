@@ -216,19 +216,6 @@
     <Compile Include="DomainModel\Auction.cs" />
     <Compile Include="DomainModel\Price.cs" />
     <Compile Include="DomainModel\UserReview.cs" />
-    <Compile Include="Migrations\202008241627414_InitialCreate.cs" />
-    <Compile Include="Migrations\202008241627414_InitialCreate.designer.cs">
-      <DependentUpon>202008241627414_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008241633520_InitialCreate2.cs" />
-    <Compile Include="Migrations\202008241633520_InitialCreate2.designer.cs">
-      <DependentUpon>202008241633520_InitialCreate2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202008241640266_InitialCreate21.cs" />
-    <Compile Include="Migrations\202008241640266_InitialCreate21.designer.cs">
-      <DependentUpon>202008241640266_InitialCreate21.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Util\Role.cs" />
     <Compile Include="LoggerUtil.cs" />
     <Compile Include="Program.cs" />
@@ -256,17 +243,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202008241627414_InitialCreate.resx">
-      <DependentUpon>202008241627414_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008241633520_InitialCreate2.resx">
-      <DependentUpon>202008241633520_InitialCreate2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202008241640266_InitialCreate21.resx">
-      <DependentUpon>202008241640266_InitialCreate21.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

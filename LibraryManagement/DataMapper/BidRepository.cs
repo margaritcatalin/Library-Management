@@ -1,6 +1,7 @@
 ﻿// <copyright file="BidRepository.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Bid repository class.</summary>
 
 namespace LibraryManagement.DataMapper
 {

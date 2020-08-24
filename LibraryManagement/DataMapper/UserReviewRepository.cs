@@ -1,6 +1,7 @@
 ﻿// <copyright file="UserReviewRepository.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the UserReview repository class.</summary>
 
 namespace LibraryManagement.DataMapper
 {

@@ -1,6 +1,7 @@
 ﻿// <copyright file="LoggerUtil.cs" company="Transilvania University of Brasov">
 // Margarit Marian Catalin
 // </copyright>
+// <summary>This is the Logger utility class.</summary>
 
 namespace LibraryManagement
 {
