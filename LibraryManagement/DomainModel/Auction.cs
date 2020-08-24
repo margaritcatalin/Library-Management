@@ -51,6 +51,6 @@ namespace LibraryManagement.DomainModel
         /// <summary>
         /// Gets or sets Auction bids.
         /// </summary>
-        public ICollection<Bid> Bids { get; set; }
+        public ICollection<Bid> Bid { get; set; }
     }
 }

@@ -4,18 +4,21 @@
 
 namespace LibraryManagement.DataMapper
 {
+    using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
-    using System.Linq;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Linq;
     using System.Reflection;
-    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Product repository.
     /// </summary>
     public class ProductRepository
     {
+        /// <summary>
+        /// Defines the libraryContext.
+        /// </summary>
         private readonly LibraryDbContext libraryContext;
 
         /// <summary>
@@ -66,8 +69,6 @@ namespace LibraryManagement.DataMapper
         /// <returns>A Product.</returns>
         public Product GetProductById(int id)
         {
-            var entity = this.libraryContext.Products.Find(id);
-            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
             return this.libraryContext.Products.Find(id);
         }
 

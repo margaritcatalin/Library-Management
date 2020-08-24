@@ -4,18 +4,21 @@
 
 namespace LibraryManagement.DataMapper
 {
-    using System.Linq;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Reflection;
     using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// The Price repository.
     /// </summary>
     public class PriceRepository
     {
+        /// <summary>
+        /// Defines the libraryContext.
+        /// </summary>
         private readonly LibraryDbContext libraryContext;
 
         /// <summary>
@@ -66,8 +69,6 @@ namespace LibraryManagement.DataMapper
         /// <returns>A price.</returns>
         public Price GetPriceById(int id)
         {
-            var entity = this.libraryContext.Prices.Find(id);
-            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
             return this.libraryContext.Prices.Find(id);
         }
 

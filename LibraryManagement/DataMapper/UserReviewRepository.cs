@@ -4,18 +4,21 @@
 
 namespace LibraryManagement.DataMapper
 {
+    using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
-    using System.Linq;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Linq;
     using System.Reflection;
-    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The UserReview repository.
     /// </summary>
     public class UserReviewRepository
     {
+        /// <summary>
+        /// Defines the libraryContext.
+        /// </summary>
         private readonly LibraryDbContext libraryContext;
 
         /// <summary>
@@ -64,8 +67,6 @@ namespace LibraryManagement.DataMapper
         /// <returns>A UserReview.</returns>
         public UserReview GetUserReviewById(int id)
         {
-            var entity = this.libraryContext.UserReviews.Find(id);
-            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
             return this.libraryContext.UserReviews.Find(id);
         }
 

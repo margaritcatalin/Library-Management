@@ -4,27 +4,31 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
+    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Configuration;
-    using LibraryManagement.DomainModel;
+    using System.Reflection;
 
     /// <summary>
     /// The Price service.
     /// </summary>
     public class PriceService
     {
+        /// <summary>
+        /// Defines the priceRepository.
+        /// </summary>
         private readonly PriceRepository priceRepository;
 
-        /// <summary>Initializes a new instance of the <see cref="PriceRepository"/> class.</summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PriceService"/> class.
+        /// </summary>
         /// <param name="priceRepository">The Price repository.</param>
         public PriceService(PriceRepository priceRepository)
         {
             this.priceRepository = priceRepository;
         }
-
 
         /// <summary>
         /// Add a new Price.

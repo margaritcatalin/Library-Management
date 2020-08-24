@@ -15,7 +15,6 @@ namespace LibraryManagement
         /// <param name="args">Arguments.</param>
         private static void Main(string[] args)
         {
-           // Initialize and create objects
         }
     }
 }

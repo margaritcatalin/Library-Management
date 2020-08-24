@@ -4,27 +4,31 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using System.Linq;
-    using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
-    using System.Collections.Generic;
     using LibraryManagement.DomainModel;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// The UserReview service.
     /// </summary>
     public class UserReviewService
     {
+        /// <summary>
+        /// Defines the userReviewRepository.
+        /// </summary>
         private readonly UserReviewRepository userReviewRepository;
 
-        /// <summary>Initializes a new instance of the <see cref="UserReviewRepository"/> class.</summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserReviewService"/> class.
+        /// </summary>
         /// <param name="userReviewRepository">The UserReview repository.</param>
         public UserReviewService(UserReviewRepository userReviewRepository)
         {
             this.userReviewRepository = userReviewRepository;
         }
-
 
         /// <summary>
         /// Add a new UserReview.
@@ -44,6 +48,7 @@ namespace LibraryManagement.BusinessLayer
         /// <summary>
         /// Get All UserRviews for User.
         /// </summary>
+        /// <param name="user">The user<see cref="AuctionUser"/>.</param>
         /// <returns>All all user reviews for user.</returns>
         public IEnumerable<UserReview> GetUserReviewsForUser(AuctionUser user)
         {

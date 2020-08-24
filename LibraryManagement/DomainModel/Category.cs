@@ -12,6 +12,7 @@ namespace LibraryManagement.DomainModel
     /// </summary>
     public class Category
     {
+        
         /// <summary>
         /// Gets or sets id.
         /// </summary>
@@ -26,11 +27,23 @@ namespace LibraryManagement.DomainModel
         /// <summary>
         /// Gets or sets products.
         /// </summary>
-        public ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Product { get; set; }
 
+        
+        /// <summary>
+        /// Gets or sets parent category id.
+        /// </summary>
+        public int ParentCategoryId { get; set; }
         /// <summary>
         /// Gets or sets parent category.
         /// </summary>
         public Category ParentCategory { get; set; }
+        
+        /// <summary>
+        /// Gets or sets subcategories
+        /// category.
+        /// </summary>
+        public ICollection<Category> Categories { get; set; } 
+
     }
 }

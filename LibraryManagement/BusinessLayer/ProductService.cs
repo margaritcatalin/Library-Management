@@ -2,30 +2,33 @@
 // Margarit Marian Catalin
 // </copyright>
 
-
 namespace LibraryManagement.BusinessLayer
 {
-    using System.Linq;
-    using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
-    using System.Collections.Generic;
     using LibraryManagement.DomainModel;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// The Product service.
     /// </summary>
     public class ProductService
     {
+        /// <summary>
+        /// Defines the productRepository.
+        /// </summary>
         private readonly ProductRepository productRepository;
 
-        /// <summary>Initializes a new instance of the <see cref="ProductRepository"/> class.</summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductService"/> class.
+        /// </summary>
         /// <param name="productRepository">The Product repository.</param>
         public ProductService(ProductRepository productRepository)
         {
             this.productRepository = productRepository;
         }
-
 
         /// <summary>
         /// Add a new Product.
@@ -100,7 +103,7 @@ namespace LibraryManagement.BusinessLayer
                 return false;
             }
 
-            if (product.Categories.IsNullOrEmpty())
+            if (product.Category.IsNullOrEmpty())
             {
                 LoggerUtil.LogInfo($"Product is invalid. You need to add a category to product.",
                     MethodBase.GetCurrentMethod());

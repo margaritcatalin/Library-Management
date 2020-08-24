@@ -27,6 +27,6 @@ namespace LibraryManagement.DomainModel
         /// <summary>
         /// Gets or sets Product category.
         /// </summary>
-        public virtual ICollection<Category> Categories { get; set; }
+        public ICollection<Category> Category { get; set; }
     }
 }

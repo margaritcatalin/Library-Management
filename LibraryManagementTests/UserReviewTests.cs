@@ -4,13 +4,13 @@
 
 namespace LibraryManagementTests
 {
-    using System.Linq;
-    using NUnit.Framework;
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
-    using Telerik.JustMock.EntityFramework;
     using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
+    using NUnit.Framework;
+    using System.Linq;
+    using Telerik.JustMock.EntityFramework;
 
     /// <summary>
     /// The userReview unit tests.
@@ -18,9 +18,19 @@ namespace LibraryManagementTests
     [TestFixture]
     public class UserReviewTests
     {
+        /// <summary>
+        /// Defines the libraryContextMock.
+        /// </summary>
         private LibraryDbContext libraryContextMock;
 
+        /// <summary>
+        /// Defines the userReviewService.
+        /// </summary>
         private UserReviewService userReviewService;
+
+        /// <summary>
+        /// Defines the auctionUserService.
+        /// </summary>
         private AuctionUserService auctionUserService;
 
         /// <summary>
@@ -30,6 +40,7 @@ namespace LibraryManagementTests
         public void SetUp()
         {
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
+            EntityFrameworkMock.PrepareMock(this.libraryContextMock);
             this.userReviewService = new UserReviewService(new UserReviewRepository(this.libraryContextMock));
             this.auctionUserService = new AuctionUserService(new AuctionUserRepository(this.libraryContextMock),
                 this.userReviewService);
@@ -82,7 +93,6 @@ namespace LibraryManagementTests
             var resultReview1 = this.userReviewService.AddUserReview(review1);
             Assert.True(!this.libraryContextMock.UserReviews.Any());
         }
-
 
         /// <summary>
         /// Test add an userReview with null review user.
@@ -160,13 +170,12 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddBigScoreUserReview()
         {
-            var userReview = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {Id = 2, FirstName = "Popa", LastName = "Andrei", Gender = "M"};
+            var userReview = new AuctionUser {FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var reviewUser = new AuctionUser {FirstName = "Popa", LastName = "Andrei", Gender = "F"};
             var resultUser1 = this.auctionUserService.AddAuctionUser(userReview, Role.Buyer);
             var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-
+            var user1 = this.auctionUserService.GetAuctionUserById(userReview.Id);
+            var user2 = this.auctionUserService.GetAuctionUserById(reviewUser.Id);
             var review1 = new UserReview
                 {Description = "He is a good man", Score = 999, ReviewByUser = user2, ReviewForUser = user1};
             var resultReview1 = this.userReviewService.AddUserReview(review1);
@@ -225,7 +234,9 @@ namespace LibraryManagementTests
             {
                 Description =
                     "bFuDu3e8H7LuEGyZbYTUfxdKm9gweGGho3e8H9m2hlgBHgglrMME0Rf6CI99bdLg1wnSwBj3dKsJ2LpRENQIloUp4m7oj4Xs9mMbxbFuDu3e8H7LuEGyZbYTUfxdKm9gweGGho3e8H9m2hlgBHgglrMME0Rf6CI99bdLg1wnSwBj3dKsJ2LpRENQIloUp4m7oj4Xs9mMbx",
-                Score = 4, ReviewByUser = user2, ReviewForUser = user1
+                Score = 4,
+                ReviewByUser = user2,
+                ReviewForUser = user1
             };
             var resultReview1 = this.userReviewService.AddUserReview(review1);
             Assert.True(!this.libraryContextMock.UserReviews.Any());
@@ -320,209 +331,7 @@ namespace LibraryManagementTests
             var reviews = this.userReviewService.GetUserReviews();
             Assert.IsFalse(reviews.Count() == 2);
         }
-
-        /// <summary>
-        /// Test update description for auction user.
-        /// </summary>
-        [Test]
-        public void TestUpdateDescriptionForUserReview()
-        {
-            var userReview = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {Id = 2, FirstName = "Popa", LastName = "Andrei", Gender = "M"};
-            var resultUser1 = this.auctionUserService.AddAuctionUser(userReview, Role.Buyer);
-            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-
-            var review1 = new UserReview
-                {Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1};
-            var resultReview1 = this.userReviewService.AddUserReview(review1);
-            var reviews = this.userReviewService.GetUserReviews();
-            var lastReview = reviews.ToList()[0];
-            lastReview.Description = "New description";
-            var review = this.userReviewService.UpdateUserReview(lastReview);
-            var newReview = this.userReviewService.GetUserReviewById(lastReview.Id);
-            Assert.IsTrue(newReview.Description.Equals("New description"));
-        }
-
-        /// <summary>
-        /// Test update with a description for auction user.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithBadDescriptionForUserReview()
-        {
-            var userReview = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {Id = 2, FirstName = "Popa", LastName = "Andrei", Gender = "M"};
-            var resultUser1 = this.auctionUserService.AddAuctionUser(userReview, Role.Buyer);
-            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-
-            var review1 = new UserReview
-                {Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1};
-            var resultReview1 = this.userReviewService.AddUserReview(review1);
-            var reviews = this.userReviewService.GetUserReviews();
-            var lastReview = reviews.ToList()[0];
-            lastReview.Description = null;
-            var review = this.userReviewService.UpdateUserReview(lastReview);
-            var newReview = this.userReviewService.GetUserReviewById(lastReview.Id);
-            Assert.IsTrue(newReview.Description.Equals("He is a good man"));
-        }
-
-        /// <summary>
-        /// Test update score for auction user.
-        /// </summary>
-        [Test]
-        public void TestUpdateScoreForUserReview()
-        {
-            var userReview = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {Id = 2, FirstName = "Popa", LastName = "Andrei", Gender = "M"};
-            var resultUser1 = this.auctionUserService.AddAuctionUser(userReview, Role.Buyer);
-            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-
-            var review1 = new UserReview
-                {Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1};
-            var resultReview1 = this.userReviewService.AddUserReview(review1);
-            var reviews = this.userReviewService.GetUserReviews();
-            var lastReview = reviews.ToList()[0];
-            lastReview.Score = 7;
-            var review = this.userReviewService.UpdateUserReview(lastReview);
-            var newReview = this.userReviewService.GetUserReviewById(lastReview.Id);
-            Assert.IsTrue(newReview.Score == 7);
-        }
-
-        /// <summary>
-        /// Test update with a wrong score for auction user.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithBadScoreForUserReview()
-        {
-            var userReview = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {Id = 2, FirstName = "Popa", LastName = "Andrei", Gender = "M"};
-            var resultUser1 = this.auctionUserService.AddAuctionUser(userReview, Role.Buyer);
-            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-
-            var review1 = new UserReview
-                {Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1};
-            var resultReview1 = this.userReviewService.AddUserReview(review1);
-            var reviews = this.userReviewService.GetUserReviews();
-            var lastReview = reviews.ToList()[0];
-            lastReview.Score = -3;
-            var review = this.userReviewService.UpdateUserReview(lastReview);
-            var newReview = this.userReviewService.GetUserReviewById(lastReview.Id);
-            Assert.IsFalse(newReview.Score == -3);
-        }
-
-        /// <summary>
-        /// Test update with a user for auction user.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithGoodByUserForUserReview()
-        {
-            var userReview = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {Id = 2, FirstName = "Popa", LastName = "Andrei", Gender = "M"};
-            var reviewUser3 = new AuctionUser {FirstName = "Popa", LastName = "Danut", Gender = "M"};
-
-            var resultUser1 = this.auctionUserService.AddAuctionUser(userReview, Role.Buyer);
-            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var resultUser3 = this.auctionUserService.AddAuctionUser(reviewUser3, Role.Seller);
-
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-            var user3 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Danut");
-
-            var review1 = new UserReview
-                {Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1};
-            var resultReview1 = this.userReviewService.AddUserReview(review1);
-            var reviews = this.userReviewService.GetUserReviews();
-            var lastReview = reviews.ToList()[0];
-            lastReview.ReviewByUser = user3;
-            var review = this.userReviewService.UpdateUserReview(lastReview);
-            var newReview = this.userReviewService.GetUserReviewById(lastReview.Id);
-            Assert.IsTrue(newReview.ReviewByUser.Id == user3.Id);
-        }
-
-        /// <summary>
-        /// Test update with a wrong user for auction user.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithBadByUserForUserReview()
-        {
-            var userReview = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {Id = 2, FirstName = "Popa", LastName = "Andrei", Gender = "M"};
-            var resultUser1 = this.auctionUserService.AddAuctionUser(userReview, Role.Buyer);
-            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-
-            var review1 = new UserReview
-                {Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1};
-            var resultReview1 = this.userReviewService.AddUserReview(review1);
-            var reviews = this.userReviewService.GetUserReviews();
-            var lastReview = reviews.ToList()[0];
-            lastReview.ReviewByUser = user1;
-            var review = this.userReviewService.UpdateUserReview(lastReview);
-            var newReview = this.userReviewService.GetUserReviewById(lastReview.Id);
-            Assert.IsFalse(newReview.ReviewByUser.Id == user1.Id);
-        }
-
-        /// <summary>
-        /// Test update with a user for auction user.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithGoodForUserForUserReview()
-        {
-            var userReview = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {Id = 2, FirstName = "Popa", LastName = "Andrei", Gender = "M"};
-            var reviewUser3 = new AuctionUser {FirstName = "Popa", LastName = "Danut", Gender = "M"};
-
-            var resultUser1 = this.auctionUserService.AddAuctionUser(userReview, Role.Buyer);
-            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var resultUser3 = this.auctionUserService.AddAuctionUser(reviewUser3, Role.Seller);
-
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-            var user3 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Danut");
-
-            var review1 = new UserReview
-                {Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1};
-            var resultReview1 = this.userReviewService.AddUserReview(review1);
-            var reviews = this.userReviewService.GetUserReviews();
-            var lastReview = reviews.ToList()[0];
-            lastReview.ReviewForUser = user3;
-            var review = this.userReviewService.UpdateUserReview(lastReview);
-            var newReview = this.userReviewService.GetUserReviewById(lastReview.Id);
-            Assert.IsTrue(newReview.ReviewForUser.Id == user3.Id);
-        }
-
-        /// <summary>
-        /// Test update with a wrong user for auction user.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithBadForUserForUserReview()
-        {
-            var userReview = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var reviewUser = new AuctionUser {Id = 2, FirstName = "Popa", LastName = "Andrei", Gender = "M"};
-            var resultUser1 = this.auctionUserService.AddAuctionUser(userReview, Role.Buyer);
-            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-
-            var review1 = new UserReview
-                {Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1};
-            var resultReview1 = this.userReviewService.AddUserReview(review1);
-            var reviews = this.userReviewService.GetUserReviews();
-            var lastReview = reviews.ToList()[0];
-            lastReview.ReviewForUser = user2;
-            var review = this.userReviewService.UpdateUserReview(lastReview);
-            var newReview = this.userReviewService.GetUserReviewById(lastReview.Id);
-            Assert.IsFalse(newReview.ReviewForUser.Id == user2.Id);
-        }
-
+        
         /// <summary>
         /// Test delete UserReview.
         /// </summary>

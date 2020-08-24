@@ -4,27 +4,31 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using System.Linq;
-    using System.Reflection;
     using Castle.Core.Internal;
     using LibraryManagement.DataMapper;
-    using System.Collections.Generic;
     using LibraryManagement.DomainModel;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// The Category service.
     /// </summary>
     public class CategoryService
     {
+        /// <summary>
+        /// Defines the categoryRepository.
+        /// </summary>
         private readonly CategoryRepository categoryRepository;
 
-        /// <summary>Initializes a new instance of the <see cref="CategoryRepository"/> class.</summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryService"/> class.
+        /// </summary>
         /// <param name="categoryRepository">The Category repository.</param>
         public CategoryService(CategoryRepository categoryRepository)
         {
             this.categoryRepository = categoryRepository;
         }
-
 
         /// <summary>
         /// Add a new Category.
@@ -93,7 +97,7 @@ namespace LibraryManagement.BusinessLayer
         public IEnumerable<Category> GetAllCategoriesProduct(Product product)
         {
             List<Category> allProductCategories = new List<Category>();
-            var productCategories = product.Categories;
+            var productCategories = product.Category;
             foreach (var category in productCategories)
             {
                 var currentCategory = category;

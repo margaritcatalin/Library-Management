@@ -4,14 +4,14 @@
 
 namespace LibraryManagementTests
 {
-    using System.Linq;
-    using NUnit.Framework;
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
-    using Telerik.JustMock.EntityFramework;
-    using System;
     using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
+    using NUnit.Framework;
+    using System;
+    using System.Linq;
+    using Telerik.JustMock.EntityFramework;
 
     /// <summary>
     /// The bid unit tests.
@@ -19,14 +19,44 @@ namespace LibraryManagementTests
     [TestFixture]
     public class BidTests
     {
+        /// <summary>
+        /// Defines the libraryContextMock.
+        /// </summary>
         private LibraryDbContext libraryContextMock;
 
+        /// <summary>
+        /// Defines the bidService.
+        /// </summary>
         private BidService bidService;
+
+        /// <summary>
+        /// Defines the productService.
+        /// </summary>
         private ProductService productService;
+
+        /// <summary>
+        /// Defines the auctionUserService.
+        /// </summary>
         private AuctionUserService auctionUserService;
+
+        /// <summary>
+        /// Defines the auctionService.
+        /// </summary>
         private AuctionService auctionService;
+
+        /// <summary>
+        /// Defines the categoryService.
+        /// </summary>
         private CategoryService categoryService;
+
+        /// <summary>
+        /// Defines the priceService.
+        /// </summary>
         private PriceService priceService;
+
+        /// <summary>
+        /// Defines the userReviewService.
+        /// </summary>
         private UserReviewService userReviewService;
 
         /// <summary>
@@ -36,6 +66,7 @@ namespace LibraryManagementTests
         public void SetUp()
         {
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
+            EntityFrameworkMock.PrepareMock(this.libraryContextMock);
             this.priceService = new PriceService(new PriceRepository(this.libraryContextMock));
             this.productService = new ProductService(new ProductRepository(this.libraryContextMock));
             this.categoryService = new CategoryService(new CategoryRepository(this.libraryContextMock));
@@ -53,19 +84,18 @@ namespace LibraryManagementTests
         [Test]
         public void TestAddBid()
         {
-            var auctionUser = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
             var userSeller = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
                 auctionUser.LastName);
-            var startPrice = new Price {Id = 1, Currency = "Euro", Value = 88.5};
+            var startPrice = new Price { Currency = "Euro", Value = 88.5};
             var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Id = 1, Name = "Legume"};
+            var category = new Category {Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
-                Id = 1,
                 Auctioneer = userSeller,
                 Product = product,
                 StartPrice = startPrice,
@@ -74,15 +104,15 @@ namespace LibraryManagementTests
                 Ended = false,
             };
             var auctionResult = this.auctionService.AddAuction(auction);
-            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
+            var auctionUser2 = new AuctionUser { FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
                 auctionUser2.LastName);
-            var bidPrice = new Price {Id = 2, Currency = "Euro", Value = 108.5};
+            var bidPrice = new Price {Currency = "Euro", Value = 108.5};
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
-            var auctionById = this.auctionService.GetAuctionById(1);
+            var auctionById = this.auctionService.GetAuctionById(auction.Id);
             var bid = new Bid
-                {Id = 1, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now};
+                { Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now};
             var resultBid = this.bidService.AddBid(bid);
             Assert.True(this.libraryContextMock.Bids.Count() == 1);
         }
@@ -96,7 +126,6 @@ namespace LibraryManagementTests
             var resultBid = this.bidService.AddBid(null);
             Assert.True(!this.libraryContextMock.Bids.Any());
         }
-
 
         /// <summary>
         /// Test add a new bid with null auction.
@@ -112,7 +141,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -152,7 +181,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -192,7 +221,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -232,7 +261,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -254,7 +283,10 @@ namespace LibraryManagementTests
             var auctionById = this.auctionService.GetAuctionById(1);
             var bid = new Bid
             {
-                Id = 1, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice,
+                Id = 1,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
                 BidDate = DateTime.Now.AddDays(5)
             };
             var resultBid = this.bidService.AddBid(bid);
@@ -275,7 +307,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -297,7 +329,11 @@ namespace LibraryManagementTests
             var auctionById = this.auctionService.GetAuctionById(1);
             var bid = new Bid
             {
-                Id = 1, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
+                Id = 1,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
+                BidDate = DateTime.Now
             };
             var resultBid = this.bidService.AddBid(bid);
             Assert.True(!this.libraryContextMock.Bids.Any());
@@ -317,7 +353,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -339,7 +375,11 @@ namespace LibraryManagementTests
             var auctionById = this.auctionService.GetAuctionById(1);
             var bid = new Bid
             {
-                Id = 1, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
+                Id = 1,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
+                BidDate = DateTime.Now
             };
             var resultBid = this.bidService.AddBid(bid);
             Assert.True(!this.libraryContextMock.Bids.Any());
@@ -359,7 +399,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -381,7 +421,11 @@ namespace LibraryManagementTests
             var auctionById = this.auctionService.GetAuctionById(1);
             var bid = new Bid
             {
-                Id = 1, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
+                Id = 1,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
+                BidDate = DateTime.Now
             };
             var resultBid = this.bidService.AddBid(bid);
             Assert.True(!this.libraryContextMock.Bids.Any());
@@ -401,7 +445,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -424,7 +468,11 @@ namespace LibraryManagementTests
             var bidId = 1;
             var bid = new Bid
             {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
+                Id = bidId,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
+                BidDate = DateTime.Now
             };
             var resultBid = this.bidService.AddBid(bid);
             var priceById = this.priceService.GetPriceById(bidId);
@@ -445,7 +493,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -468,7 +516,11 @@ namespace LibraryManagementTests
             var bidId = 1;
             var bid = new Bid
             {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
+                Id = bidId,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
+                BidDate = DateTime.Now
             };
             var resultBid = this.bidService.AddBid(bid);
             var bidById = this.bidService.GetBidById(bidId + 1);
@@ -489,7 +541,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -512,7 +564,11 @@ namespace LibraryManagementTests
             var bidId = 1;
             var bid = new Bid
             {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
+                Id = bidId,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
+                BidDate = DateTime.Now
             };
             var resultBid = this.bidService.AddBid(bid);
             var bids = this.bidService.GetBids();
@@ -533,7 +589,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -556,370 +612,17 @@ namespace LibraryManagementTests
             var bidId = 1;
             var bid = new Bid
             {
-                Id = bidId, Auction = auctionById, BidUser = null, BidPrice = bidPrice, BidDate = DateTime.Now
+                Id = bidId,
+                Auction = auctionById,
+                BidUser = null,
+                BidPrice = bidPrice,
+                BidDate = DateTime.Now
             };
             var resultBid = this.bidService.AddBid(bid);
             var bids = this.bidService.GetBids();
             Assert.IsFalse(bids.Count() == 1);
         }
-
-        /// <summary>
-        /// Test update auction for bid.
-        /// </summary>
-        [Test]
-        public void TestUpdateBidAuction()
-        {
-            var auctionUser = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var userSeller = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                auctionUser.LastName);
-            var startPrice = new Price {Id = 1, Currency = "Euro", Value = 88.5};
-            var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Id = 1, Name = "Legume"};
-            var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
-            var productResult = this.productService.AddProduct(product);
-            var auction = new Auction
-            {
-                Id = 1,
-                Auctioneer = userSeller,
-                Product = product,
-                StartPrice = startPrice,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(5),
-                Ended = false,
-            };
-            var auctionResult = this.auctionService.AddAuction(auction);
-            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
-            var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
-            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
-                auctionUser2.LastName);
-            var bidPrice = new Price {Id = 2, Currency = "Euro", Value = 108.5};
-            var bidPriceResult = this.priceService.AddPrice(bidPrice);
-            var auctionById = this.auctionService.GetAuctionById(1);
-            var bidId = 1;
-            var bid = new Bid
-            {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
-            };
-            var resultBid = this.bidService.AddBid(bid);
-            var bidById = this.bidService.GetBidById(bidId);
-            var auction2 = new Auction
-            {
-                Id = 2,
-                Auctioneer = userSeller,
-                Product = product,
-                StartPrice = startPrice,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(7),
-                Ended = false,
-            };
-            var auction2Result = this.auctionService.AddAuction(auction2);
-
-            bidById.Auction = auction2;
-            var updateResult = this.bidService.UpdateBid(bidById);
-            bidById = this.bidService.GetBidById(bidId);
-            Assert.IsTrue(bidById.Auction.Id == auction2.Id);
-        }
-
-        /// <summary>
-        /// Test update with a wrong auction for bid.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithBadBidAuction()
-        {
-            var auctionUser = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var userSeller = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                auctionUser.LastName);
-            var startPrice = new Price {Id = 1, Currency = "Euro", Value = 88.5};
-            var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Id = 1, Name = "Legume"};
-            var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
-            var productResult = this.productService.AddProduct(product);
-            var auction = new Auction
-            {
-                Id = 1,
-                Auctioneer = userSeller,
-                Product = product,
-                StartPrice = startPrice,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(5),
-                Ended = false,
-            };
-            var auctionResult = this.auctionService.AddAuction(auction);
-            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
-            var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
-            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
-                auctionUser2.LastName);
-            var bidPrice = new Price {Id = 2, Currency = "Euro", Value = 108.5};
-            var bidPriceResult = this.priceService.AddPrice(bidPrice);
-            var auctionById = this.auctionService.GetAuctionById(1);
-            var bidId = 1;
-            var bid = new Bid
-            {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
-            };
-            var resultBid = this.bidService.AddBid(bid);
-            var bidById = this.bidService.GetBidById(bidId);
-            bidById.Auction = null;
-            var updateResult = this.bidService.UpdateBid(bidById);
-            bidById = this.bidService.GetBidById(bidId);
-            Assert.IsNotNull(bidById.Auction);
-        }
-
-        /// <summary>
-        /// Test update user for bid.
-        /// </summary>
-        [Test]
-        public void TestUpdateBidUser()
-        {
-            var auctionUser = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var userSeller = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                auctionUser.LastName);
-            var startPrice = new Price {Id = 1, Currency = "Euro", Value = 88.5};
-            var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Id = 1, Name = "Legume"};
-            var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
-            var productResult = this.productService.AddProduct(product);
-            var auction = new Auction
-            {
-                Id = 1,
-                Auctioneer = userSeller,
-                Product = product,
-                StartPrice = startPrice,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(5),
-                Ended = false,
-            };
-            var auctionResult = this.auctionService.AddAuction(auction);
-            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
-            var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
-            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
-                auctionUser2.LastName);
-            var bidPrice = new Price {Id = 2, Currency = "Euro", Value = 108.5};
-            var bidPriceResult = this.priceService.AddPrice(bidPrice);
-            var auctionById = this.auctionService.GetAuctionById(1);
-            var bidId = 1;
-            var bid = new Bid
-            {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
-            };
-            var resultBid = this.bidService.AddBid(bid);
-            var bidById = this.bidService.GetBidById(bidId);
-            var auctionUser3 = new AuctionUser {Id = 2, FirstName = "Anton", LastName = "Mihai", Gender = "F"};
-            var result3 = this.auctionUserService.AddAuctionUser(auctionUser3, Role.Buyer);
-            var userBuyer3 = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser3.FirstName,
-                auctionUser3.LastName);
-
-            bidById.BidUser = userBuyer3;
-            var updateResult = this.bidService.UpdateBid(bidById);
-            bidById = this.bidService.GetBidById(bidId);
-            Assert.IsTrue(bidById.BidUser.Id == userBuyer3.Id);
-        }
-
-        /// <summary>
-        /// Test update with a wrong userr for bid.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithBadBidUser()
-        {
-            var auctionUser = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var userSeller = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                auctionUser.LastName);
-            var startPrice = new Price {Id = 1, Currency = "Euro", Value = 88.5};
-            var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Id = 1, Name = "Legume"};
-            var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
-            var productResult = this.productService.AddProduct(product);
-            var auction = new Auction
-            {
-                Id = 1,
-                Auctioneer = userSeller,
-                Product = product,
-                StartPrice = startPrice,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(5),
-                Ended = false,
-            };
-            var auctionResult = this.auctionService.AddAuction(auction);
-            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
-            var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
-            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
-                auctionUser2.LastName);
-            var bidPrice = new Price {Id = 2, Currency = "Euro", Value = 108.5};
-            var bidPriceResult = this.priceService.AddPrice(bidPrice);
-            var auctionById = this.auctionService.GetAuctionById(1);
-            var bidId = 1;
-            var bid = new Bid
-            {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
-            };
-            var resultBid = this.bidService.AddBid(bid);
-            var bidById = this.bidService.GetBidById(bidId);
-            var auctionUser3 = new AuctionUser {Id = 2, FirstName = "Anton", LastName = "Mihai", Gender = "F"};
-            var result3 = this.auctionUserService.AddAuctionUser(auctionUser3, Role.Seller);
-            var userBuyer3 = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser3.FirstName,
-                auctionUser3.LastName);
-            bidById.BidUser = userBuyer3;
-            var updateResult = this.bidService.UpdateBid(bidById);
-            bidById = this.bidService.GetBidById(bidId);
-            Assert.IsFalse(bidById.BidUser.Id == userBuyer3.Id);
-        }
-
-        /// <summary>
-        /// Test update price for bid.
-        /// </summary>
-        [Test]
-        public void TestUpdateBidPrice()
-        {
-            var auctionUser = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var userSeller = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                auctionUser.LastName);
-            var startPrice = new Price {Id = 1, Currency = "Euro", Value = 88.5};
-            var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Id = 1, Name = "Legume"};
-            var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
-            var productResult = this.productService.AddProduct(product);
-            var auction = new Auction
-            {
-                Id = 1,
-                Auctioneer = userSeller,
-                Product = product,
-                StartPrice = startPrice,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(5),
-                Ended = false,
-            };
-            var auctionResult = this.auctionService.AddAuction(auction);
-            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
-            var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
-            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
-                auctionUser2.LastName);
-            var bidPrice = new Price {Id = 2, Currency = "Euro", Value = 108.5};
-            var bidPriceResult = this.priceService.AddPrice(bidPrice);
-            var auctionById = this.auctionService.GetAuctionById(1);
-            var bidId = 1;
-            var bid = new Bid
-            {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
-            };
-            var resultBid = this.bidService.AddBid(bid);
-            var bidById = this.bidService.GetBidById(bidId);
-            var bidPrice2 = new Price {Id = 3, Currency = "Euro", Value = 108.5};
-            var bidPriceResult2 = this.priceService.AddPrice(bidPrice2);
-
-            bidById.BidPrice = bidPrice2;
-            var updateResult = this.bidService.UpdateBid(bidById);
-            bidById = this.bidService.GetBidById(bidId);
-            Assert.IsTrue(bidById.BidPrice.Id == bidPrice2.Id);
-        }
-
-        /// <summary>
-        /// Test update with a wrong auction for bid.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithBadBidPrice()
-        {
-            var auctionUser = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var userSeller = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                auctionUser.LastName);
-            var startPrice = new Price {Id = 1, Currency = "Euro", Value = 88.5};
-            var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Id = 1, Name = "Legume"};
-            var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
-            var productResult = this.productService.AddProduct(product);
-            var auction = new Auction
-            {
-                Id = 1,
-                Auctioneer = userSeller,
-                Product = product,
-                StartPrice = startPrice,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(5),
-                Ended = false,
-            };
-            var auctionResult = this.auctionService.AddAuction(auction);
-            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
-            var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
-            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
-                auctionUser2.LastName);
-            var bidPrice = new Price {Id = 2, Currency = "Euro", Value = 108.5};
-            var bidPriceResult = this.priceService.AddPrice(bidPrice);
-            var auctionById = this.auctionService.GetAuctionById(1);
-            var bidId = 1;
-            var bid = new Bid
-            {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now
-            };
-            var resultBid = this.bidService.AddBid(bid);
-            var bidById = this.bidService.GetBidById(bidId);
-            var bidPrice2 = new Price {Id = 3, Currency = "Dolar", Value = 108.5};
-            var bidPriceResult2 = this.priceService.AddPrice(bidPrice2);
-
-            bidById.BidPrice = bidPrice2;
-            var updateResult = this.bidService.UpdateBid(bidById);
-            bidById = this.bidService.GetBidById(bidId);
-            Assert.IsFalse(bidById.BidPrice.Id == bidPrice2.Id);
-        }
-
-        /// <summary>
-        /// Test update date for bid.
-        /// </summary>
-        [Test]
-        public void TestUpdateBidDate()
-        {
-            var auctionUser = new AuctionUser {Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M"};
-            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
-            var userSeller = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName,
-                auctionUser.LastName);
-            var startPrice = new Price {Id = 1, Currency = "Euro", Value = 88.5};
-            var priceResult = this.priceService.AddPrice(startPrice);
-            var category = new Category {Id = 1, Name = "Legume"};
-            var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
-            var productResult = this.productService.AddProduct(product);
-            var auction = new Auction
-            {
-                Id = 1,
-                Auctioneer = userSeller,
-                Product = product,
-                StartPrice = startPrice,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(5),
-                Ended = false,
-            };
-            var auctionResult = this.auctionService.AddAuction(auction);
-            var auctionUser2 = new AuctionUser {Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F"};
-            var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
-            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName,
-                auctionUser2.LastName);
-            var bidPrice = new Price {Id = 2, Currency = "Euro", Value = 108.5};
-            var bidPriceResult = this.priceService.AddPrice(bidPrice);
-            var auctionById = this.auctionService.GetAuctionById(1);
-            var bidId = 1;
-            var bidDate = DateTime.Now;
-            var bid = new Bid
-            {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = bidDate
-            };
-            var resultBid = this.bidService.AddBid(bid);
-            var bidById = this.bidService.GetBidById(bidId);
-            bidById.BidDate = bidDate.AddDays(2);
-            var updateResult = this.bidService.UpdateBid(bidById);
-            bidById = this.bidService.GetBidById(bidId);
-            Assert.IsTrue(DateTime.Compare(bidById.BidDate, bidDate) == 0);
-        }
-
+        
         /// <summary>
         /// Test delete bid.
         /// </summary>
@@ -934,7 +637,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -958,7 +661,11 @@ namespace LibraryManagementTests
             var bidDate = DateTime.Now;
             var bid = new Bid
             {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = bidDate
+                Id = bidId,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
+                BidDate = bidDate
             };
             var resultBid = this.bidService.AddBid(bid);
             var deleteResult = this.bidService.DeleteBid(bidId);
@@ -979,7 +686,7 @@ namespace LibraryManagementTests
             var priceResult = this.priceService.AddPrice(startPrice);
             var category = new Category {Id = 1, Name = "Legume"};
             var categoryResult = this.categoryService.AddCategory(category);
-            var product = new Product {Id = 1, Name = "Fasole", Categories = new[] {category}};
+            var product = new Product {Id = 1, Name = "Fasole", Category = new[] {category}};
             var productResult = this.productService.AddProduct(product);
             var auction = new Auction
             {
@@ -1003,7 +710,11 @@ namespace LibraryManagementTests
             var bidDate = DateTime.Now;
             var bid = new Bid
             {
-                Id = bidId, Auction = auctionById, BidUser = userBuyer, BidPrice = bidPrice, BidDate = bidDate
+                Id = bidId,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
+                BidDate = bidDate
             };
             var resultBid = this.bidService.AddBid(bid);
             var deleteResult = this.bidService.DeleteBid(bidId + 1);

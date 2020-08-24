@@ -34,8 +34,8 @@
         </Rule>
       </Rules>
       <AnalyzerSettings>
-        <StringProperty Name="CompanyName">Transilvania University Of Brasov</StringProperty>
-        <StringProperty Name="Copyright">Dorin Alexandru-Valentin</StringProperty>
+        <StringProperty Name="CompanyName">Transilvania University of Brasov</StringProperty>
+        <StringProperty Name="Copyright">Margarit Marian Catalin</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.ReadabilityRules">

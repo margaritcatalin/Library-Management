@@ -2,21 +2,23 @@
 // Margarit Marian Catalin
 // </copyright>
 
-
 namespace LibraryManagement.DataMapper
 {
+    using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
-    using System.Linq;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Linq;
     using System.Reflection;
-    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Auction repository.
     /// </summary>
     public class AuctionRepository
     {
+        /// <summary>
+        /// Defines the libraryContext.
+        /// </summary>
         private readonly LibraryDbContext libraryContext;
 
         /// <summary>
@@ -65,15 +67,13 @@ namespace LibraryManagement.DataMapper
         /// <returns>A Auction.</returns>
         public Auction GetAuctionById(int id)
         {
-            var auction = this.libraryContext.Auctions.Find(id);
-            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, auction);
             return this.libraryContext.Auctions.Find(id);
         }
 
         /// <summary>
         /// Update a Auction.
         /// </summary>
-        /// <param name="price">The Auction.</param>
+        /// <param name="auction">The auction<see cref="Auction"/>.</param>
         /// <returns>If Auction was updated.</returns>
         public bool UpdateAuction(Auction auction)
         {

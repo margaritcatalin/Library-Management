@@ -2,29 +2,41 @@
 // Margarit Marian Catalin
 // </copyright>
 
-
 namespace LibraryManagement.BusinessLayer
 {
-    using System.Linq;
-    using System.Reflection;
     using Castle.Core.Internal;
     using DataMapper;
+    using LibraryManagement.DomainModel;
+    using LibraryManagement.Util;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
-    using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// The Auction service.
     /// </summary>
     public class AuctionService
     {
+        /// <summary>
+        /// Defines the auctionRepository.
+        /// </summary>
         private readonly AuctionRepository auctionRepository;
+
+        /// <summary>
+        /// Defines the categoryService.
+        /// </summary>
         private readonly CategoryService categoryService;
+
+        /// <summary>
+        /// Defines the auctionUserService.
+        /// </summary>
         private readonly AuctionUserService auctionUserService;
 
-        /// <summary>Initializes a new instance of the <see cref="AuctionRepository"/> class.</summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuctionService"/> class.
+        /// </summary>
         /// <param name="auctionRepository">The Auction repository.</param>
         /// <param name="categoryService">The Auction category Service.</param>
         /// <param name="auctionUserService">The Auction user Service.</param>
@@ -35,7 +47,6 @@ namespace LibraryManagement.BusinessLayer
             this.categoryService = categoryService;
             this.auctionUserService = auctionUserService;
         }
-
 
         /// <summary>
         /// Add a new Auction.
@@ -74,12 +85,12 @@ namespace LibraryManagement.BusinessLayer
             return false;
         }
 
-        /// <summary>
-        /// Get All Auction started by User.
-        /// </summary>
-        /// <param name="user">The user.</param>
-        /// <returns>All Auction started by user.</returns>
-        public IEnumerable<Auction> GetStartedAuctionsByUser(AuctionUser user)
+		/// <summary>
+		/// Get All Auction started by an specific user.
+		/// </summary>
+		/// <param name="user">The user.</param>
+		/// <returns>All Auction started by a user.</returns>
+		public IEnumerable<Auction> GetStartedAuctionsByUser(AuctionUser user)
         {
             var auctions = GetAuctions();
             var filteredAuctions =
@@ -134,9 +145,9 @@ namespace LibraryManagement.BusinessLayer
         {
             if (ValidateAuction(auction))
             {
-                if (!auction.Bids.IsNullOrEmpty())
+                if (!auction.Bid.IsNullOrEmpty())
                 {
-                    Bid firstBid = auction.Bids.ToList()[0];
+                    Bid firstBid = auction.Bid.ToList()[0];
                     if (!auction.StartPrice.Currency.Equals(firstBid.BidPrice.Currency))
                     {
                         LoggerUtil.LogInfo($"This new start price is wrong.", MethodBase.GetCurrentMethod());
@@ -233,7 +244,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>Last auction price.</returns>
         public Price GetAuctionLastPrice(Auction auction)
         {
-            var auctionBids = auction.Bids;
+            var auctionBids = auction.Bid;
             if (auctionBids.IsNullOrEmpty())
             {
                 return auction.StartPrice;

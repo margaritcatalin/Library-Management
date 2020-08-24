@@ -4,13 +4,13 @@
 
 namespace LibraryManagementTests
 {
-    using System.Linq;
-    using NUnit.Framework;
     using LibraryManagement.BusinessLayer;
     using LibraryManagement.DataMapper;
-    using Telerik.JustMock.EntityFramework;
-    using System.Configuration;
     using LibraryManagement.DomainModel;
+    using NUnit.Framework;
+    using System.Configuration;
+    using System.Linq;
+    using Telerik.JustMock.EntityFramework;
 
     /// <summary>
     /// The price unit tests.
@@ -18,8 +18,14 @@ namespace LibraryManagementTests
     [TestFixture]
     public class PriceTests
     {
+        /// <summary>
+        /// Defines the libraryContextMock.
+        /// </summary>
         private LibraryDbContext libraryContextMock;
 
+        /// <summary>
+        /// Defines the priceService.
+        /// </summary>
         private PriceService priceService;
 
         /// <summary>
@@ -29,6 +35,7 @@ namespace LibraryManagementTests
         public void SetUp()
         {
             this.libraryContextMock = EntityFrameworkMock.Create<LibraryDbContext>();
+            EntityFrameworkMock.PrepareMock(this.libraryContextMock);
             this.priceService = new PriceService(new PriceRepository(this.libraryContextMock));
         }
 
@@ -117,9 +124,7 @@ namespace LibraryManagementTests
         {
             var price = new Price {Currency = "Euro", Value = 54.5};
             var result = this.priceService.AddPrice(price);
-            var prices = this.priceService.GetPrices();
-            var priceId = prices.ToList()[0].Id;
-            var priceById = this.priceService.GetPriceById(priceId);
+            var priceById = this.priceService.GetPriceById(price.Id);
             Assert.NotNull(priceById);
         }
 
@@ -163,74 +168,6 @@ namespace LibraryManagementTests
             var result2 = this.priceService.AddPrice(price2);
             var prices = this.priceService.GetPrices();
             Assert.IsFalse(prices.Count() == 2);
-        }
-
-        /// <summary>
-        /// Test update Currency for price.
-        /// </summary>
-        [Test]
-        public void TestUpdateCurrencyForPrice()
-        {
-            var price = new Price {Currency = "Euro", Value = 54.5};
-            var result = this.priceService.AddPrice(price);
-            var prices = this.priceService.GetPrices();
-            var priceId = prices.ToList()[0].Id;
-            var priceById = this.priceService.GetPriceById(priceId);
-            priceById.Currency = "Dolar";
-            var updateResult = this.priceService.UpdatePrice(price);
-            var priceUpdated = this.priceService.GetPriceById(priceId);
-            Assert.IsTrue(priceUpdated.Currency.Equals("Dolar"));
-        }
-
-        /// <summary>
-        /// Test update with a wrong currency for auction price.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithBadCurrencyForPrice()
-        {
-            var price = new Price {Currency = "Euro", Value = 54.5};
-            var result = this.priceService.AddPrice(price);
-            var prices = this.priceService.GetPrices();
-            var priceId = prices.ToList()[0].Id;
-            var priceById = this.priceService.GetPriceById(priceId);
-            priceById.Currency = string.Empty;
-            var updateResult = this.priceService.UpdatePrice(price);
-            var priceUpdated = this.priceService.GetPriceById(priceId);
-            Assert.IsFalse(priceUpdated.Currency.Equals("Dolar"));
-        }
-
-        /// <summary>
-        /// Test update Value for price.
-        /// </summary>
-        [Test]
-        public void TestUpdateValueForPrice()
-        {
-            var price = new Price {Currency = "Euro", Value = 54.5};
-            var result = this.priceService.AddPrice(price);
-            var prices = this.priceService.GetPrices();
-            var priceId = prices.ToList()[0].Id;
-            var priceById = this.priceService.GetPriceById(priceId);
-            priceById.Value = 99.3;
-            var updateResult = this.priceService.UpdatePrice(priceById);
-            var priceUpdated = this.priceService.GetPriceById(priceId);
-            Assert.IsTrue(double.Equals(priceUpdated.Value, 99.3));
-        }
-
-        /// <summary>
-        /// Test update with a wrong Value for auction price.
-        /// </summary>
-        [Test]
-        public void TestUpdateWithBadValueForPrice()
-        {
-            var price = new Price {Currency = "Euro", Value = 54.5};
-            var result = this.priceService.AddPrice(price);
-            var prices = this.priceService.GetPrices();
-            var priceId = prices.ToList()[0].Id;
-            var priceById = this.priceService.GetPriceById(priceId);
-            priceById.Value = 0.0;
-            var updateResult = this.priceService.UpdatePrice(priceById);
-            var priceUpdated = this.priceService.GetPriceById(priceId);
-            Assert.IsFalse(double.Equals(priceUpdated.Value, 0.0));
         }
 
         /// <summary>

@@ -2,21 +2,23 @@
 // Margarit Marian Catalin
 // </copyright>
 
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Reflection;
-using LibraryManagement.DomainModel;
-
 namespace LibraryManagement.DataMapper
 {
+    using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
+    using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// The Bid repository.
     /// </summary>
     public class BidRepository
     {
+        /// <summary>
+        /// Defines the libraryContext.
+        /// </summary>
         private readonly LibraryDbContext libraryContext;
 
         /// <summary>
@@ -65,8 +67,6 @@ namespace LibraryManagement.DataMapper
         /// <returns>A Bid.</returns>
         public Bid GetBidById(int id)
         {
-            var entity = this.libraryContext.Bids.Find(id);
-            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
             return this.libraryContext.Bids.Find(id);
         }
 

@@ -4,18 +4,21 @@
 
 namespace LibraryManagement.DataMapper
 {
-    using System.Linq;
-    using System.Reflection;
     using LibraryManagement.DomainModel;
+    using LibraryManagement.Util;
     using System.Collections.Generic;
     using System.Data.Entity;
-    using LibraryManagement.Util;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// The Category repository.
     /// </summary>
     public class CategoryRepository
     {
+        /// <summary>
+        /// Defines the libraryContext.
+        /// </summary>
         private readonly LibraryDbContext libraryContext;
 
         /// <summary>
@@ -34,9 +37,6 @@ namespace LibraryManagement.DataMapper
         /// <returns>A role.</returns>
         public Category GetCategoryByName(string categoryName)
         {
-            var entity = this.libraryContext.Categories.FirstOrDefault(
-                a => a.Name.Equals(categoryName));
-            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
             return this.libraryContext.Categories.FirstOrDefault(
                 a => a.Name.Equals(categoryName));
         }
@@ -78,8 +78,6 @@ namespace LibraryManagement.DataMapper
         /// <returns>A category.</returns>
         public Category GetCategoryById(int id)
         {
-            var entity = this.libraryContext.Categories.Find(id);
-            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
             return this.libraryContext.Categories.Find(id);
         }
 

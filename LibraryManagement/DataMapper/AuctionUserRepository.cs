@@ -4,18 +4,21 @@
 
 namespace LibraryManagement.DataMapper
 {
+    using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
-    using System.Linq;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Linq;
     using System.Reflection;
-    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The AuctionUser repository.
     /// </summary>
     public class AuctionUserRepository
     {
+        /// <summary>
+        /// Defines the libraryContext.
+        /// </summary>
         private readonly LibraryDbContext libraryContext;
 
         /// <summary>
@@ -35,9 +38,6 @@ namespace LibraryManagement.DataMapper
         /// <returns>An AuctionUser.</returns>
         public AuctionUser GetAuctionUser(string firstName, string lastName)
         {
-            var entity = this.libraryContext.AuctionUsers.FirstOrDefault(
-                a => a.FirstName.Equals(firstName) && a.LastName.Equals(lastName));
-            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
             return this.libraryContext.AuctionUsers.FirstOrDefault(
                 a => a.FirstName.Equals(firstName) && a.LastName.Equals(lastName));
         }
@@ -81,8 +81,6 @@ namespace LibraryManagement.DataMapper
         /// <returns>An AuctionUser.</returns>
         public AuctionUser GetAuctionUserById(int id)
         {
-            var entity = this.libraryContext.AuctionUsers.Find(id);
-            DiscardChangesUtil.UndoingChangesDbEntityLevel(this.libraryContext, entity);
             return this.libraryContext.AuctionUsers.Find(id);
         }
 

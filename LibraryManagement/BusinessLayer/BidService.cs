@@ -2,25 +2,33 @@
 // Margarit Marian Catalin
 // </copyright>
 
-
 namespace LibraryManagement.BusinessLayer
 {
-    using System.Reflection;
     using LibraryManagement.DataMapper;
-    using System;
-    using System.Collections.Generic;
     using LibraryManagement.DomainModel;
     using LibraryManagement.Util;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
 
     /// <summary>
     /// The Bid service.
     /// </summary>
     public class BidService
     {
+        /// <summary>
+        /// Defines the bidRepository.
+        /// </summary>
         private readonly BidRepository bidRepository;
+
+        /// <summary>
+        /// Defines the auctionService.
+        /// </summary>
         private readonly AuctionService auctionService;
 
-        /// <summary>Initializes a new instance of the <see cref="BidRepository"/> class.</summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BidService"/> class.
+        /// </summary>
         /// <param name="bidRepository">The Bid repository.</param>
         /// <param name="auctionService">The Bid service.</param>
         public BidService(BidRepository bidRepository, AuctionService auctionService)
@@ -28,7 +36,6 @@ namespace LibraryManagement.BusinessLayer
             this.bidRepository = bidRepository;
             this.auctionService = auctionService;
         }
-
 
         /// <summary>
         /// Add a new Bid.
