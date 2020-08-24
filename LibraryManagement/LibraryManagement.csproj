@@ -216,8 +216,8 @@
     <Compile Include="DomainModel\Auction.cs" />
     <Compile Include="DomainModel\Price.cs" />
     <Compile Include="DomainModel\UserReview.cs" />
+    <Compile Include="Util\LoggerUtil.cs" />
     <Compile Include="Util\Role.cs" />
-    <Compile Include="LoggerUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

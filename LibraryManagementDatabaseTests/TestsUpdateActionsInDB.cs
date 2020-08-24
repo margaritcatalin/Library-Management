@@ -87,6 +87,64 @@ namespace LibraryManagementDatabaseTests
         }
 
         /// <summary>
+        /// Test get user score with more than k reviews.
+        /// </summary>
+        [Test]
+        public void TestGetUserScoreWithMoreThanKReviews()
+        {
+            this.ClearDatabase();
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var reviewUser = new AuctionUser { FirstName = "Popa", LastName = "Andrei", Gender = "M" };
+            var resultUser1 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
+            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
+            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
+            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
+            var averageOf = int.Parse(ConfigurationManager.AppSettings["SCORE_AVERAGE_OF"]);
+            var sumScores = 0;
+            for (var i = 0; i <= averageOf + 1; i++)
+            {
+                var review1 = new UserReview
+                { Description = "He is a good man" + i, Score = 1 + i, ReviewByUser = user2, ReviewForUser = user1 };
+                var resultReview1 = this.userReviewService.AddUserReview(review1);
+                if (i <= averageOf)
+                {
+                    sumScores += review1.Score;
+                }
+            }
+
+            var user = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
+            var userScore = this.auctionUserService.GetAuctionUserScore(user.Id);
+            int correctScore = sumScores / averageOf;
+            Assert.True(userScore == correctScore);
+        }
+
+        /// <summary>
+        /// Test get user score without reviews.
+        /// </summary>
+        [Test]
+        public void TestGetUserScoreWithReviews()
+        {
+            this.ClearDatabase();
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var reviewUser = new AuctionUser { FirstName = "Popa", LastName = "Andrei", Gender = "M" };
+            var resultUser1 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
+            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
+            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
+            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
+
+            var review1 = new UserReview
+            { Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1 };
+            var review2 = new UserReview
+            { Description = "He is a bad man", Score = 2, ReviewByUser = user2, ReviewForUser = user1 };
+            var resultReview1 = this.userReviewService.AddUserReview(review1);
+            var resultReview2 = this.userReviewService.AddUserReview(review2);
+            var user = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
+            var userScore = this.auctionUserService.GetAuctionUserScore(user.Id);
+            int correctScore = (review1.Score + review2.Score) / 2;
+            Assert.True(userScore == correctScore);
+        }
+
+        /// <summary>
         /// Test get user score without reviews.
         /// </summary>
         [Test]
@@ -129,6 +187,60 @@ namespace LibraryManagementDatabaseTests
             var userUpdated = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Marcus", "Pascu");
 
             Assert.IsTrue(user == null && userUpdated != null);
+        }
+
+        /// <summary>
+        /// Test update with a wrong role name for auction user.
+        /// </summary>
+        [Test]
+        public void TestUpdateWithAWrongRoleNameForAuctionUser()
+        {
+            this.ClearDatabase();
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+
+            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
+            auctionUser.Role = "Administrator";
+            var updateResult = this.auctionUserService.UpdateAuctionUser(auctionUser);
+            TestsUtil.UndoingChangesDbEntityLevel(this.libraryContext, auctionUser);
+            var user = this.auctionUserService.GetAuctionUserById(auctionUser.Id);
+            Assert.IsFalse(updateResult);
+            Assert.IsTrue(user.Role.Equals(Role.Buyer.Value));
+        }
+
+        /// <summary>
+        /// Test update role name with lower first for auction user.
+        /// </summary>
+        [Test]
+        public void TestUpdateRoleNameWithLowerFirstForAuctionUser()
+        {
+            this.ClearDatabase();
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+
+            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
+            auctionUser.Role = Role.Seller.Value.ToLower();
+            var updateResult = this.auctionUserService.UpdateAuctionUser(auctionUser);
+            TestsUtil.UndoingChangesDbEntityLevel(this.libraryContext, auctionUser);
+            var user = this.auctionUserService.GetAuctionUserById(auctionUser.Id);
+            Assert.IsFalse(updateResult);
+            Assert.IsTrue(user.Role.Equals(Role.Buyer.Value));
+        }
+        
+        /// <summary>
+        /// Test update role name with empty string for auction user.
+        /// </summary>
+        [Test]
+        public void TestUpdateRoleNameWithEmptyStringForAuctionUser()
+        {
+            this.ClearDatabase();
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+
+            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
+            auctionUser.Role = string.Empty;
+            var updateResult = this.auctionUserService.UpdateAuctionUser(auctionUser);
+            TestsUtil.UndoingChangesDbEntityLevel(this.libraryContext, auctionUser);
+            var user = this.auctionUserService.GetAuctionUserById(auctionUser.Id);
+            Assert.IsFalse(updateResult);
+            Assert.IsTrue(user.Role.Equals(Role.Buyer.Value));
         }
 
         /// <summary>

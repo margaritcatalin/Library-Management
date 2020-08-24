@@ -3,7 +3,7 @@
 // </copyright>
 // <summary>This is the Logger utility class.</summary>
 
-namespace LibraryManagement
+namespace LibraryManagement.Util
 {
     using System.Reflection;
 

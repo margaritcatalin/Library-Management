@@ -513,31 +513,5 @@ namespace LibraryManagementTests
             var defaultScore = int.Parse(ConfigurationManager.AppSettings["DEFAULT_SCORE"]);
             Assert.True(userScore == defaultScore);
         }
-
-        /// <summary>
-        /// Test get user score without reviews.
-        /// </summary>
-        [Test]
-        public void TestGetUserScoreWithReviews()
-        {
-            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
-            var reviewUser = new AuctionUser { FirstName = "Popa", LastName = "Andrei", Gender = "M" };
-            var resultUser1 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
-            var resultUser2 = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
-            var user1 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var user2 = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Popa", "Andrei");
-
-            var review1 = new UserReview
-            { Description = "He is a good man", Score = 4, ReviewByUser = user2, ReviewForUser = user1 };
-            var review2 = new UserReview
-            { Description = "He is a bad man", Score = 2, ReviewByUser = user2, ReviewForUser = user1 };
-            var resultReview1 = this.userReviewService.AddUserReview(review1);
-            var resultReview2 = this.userReviewService.AddUserReview(review2);
-            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
-            var user = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
-            var userScore = this.auctionUserService.GetAuctionUserScore(user.Id);
-            int correctScore = (review1.Score + review2.Score) / 2;
-            Assert.True(userScore == correctScore);
-        }
     }
 }

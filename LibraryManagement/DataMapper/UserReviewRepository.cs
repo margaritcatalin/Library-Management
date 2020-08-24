@@ -10,6 +10,7 @@ namespace LibraryManagement.DataMapper
     using System.Linq;
     using System.Reflection;
     using LibraryManagement.DomainModel;
+    using LibraryManagement.Util;
 
     /// <summary>
     /// The UserReview repository.

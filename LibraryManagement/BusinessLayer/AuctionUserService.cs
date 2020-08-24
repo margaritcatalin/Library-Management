@@ -265,18 +265,6 @@ namespace LibraryManagement.BusinessLayer
                 return false;
             }
 
-            if ((roleName.Length < 3) || (roleName.Length > 10))
-            {
-                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with invalid lenght role.", MethodBase.GetCurrentMethod());
-                return false;
-            }
-
-            if (!roleName.All(a => char.IsLetter(a) || char.IsWhiteSpace(a) || (a == '-')))
-            {
-                LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with invalid character in role.", MethodBase.GetCurrentMethod());
-                return false;
-            }
-
             if (char.IsLower(roleName.First()))
             {
                 LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with role with lower case.", MethodBase.GetCurrentMethod());
