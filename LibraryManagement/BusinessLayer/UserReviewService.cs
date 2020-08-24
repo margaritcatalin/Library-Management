@@ -4,12 +4,12 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using Castle.Core.Internal;
-    using LibraryManagement.DataMapper;
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Castle.Core.Internal;
+    using LibraryManagement.DataMapper;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The UserReview service.
@@ -37,7 +37,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If UserReview was added.</returns>
         public bool AddUserReview(UserReview userReview)
         {
-            if (ValidateUserReview(userReview))
+            if (this.ValidateUserReview(userReview))
             {
                 return this.userReviewRepository.AddUserReview(userReview);
             }
@@ -46,7 +46,7 @@ namespace LibraryManagement.BusinessLayer
         }
 
         /// <summary>
-        /// Get All UserRviews for User.
+        /// Get All UserReviews for User.
         /// </summary>
         /// <param name="user">The user<see cref="AuctionUser"/>.</param>
         /// <returns>All all user reviews for user.</returns>
@@ -91,7 +91,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If UserReview was updated.</returns>
         public bool UpdateUserReview(UserReview userReview)
         {
-            if (ValidateUserReview(userReview))
+            if (this.ValidateUserReview(userReview))
             {
                 return this.userReviewRepository.UpdateUserReview(userReview);
             }
@@ -118,8 +118,7 @@ namespace LibraryManagement.BusinessLayer
         {
             if (userReview == null)
             {
-                LoggerUtil.LogInfo($"UserReview is invalid. You tried to add an null UserReview.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"UserReview is invalid. You tried to add an null UserReview.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -137,19 +136,17 @@ namespace LibraryManagement.BusinessLayer
 
             if (userReview.ReviewByUser.Id == userReview.ReviewForUser.Id)
             {
-                LoggerUtil.LogInfo($"UserReview is invalid. You are not able to add a review for yourself.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"UserReview is invalid. You are not able to add a review for yourself.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (userReview.Score < 1 || userReview.Score > 99)
             {
-                LoggerUtil.LogInfo($"UserReview is invalid. Score is need to be more or equals with 1",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"UserReview is invalid. Score is need to be more or equals with 1", MethodBase.GetCurrentMethod());
                 return false;
             }
 
-            if (!ValidateDescription(userReview.Description))
+            if (!this.ValidateDescription(userReview.Description))
             {
                 LoggerUtil.LogInfo($"UserReview is invalid. Invalid description", MethodBase.GetCurrentMethod());
                 return false;
@@ -167,16 +164,14 @@ namespace LibraryManagement.BusinessLayer
         {
             if (description.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Description is invalid. You tried to add an userRole with null empty description.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Description is invalid. You tried to add an userRole with null empty description.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((description.Length < 3) || (description.Length > 100))
             {
                 LoggerUtil.LogInfo(
-                    $"Description is invalid. You tried to add an userRole with invalid lenght description.",
-                    MethodBase.GetCurrentMethod());
+                    $"Description is invalid. You tried to add an userRole with invalid length description.", MethodBase.GetCurrentMethod());
                 return false;
             }
 

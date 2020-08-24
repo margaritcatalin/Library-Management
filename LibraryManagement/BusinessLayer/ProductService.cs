@@ -4,12 +4,12 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using Castle.Core.Internal;
-    using LibraryManagement.DataMapper;
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Castle.Core.Internal;
+    using LibraryManagement.DataMapper;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Product service.
@@ -37,7 +37,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If Product was added.</returns>
         public bool AddProduct(Product product)
         {
-            if (ValidateProduct(product))
+            if (this.ValidateProduct(product))
             {
                 return this.productRepository.AddProduct(product);
             }
@@ -71,7 +71,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If Product was updated.</returns>
         public bool UpdateProduct(Product product)
         {
-            if (ValidateProduct(product))
+            if (this.ValidateProduct(product))
             {
                 return this.productRepository.UpdateProduct(product);
             }
@@ -98,36 +98,31 @@ namespace LibraryManagement.BusinessLayer
         {
             if (product == null)
             {
-                LoggerUtil.LogInfo($"Product is invalid. You tried to add a null Product.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You tried to add a null Product.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (product.Category.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Product is invalid. You need to add a category to product.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You need to add a category to product.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (product.Name.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with null empty name.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with null empty name.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((product.Name.Length < 3) || (product.Name.Length > 100))
             {
-                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with invalid lenght name.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with invalid lenght name.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(product.Name.First()))
             {
-                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with name with lower case.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product is invalid. You tried to add a Product with name with lower case.", MethodBase.GetCurrentMethod());
                 return false;
             }
 

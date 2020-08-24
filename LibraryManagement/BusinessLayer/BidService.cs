@@ -4,12 +4,12 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using LibraryManagement.DataMapper;
-    using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using LibraryManagement.DataMapper;
+    using LibraryManagement.DomainModel;
+    using LibraryManagement.Util;
 
     /// <summary>
     /// The Bid service.
@@ -38,13 +38,13 @@ namespace LibraryManagement.BusinessLayer
         }
 
         /// <summary>
-        /// Add a new Bid.
+        /// Add a new Bid in the database.
         /// </summary>
-        /// <param name="bid">The Bid.</param>
+        /// <param name="bid">The Bid what will be added.</param>
         /// <returns>If Bid was added.</returns>
         public bool AddBid(Bid bid)
         {
-            if (ValidateBid(bid))
+            if (this.ValidateBid(bid))
             {
                 return this.bidRepository.AddBid(bid);
             }
@@ -62,10 +62,10 @@ namespace LibraryManagement.BusinessLayer
         }
 
         /// <summary>
-        /// Get Bid by Bid id.
+        /// Get a Bid by Bid id.
         /// </summary>
-        /// <param name="id">The Bid id.</param>
-        /// <returns>An Bid.</returns>
+        /// <param name="id">The Bid code.</param>
+        /// <returns>If bid exist will be return the object if not will return null.</returns>
         public Bid GetBidById(int id)
         {
             return this.bidRepository.GetBidById(id);
@@ -74,11 +74,11 @@ namespace LibraryManagement.BusinessLayer
         /// <summary>
         /// Update an Bid.
         /// </summary>
-        /// <param name="bid">The Bid.</param>
+        /// <param name="bid">The Bid what will be updated.</param>
         /// <returns>If Bid was updated.</returns>
         public bool UpdateBid(Bid bid)
         {
-            if (ValidateBid(bid))
+            if (this.ValidateBid(bid))
             {
                 return this.bidRepository.UpdateBid(bid);
             }
@@ -99,7 +99,7 @@ namespace LibraryManagement.BusinessLayer
         /// <summary>
         /// Validation for Bid user.
         /// </summary>
-        /// <param name="bid">The Bid.</param>
+        /// <param name="bid">The Bid what will be validate.</param>
         /// <returns>If Bid is valid or not.</returns>
         private bool ValidateBid(Bid bid)
         {
@@ -117,8 +117,7 @@ namespace LibraryManagement.BusinessLayer
 
             if (DateTime.Compare(bid.BidDate.Date, DateTime.Now.Date) != 0)
             {
-                LoggerUtil.LogInfo($"Bid is invalid. Bid date is need to be today.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Bid is invalid. Bid date is need to be today.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -130,8 +129,7 @@ namespace LibraryManagement.BusinessLayer
 
             if (bid.BidPrice != null && !bid.BidPrice.Currency.Equals(bid.Auction.StartPrice.Currency))
             {
-                LoggerUtil.LogInfo($"Bid is invalid. You need to have a price in the auction currency.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Bid is invalid. You need to have a price in the auction currency.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -140,22 +138,19 @@ namespace LibraryManagement.BusinessLayer
             var valuePercent = 10 * lastAuctionPrice.Value / 100;
             if (bidPrice.Value < lastAuctionPrice.Value + valuePercent)
             {
-                LoggerUtil.LogInfo($"Bid is invalid.You need to add a price >10% by last price.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Bid is invalid.You need to add a price >10% by last price.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (bid.BidUser == null)
             {
-                LoggerUtil.LogInfo($"Bid is invalid. You tried to add a bid with null user.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Bid is invalid. You tried to add a bid with null user.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!bid.BidUser.Role.Equals(Role.Buyer.Value))
             {
-                LoggerUtil.LogInfo($"Bid is invalid. You are a seller not a buyer.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Bid is invalid. You are a seller not a buyer.", MethodBase.GetCurrentMethod());
                 return false;
             }
 

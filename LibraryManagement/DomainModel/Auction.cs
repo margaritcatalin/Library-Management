@@ -13,27 +13,28 @@ namespace LibraryManagement.DomainModel
     public class Auction
     {
         /// <summary>
-        /// Gets or sets id.
+        /// Gets or sets the Id.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets auctioneer.
+        /// Gets or sets the Auctioneer
         /// </summary>
         public AuctionUser Auctioneer { get; set; }
 
         /// <summary>
-        /// Gets or sets start price.
+        /// Gets or sets the Product
         /// </summary>
         public Product Product { get; set; }
 
         /// <summary>
-        /// Gets or sets start price.
+        /// Gets or sets the StartPrice
         /// </summary>
         public Price StartPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets start date.
+        /// Gets or sets the StartDate
+        /// Gets or sets start date..
         /// </summary>
         public DateTime StartDate { get; set; }
 

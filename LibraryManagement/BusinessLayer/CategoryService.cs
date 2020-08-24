@@ -4,12 +4,12 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using Castle.Core.Internal;
-    using LibraryManagement.DataMapper;
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Castle.Core.Internal;
+    using LibraryManagement.DataMapper;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Category service.
@@ -37,7 +37,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If Category was added.</returns>
         public bool AddCategory(Category category)
         {
-            if (ValidateCategory(category))
+            if (this.ValidateCategory(category))
             {
                 return this.categoryRepository.AddCategory(category);
             }
@@ -71,7 +71,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If Category was updated.</returns>
         public bool UpdateCategory(Category category)
         {
-            if (ValidateCategory(category))
+            if (this.ValidateCategory(category))
             {
                 return this.categoryRepository.UpdateCategory(category);
             }
@@ -119,10 +119,10 @@ namespace LibraryManagement.BusinessLayer
         /// Get Category by category name.
         /// </summary>
         /// <param name="categoryName">The category name.</param>
-        /// <returns>A role.</returns>
+        /// <returns>The category with the specific category name.</returns>
         public Category GetCategoryByName(string categoryName)
         {
-            if (ValidateCategoryName(categoryName))
+            if (this.ValidateCategoryName(categoryName))
             {
                 return this.categoryRepository.GetCategoryByName(categoryName);
             }
@@ -139,22 +139,19 @@ namespace LibraryManagement.BusinessLayer
         {
             if (category == null)
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an null Category.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an null Category.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
-            if (!ValidateCategoryName(category.Name))
+            if (!this.ValidateCategoryName(category.Name))
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with a wrong Name.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with a wrong Name.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (category.ParentCategory_Id != null && category.Id == category.ParentCategory_Id)
             {
-                LoggerUtil.LogInfo($"Your Category is invalid. Category is the same with parent category.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Your Category is invalid. Category is the same with parent category.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -164,28 +161,25 @@ namespace LibraryManagement.BusinessLayer
         /// <summary>
         /// Validation for categoryName.
         /// </summary>
-        /// <param name="categoryName">The categoryName.</param>
+        /// <param name="categoryName">The category name.</param>
         /// <returns>If Category is valid or not.</returns>
         private bool ValidateCategoryName(string categoryName)
         {
             if (categoryName.IsNullOrEmpty())
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with null empty name.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with null empty name.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if ((categoryName.Length < 3) || (categoryName.Length > 100))
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with invalid lenght name.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with invalid lenght name.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (char.IsLower(categoryName.First()))
             {
-                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with name with lower case.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Category is invalid. You tried to add an Category with name with lower case.", MethodBase.GetCurrentMethod());
                 return false;
             }
 

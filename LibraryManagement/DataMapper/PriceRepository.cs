@@ -4,11 +4,11 @@
 
 namespace LibraryManagement.DataMapper
 {
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Reflection;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Price repository.
@@ -23,7 +23,7 @@ namespace LibraryManagement.DataMapper
         /// <summary>
         /// Initializes a new instance of the <see cref="PriceRepository"/> class.
         /// </summary>
-        /// <param name="libraryContext">Tha database manager.</param>
+        /// <param name="libraryContext">The database manager.</param>
         public PriceRepository(LibraryDbContext libraryContext)
         {
             this.libraryContext = libraryContext;
@@ -40,13 +40,11 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Price added successfully : {price.Value}{price.Currency} ",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Price added successfully : {price.Value}{price.Currency} ", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to add to database : {price.Value}{price.Currency}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Price failed to add to database : {price.Value}{price.Currency}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -65,7 +63,7 @@ namespace LibraryManagement.DataMapper
         /// Get Price by id.
         /// </summary>
         /// <param name="id">The price id.</param>
-        /// <returns>A price.</returns>
+        /// <returns>A price if exist or null if not.</returns>
         public Price GetPriceById(int id)
         {
             return this.libraryContext.Prices.Find(id);
@@ -82,13 +80,11 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Price updated successfully : {price.Value}{price.Currency}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Price updated successfully : {price.Value}{price.Currency}", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to update to database : {price.Value}{price.Currency}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Price failed to update to database : {price.Value}{price.Currency}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -108,8 +104,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to delete from database. We don't found a price with id: {id}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Price failed to delete from database. We don't found a price with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 

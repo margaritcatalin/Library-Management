@@ -4,11 +4,11 @@
 
 namespace LibraryManagement.DataMapper
 {
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Reflection;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Bid repository.
@@ -23,7 +23,7 @@ namespace LibraryManagement.DataMapper
         /// <summary>
         /// Initializes a new instance of the <see cref="BidRepository"/> class.
         /// </summary>
-        /// <param name="libraryContext">Tha database manager.</param>
+        /// <param name="libraryContext">The database manager.</param>
         public BidRepository(LibraryDbContext libraryContext)
         {
             this.libraryContext = libraryContext;
@@ -53,7 +53,7 @@ namespace LibraryManagement.DataMapper
         /// <summary>
         /// Get All Bids.
         /// </summary>
-        /// <returns>All Bids.</returns>
+        /// <returns>All Bids from the database.</returns>
         public IEnumerable<Bid> GetBids()
         {
             return this.libraryContext.Bids.ToList();
@@ -63,7 +63,7 @@ namespace LibraryManagement.DataMapper
         /// Get Bid by id.
         /// </summary>
         /// <param name="id">The Bid id.</param>
-        /// <returns>A Bid.</returns>
+        /// <returns>A Bid if exist or null if not.</returns>
         public Bid GetBidById(int id)
         {
             return this.libraryContext.Bids.Find(id);
@@ -72,7 +72,7 @@ namespace LibraryManagement.DataMapper
         /// <summary>
         /// Update a Bid.
         /// </summary>
-        /// <param name="bid">The Bid.</param>
+        /// <param name="bid">The Bid what will be updated.</param>
         /// <returns>If Bid was updated.</returns>
         public bool UpdateBid(Bid bid)
         {
@@ -104,8 +104,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Bid failed to delete from database. We don't found a bid with id: {id}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Bid failed to delete from database. We don't found a bid with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 

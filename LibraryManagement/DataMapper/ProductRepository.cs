@@ -4,11 +4,11 @@
 
 namespace LibraryManagement.DataMapper
 {
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Reflection;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Product repository.
@@ -23,7 +23,7 @@ namespace LibraryManagement.DataMapper
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductRepository"/> class.
         /// </summary>
-        /// <param name="libraryContext">Tha database manager.</param>
+        /// <param name="libraryContext">The database manager.</param>
         public ProductRepository(LibraryDbContext libraryContext)
         {
             this.libraryContext = libraryContext;
@@ -40,13 +40,11 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Product added successfully : {product.Id},{product.Name} ",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product added successfully : {product.Id},{product.Name} ", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Product failed to add to database : {product.Id},{product.Name}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Product failed to add to database : {product.Id},{product.Name}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -82,13 +80,11 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"Product updated successfully : {product.Id},{product.Name}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Product updated successfully : {product.Id},{product.Name}", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"Product failed to update to database : {product.Id},{product.Name}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Product failed to update to database : {product.Id},{product.Name}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -108,8 +104,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Product failed to delete from database. We don't found a product with id: {id}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Product failed to delete from database. We don't found a product with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 

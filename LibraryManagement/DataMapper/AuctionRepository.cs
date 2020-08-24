@@ -4,11 +4,11 @@
 
 namespace LibraryManagement.DataMapper
 {
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Reflection;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Auction repository.
@@ -23,7 +23,7 @@ namespace LibraryManagement.DataMapper
         /// <summary>
         /// Initializes a new instance of the <see cref="AuctionRepository"/> class.
         /// </summary>
-        /// <param name="libraryContext">Tha database manager.</param>
+        /// <param name="libraryContext">The database manager.</param>
         public AuctionRepository(LibraryDbContext libraryContext)
         {
             this.libraryContext = libraryContext;
@@ -104,8 +104,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Auction failed to delete from database. We don't found a auction with id: {id}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Auction failed to delete from database. We don't found a auction with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 

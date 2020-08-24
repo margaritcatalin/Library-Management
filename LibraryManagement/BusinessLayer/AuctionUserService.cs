@@ -4,14 +4,14 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using Castle.Core.Internal;
-    using LibraryManagement.DataMapper;
-    using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
     using System.Reflection;
+    using Castle.Core.Internal;
+    using LibraryManagement.DataMapper;
+    using LibraryManagement.DomainModel;
+    using LibraryManagement.Util;
 
     /// <summary>
     /// The AuctionUser service.
@@ -52,11 +52,13 @@ namespace LibraryManagement.BusinessLayer
                 LoggerUtil.LogInfo($"UserRole is invalid. You tried to add an userRole with null empty role.", MethodBase.GetCurrentMethod());
                 return false;
             }
+
             if (auctionUser == null)
             {
                 LoggerUtil.LogInfo($"AuctionUser is invalid. You tried to add an null auctionUser.", MethodBase.GetCurrentMethod());
                 return false;
             }
+
             auctionUser.Role = role.Value;
 
             if (this.ValidateAuctionUser(auctionUser))

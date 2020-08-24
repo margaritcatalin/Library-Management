@@ -4,11 +4,11 @@
 
 namespace LibraryManagement.DataMapper
 {
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Reflection;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Category repository.
@@ -33,7 +33,7 @@ namespace LibraryManagement.DataMapper
         /// Get Category by category name.
         /// </summary>
         /// <param name="categoryName">The category name.</param>
-        /// <returns>A role.</returns>
+        /// <returns>The category if exist or null if not.</returns>
         public Category GetCategoryByName(string categoryName)
         {
             return this.libraryContext.Categories.FirstOrDefault(
@@ -95,8 +95,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Category failed to update to database : {category.Name}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Category failed to update to database : {category.Name}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -116,8 +115,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Category failed to delete from database. We don't found a category with id: {id}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"Category failed to delete from database. We don't found a category with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 

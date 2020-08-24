@@ -4,12 +4,12 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using Castle.Core.Internal;
-    using LibraryManagement.DataMapper;
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Reflection;
+    using Castle.Core.Internal;
+    using LibraryManagement.DataMapper;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The Price service.
@@ -37,7 +37,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If Price was added.</returns>
         public bool AddPrice(Price price)
         {
-            if (ValidatePrice(price))
+            if (this.ValidatePrice(price))
             {
                 return this.priceRepository.AddPrice(price);
             }
@@ -58,7 +58,7 @@ namespace LibraryManagement.BusinessLayer
         /// Get Price by Price id.
         /// </summary>
         /// <param name="id">The Price id.</param>
-        /// <returns>An Price.</returns>
+        /// <returns>A price if it is in the database or null if not.</returns>
         public Price GetPriceById(int id)
         {
             return this.priceRepository.GetPriceById(id);
@@ -71,7 +71,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If Price was updated.</returns>
         public bool UpdatePrice(Price price)
         {
-            if (ValidatePrice(price))
+            if (this.ValidatePrice(price))
             {
                 return this.priceRepository.UpdatePrice(price);
             }
@@ -110,8 +110,7 @@ namespace LibraryManagement.BusinessLayer
 
             if (price.Value <= 0)
             {
-                LoggerUtil.LogInfo($"Price is invalid. Price value is need to be more than 0.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Price is invalid. Price value is need to be more than 0.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -119,8 +118,7 @@ namespace LibraryManagement.BusinessLayer
 
             if (price.Value < minPrice)
             {
-                LoggerUtil.LogInfo($"Price is invalid. You tried to add a small price.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Price is invalid. You tried to add a small price.", MethodBase.GetCurrentMethod());
                 return false;
             }
 

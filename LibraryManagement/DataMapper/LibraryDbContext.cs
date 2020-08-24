@@ -4,8 +4,8 @@
 
 namespace LibraryManagement.DataMapper
 {
-    using LibraryManagement.DomainModel;
     using System.Data.Entity;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The library database manager.
@@ -23,43 +23,43 @@ namespace LibraryManagement.DataMapper
 
         /// <summary>
         /// Gets or sets the Products
-        /// Gets or sets Products..
+        /// Gets or sets Products.
         /// </summary>
         public DbSet<Product> Products { get; set; }
 
         /// <summary>
         /// Gets or sets the AuctionUsers
-        /// Gets or sets AuctionUsers..
+        /// Gets or sets AuctionUsers.
         /// </summary>
         public DbSet<AuctionUser> AuctionUsers { get; set; }
 
         /// <summary>
         /// Gets or sets the Auctions
-        /// Gets or sets Auctions..
+        /// Gets or sets Auctions.
         /// </summary>
         public DbSet<Auction> Auctions { get; set; }
 
         /// <summary>
         /// Gets or sets the Bids
-        /// Gets or sets Bids..
+        /// Gets or sets Bids.
         /// </summary>
         public DbSet<Bid> Bids { get; set; }
 
         /// <summary>
         /// Gets or sets the Categories
-        /// Gets or sets Categories..
+        /// Gets or sets Categories.
         /// </summary>
         public DbSet<Category> Categories { get; set; }
 
         /// <summary>
         /// Gets or sets the Prices
-        /// Gets or sets Prices..
+        /// Gets or sets Prices.
         /// </summary>
         public DbSet<Price> Prices { get; set; }
 
         /// <summary>
         /// Gets or sets the UserReviews
-        /// Gets or sets UserReviews..
+        /// Gets or sets UserReviews.
         /// </summary>
         public DbSet<UserReview> UserReviews { get; set; }
     }

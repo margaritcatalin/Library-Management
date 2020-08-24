@@ -4,15 +4,15 @@
 
 namespace LibraryManagement.BusinessLayer
 {
-    using Castle.Core.Internal;
-    using DataMapper;
-    using LibraryManagement.DomainModel;
-    using LibraryManagement.Util;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
     using System.Reflection;
+    using Castle.Core.Internal;
+    using DataMapper;
+    using LibraryManagement.DomainModel;
+    using LibraryManagement.Util;
 
     /// <summary>
     /// The Auction service.
@@ -40,8 +40,7 @@ namespace LibraryManagement.BusinessLayer
         /// <param name="auctionRepository">The Auction repository.</param>
         /// <param name="categoryService">The Auction category Service.</param>
         /// <param name="auctionUserService">The Auction user Service.</param>
-        public AuctionService(AuctionRepository auctionRepository, CategoryService categoryService,
-            AuctionUserService auctionUserService)
+        public AuctionService(AuctionRepository auctionRepository, CategoryService categoryService, AuctionUserService auctionUserService)
         {
             this.auctionRepository = auctionRepository;
             this.categoryService = categoryService;
@@ -55,31 +54,29 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If Auction was added.</returns>
         public bool AddAuction(Auction auction)
         {
-            if (ValidateAuction(auction))
+            if (this.ValidateAuction(auction))
             {
-                if (!CheckIfUserCanOpenANewAuction(auction.Auctioneer))
+                if (!this.CheckIfUserCanOpenANewAuction(auction.Auctioneer))
                 {
-                    LoggerUtil.LogInfo($"Your score is too small.You need to wait some days.",
-                        MethodBase.GetCurrentMethod());
+                    LoggerUtil.LogInfo($"Your score is too small.You need to wait some days.", MethodBase.GetCurrentMethod());
                     return false;
                 }
 
-                if (CheckIfUserHasMaxNumberOfStartedAuction(auction.Auctioneer))
+                if (this.CheckIfUserHasMaxNumberOfStartedAuction(auction.Auctioneer))
                 {
                     LoggerUtil.LogInfo($"You already have a lot of started auctions.", MethodBase.GetCurrentMethod());
                     return false;
                 }
 
                 var productsCategories =
-                    categoryService.GetAllCategoriesProduct(auction.Product);
-                if (CheckIfUserHasMaxNumberOfStartedAuctionInCategory(auction.Auctioneer, productsCategories))
+                    this.categoryService.GetAllCategoriesProduct(auction.Product);
+                if (this.CheckIfUserHasMaxNumberOfStartedAuctionInCategory(auction.Auctioneer, productsCategories))
                 {
-                    LoggerUtil.LogInfo($"You already have a lot of started auctions in this category.",
-                        MethodBase.GetCurrentMethod());
+                    LoggerUtil.LogInfo($"You already have a lot of started auctions in this category.", MethodBase.GetCurrentMethod());
                     return false;
                 }
 
-                return auctionRepository.AddAuction(auction);
+                return this.auctionRepository.AddAuction(auction);
             }
 
             return false;
@@ -88,14 +85,14 @@ namespace LibraryManagement.BusinessLayer
         /// <summary>
         /// Get All Auction started by an specific user.
         /// </summary>
-        /// <param name="user">The user.</param>
+        /// <param name="user">The user what will be checked.</param>
         /// <returns>All Auction started by a user.</returns>
         public IEnumerable<Auction> GetStartedAuctionsByUser(AuctionUser user)
         {
-            var auctions = GetAuctions();
+            var auctions = this.GetAuctions();
             var filteredAuctions =
                 from auction in auctions
-                where auction.Auctioneer.Id == user.Id && !CheckIfAuctionIsEnded(auction)
+                where auction.Auctioneer.Id == user.Id && !this.CheckIfAuctionIsEnded(auction)
                 select auction;
             return filteredAuctions;
         }
@@ -103,16 +100,16 @@ namespace LibraryManagement.BusinessLayer
         /// <summary>
         /// Get All Auction started by User in a specific category.
         /// </summary>
-        /// <param name="user">The user.</param>
-        /// <param name="category">The category.</param>
+        /// <param name="user">The user what will be checked.</param>
+        /// <param name="category">The category what will be checked.</param>
         /// <returns>All Auction started by User in a specific category.</returns>
         public IEnumerable<Auction> GetStartedAuctionsByUserAndCategory(AuctionUser user, Category category)
         {
-            var auctions = GetStartedAuctionsByUser(user);
+            var auctions = this.GetStartedAuctionsByUser(user);
 
             var filteredAuctions =
                 from auction in auctions
-                where categoryService.GetAllCategoriesProduct(auction.Product).Contains(category)
+                where this.categoryService.GetAllCategoriesProduct(auction.Product).Contains(category)
                 select auction;
             return filteredAuctions;
         }
@@ -123,7 +120,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>All AuctionUsers.</returns>
         public IEnumerable<Auction> GetAuctions()
         {
-            return auctionRepository.GetAuctions();
+            return this.auctionRepository.GetAuctions();
         }
 
         /// <summary>
@@ -133,7 +130,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>An Auction.</returns>
         public Auction GetAuctionById(int id)
         {
-            return auctionRepository.GetAuctionById(id);
+            return this.auctionRepository.GetAuctionById(id);
         }
 
         /// <summary>
@@ -143,7 +140,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If Auction was updated.</returns>
         public bool UpdateAuction(Auction auction)
         {
-            if (ValidateAuction(auction))
+            if (this.ValidateAuction(auction))
             {
                 if (!auction.Bid.IsNullOrEmpty())
                 {
@@ -155,7 +152,7 @@ namespace LibraryManagement.BusinessLayer
                     }
                 }
 
-                return auctionRepository.UpdateAuction(auction);
+                return this.auctionRepository.UpdateAuction(auction);
             }
 
             return false;
@@ -168,7 +165,7 @@ namespace LibraryManagement.BusinessLayer
         /// <returns>If Auction was deleted.</returns>
         public bool DeleteAuction(int id)
         {
-            return auctionRepository.DeleteAuction(id);
+            return this.auctionRepository.DeleteAuction(id);
         }
 
         /// <summary>
@@ -179,41 +176,6 @@ namespace LibraryManagement.BusinessLayer
         public bool CheckIfAuctionIsEnded(Auction auction)
         {
             return DateTime.Compare(auction.StartDate, auction.EndDate) == 0 || auction.Ended;
-        }
-
-        /// <summary>
-        /// Check if user has max number of started auction.
-        /// </summary>
-        /// <param name="auctionUser">The auctionUser.</param>
-        /// <returns>If user has max number of started auction.</returns>
-        private bool CheckIfUserHasMaxNumberOfStartedAuction(AuctionUser auctionUser)
-        {
-            var startedAuctions = GetStartedAuctionsByUser(auctionUser);
-            var k = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_AUCTION"]);
-            return startedAuctions.Count() == k;
-        }
-
-        /// <summary>
-        /// Check if user has max number of started auction.
-        /// </summary>
-        /// <param name="auctionUser">The auctionUser.</param>
-        /// <returns>If user has max number of started auction.</returns>
-        private bool CheckIfUserCanOpenANewAuction(AuctionUser auctionUser)
-        {
-            var userScore = this.auctionUserService.GetAuctionUserScore(auctionUser.Id);
-            var minScore = int.Parse(ConfigurationManager.AppSettings["MIN_SCORE"]);
-            if (userScore < minScore)
-            {
-                var blockDays = int.Parse(ConfigurationManager.AppSettings["NUMBER_OF_BLOCK_DAYS"]);
-                Auction lastAuction = GetLastAuctionForUser(auctionUser);
-                if (lastAuction != null)
-                {
-                    var blockUntil = lastAuction.EndDate.AddDays(blockDays);
-                    return DateTime.Compare(lastAuction.EndDate, blockUntil) > 0;
-                }
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -255,33 +217,11 @@ namespace LibraryManagement.BusinessLayer
         }
 
         /// <summary>
-        /// Check if user has max number of started auction in category.
-        /// </summary>
-        /// <param name="auctionUser">The auctionUser.</param>
-        /// <param name="categories">The product categories.</param>
-        /// <returns>If user has max number of started auction.</returns>
-        private bool CheckIfUserHasMaxNumberOfStartedAuctionInCategory(AuctionUser auctionUser,
-            IEnumerable<Category> categories)
-        {
-            var m = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_AUCTION_IN_CATEGORY"]);
-            foreach (var category in categories)
-            {
-                var startedAuctions = GetStartedAuctionsByUserAndCategory(auctionUser, category);
-                if (startedAuctions.Count() == m)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Check if auction is ended.
         /// </summary>
-        /// <param name="auction">The Auction.</param>
-        /// <param name="user">The user.</param>
-        /// <returns>If Auction was ended.</returns>
+        /// <param name="auction">The Auction what will be ended.</param>
+        /// <param name="user">The user how will end the auction.</param>
+        /// <returns>If Auction was ended or not.</returns>
         public bool EndAuctionByUser(Auction auction, AuctionUser user)
         {
             if (auction.Auctioneer.Id != user.Id)
@@ -290,7 +230,7 @@ namespace LibraryManagement.BusinessLayer
                 return false;
             }
 
-            if (CheckIfAuctionIsEnded(auction))
+            if (this.CheckIfAuctionIsEnded(auction))
             {
                 LoggerUtil.LogInfo($"This auction is already ended.", MethodBase.GetCurrentMethod());
                 return false;
@@ -298,8 +238,64 @@ namespace LibraryManagement.BusinessLayer
 
             auction.EndDate = DateTime.Now;
             auction.Ended = true;
-            UpdateAuction(auction);
+            this.UpdateAuction(auction);
             return true;
+        }
+
+        /// <summary>
+        /// Check if user has max number of started auction.
+        /// </summary>
+        /// <param name="auctionUser">The auctionUser.</param>
+        /// <returns>If user has max number of started auction.</returns>
+        private bool CheckIfUserHasMaxNumberOfStartedAuction(AuctionUser auctionUser)
+        {
+            var startedAuctions = this.GetStartedAuctionsByUser(auctionUser);
+            var k = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_AUCTION"]);
+            return startedAuctions.Count() == k;
+        }
+
+        /// <summary>
+        /// Check if user has max number of started auction.
+        /// </summary>
+        /// <param name="auctionUser">The auctionUser.</param>
+        /// <returns>If user has max number of started auction.</returns>
+        private bool CheckIfUserCanOpenANewAuction(AuctionUser auctionUser)
+        {
+            var userScore = this.auctionUserService.GetAuctionUserScore(auctionUser.Id);
+            var minScore = int.Parse(ConfigurationManager.AppSettings["MIN_SCORE"]);
+            if (userScore < minScore)
+            {
+                var blockDays = int.Parse(ConfigurationManager.AppSettings["NUMBER_OF_BLOCK_DAYS"]);
+                Auction lastAuction = this.GetLastAuctionForUser(auctionUser);
+                if (lastAuction != null)
+                {
+                    var blockUntil = lastAuction.EndDate.AddDays(blockDays);
+                    return DateTime.Compare(lastAuction.EndDate, blockUntil) > 0;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Check if user has max number of started auction in category.
+        /// </summary>
+        /// <param name="auctionUser">The auctionUser.</param>
+        /// <param name="categories">The product categories.</param>
+        /// <returns>If user has max number of started auction.</returns>
+        private bool CheckIfUserHasMaxNumberOfStartedAuctionInCategory(AuctionUser auctionUser, IEnumerable<Category> categories)
+        {
+            var m = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_AUCTION_IN_CATEGORY"]);
+            foreach (var category in categories)
+            {
+                var startedAuctions = this.GetStartedAuctionsByUserAndCategory(auctionUser, category);
+                if (startedAuctions.Count() == m)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -311,37 +307,32 @@ namespace LibraryManagement.BusinessLayer
         {
             if (auction == null)
             {
-                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null Auction.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null Auction.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (DateTime.Compare(auction.StartDate.Date, DateTime.Now.Date) < 0)
             {
-                LoggerUtil.LogInfo($"Auction is invalid. Start date is need to be today or in the future.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Auction is invalid. Start date is need to be today or in the future.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (DateTime.Compare(auction.StartDate, auction.EndDate) >= 0)
             {
-                LoggerUtil.LogInfo($"Auction is invalid. Start date is need to be less than end date.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Auction is invalid. Start date is need to be less than end date.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             var maxNumberOfMonths = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_MONTHS"]);
             if (DateTime.Compare(auction.StartDate.AddMonths(maxNumberOfMonths), auction.EndDate) < 0)
             {
-                LoggerUtil.LogInfo($"Auction is invalid. End date >" + maxNumberOfMonths + ".",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Auction is invalid. End date >" + maxNumberOfMonths + ".", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (auction.StartPrice == null)
             {
-                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null start price.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null start price.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -349,29 +340,25 @@ namespace LibraryManagement.BusinessLayer
 
             if (auction.StartPrice.Value < minPrice)
             {
-                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null start price.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null start price.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (auction.Auctioneer == null)
             {
-                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null auctioneer.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null auctioneer.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (!auction.Auctioneer.Role.Equals(Role.Seller.Value))
             {
-                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an wrong user role.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an wrong user role.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
             if (auction.Product == null)
             {
-                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null product.",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Auction is invalid. You tried to add an null product.", MethodBase.GetCurrentMethod());
                 return false;
             }
 

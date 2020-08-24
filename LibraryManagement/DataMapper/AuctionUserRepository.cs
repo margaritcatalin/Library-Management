@@ -4,11 +4,11 @@
 
 namespace LibraryManagement.DataMapper
 {
-    using LibraryManagement.DomainModel;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Reflection;
+    using LibraryManagement.DomainModel;
 
     /// <summary>
     /// The AuctionUser repository.
@@ -23,14 +23,14 @@ namespace LibraryManagement.DataMapper
         /// <summary>
         /// Initializes a new instance of the <see cref="AuctionUserRepository"/> class.
         /// </summary>
-        /// <param name="libraryContext">Tha database manager.</param>
+        /// <param name="libraryContext">The database manager.</param>
         public AuctionUserRepository(LibraryDbContext libraryContext)
         {
             this.libraryContext = libraryContext;
         }
 
         /// <summary>
-        /// Get AuctionUser by firstname and lastname.
+        /// Get AuctionUser by first name and last name.
         /// </summary>
         /// <param name="firstName">The first name.</param>
         /// <param name="lastName">The last name.</param>
@@ -52,13 +52,11 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"AuctionUser added successfully : {auctionUser.FirstName} ",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"AuctionUser added successfully : {auctionUser.FirstName} ", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to add to database : {auctionUser.FirstName}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"AuctionUser failed to add to database : {auctionUser.FirstName}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -94,13 +92,11 @@ namespace LibraryManagement.DataMapper
             var successful = this.libraryContext.SaveChanges() != 0;
             if (successful)
             {
-                LoggerUtil.LogInfo($"AuctionUser was updated successfully : {auctionUser.FirstName} ",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"AuctionUser was updated successfully : {auctionUser.FirstName} ", MethodBase.GetCurrentMethod());
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to update to database : {auctionUser.FirstName}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"AuctionUser failed to update to database : {auctionUser.FirstName}", MethodBase.GetCurrentMethod());
             }
 
             return successful;
@@ -120,8 +116,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to delete from database. We don't found an user with id: {id}",
-                    MethodBase.GetCurrentMethod());
+                LoggerUtil.LogError($"AuctionUser failed to delete from database. We don't found an user with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 
