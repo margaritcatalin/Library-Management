@@ -167,7 +167,7 @@ namespace LibraryManagementTests
         /// Test add an auction with wrong price.
         /// </summary>
         [Test]
-        public void TestAddWithNullStartPriceAuction()
+        public void TestAddWithStartPriceLessThanMinPriceAuction()
         {
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
@@ -195,7 +195,7 @@ namespace LibraryManagementTests
         /// Test add an auction with wrong price.
         /// </summary>
         [Test]
-        public void TestAddWithStartPriceLessThanMinPriceAuction()
+        public void TestAddWithNullStartPriceAuction()
         {
             var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
