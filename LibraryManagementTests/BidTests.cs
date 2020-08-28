@@ -104,7 +104,7 @@ namespace LibraryManagementTests
             var auctionUser2 = new AuctionUser { FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(auction.Id);
             var bid = new Bid
@@ -326,7 +326,7 @@ namespace LibraryManagementTests
         }
 
         /// <summary>
-        /// Test add a new bid with wrong price currency.
+        /// Test add a new bid with a small price.
         /// </summary>
         [Test]
         public void TestAddWithWrongPriceSmallPrice()
@@ -354,7 +354,7 @@ namespace LibraryManagementTests
             var auctionUser2 = new AuctionUser { Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = 88.5 + 1 };
+            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = startPrice.Value - 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(1);
             var bid = new Bid
@@ -369,6 +369,50 @@ namespace LibraryManagementTests
             Assert.True(!this.libraryContextMock.Bids.Any());
         }
 
+                /// <summary>
+        /// Test add a new bid with biggest price.
+        /// </summary>
+        [Test]
+        public void TestAddWithWrongPriceBiggestPrice()
+        {
+            var auctionUser = new AuctionUser { Id = 1, FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var userSeller = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser.FirstName, auctionUser.LastName);
+            var startPrice = new Price { Id = 1, Currency = "Euro", Value = 88.5 };
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category { Id = 1, Name = "Legume" };
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product { Id = 1, Name = "Fasole", Category = new[] { category } };
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Id = 1,
+                Auctioneer = userSeller,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUser2 = new AuctionUser { Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
+            var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
+            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = startPrice.Value * 2 };
+            var bidPriceResult = this.priceService.AddPrice(bidPrice);
+            var auctionById = this.auctionService.GetAuctionById(1);
+            var bid = new Bid
+            {
+                Id = 1,
+                Auction = auctionById,
+                BidUser = userBuyer,
+                BidPrice = bidPrice,
+                BidDate = DateTime.Now
+            };
+            var resultBid = this.bidService.AddBid(bid);
+            Assert.True(!this.libraryContextMock.Bids.Any());
+        }
+        
         /// <summary>
         /// Test add a new bid with wrong price currency.
         /// </summary>
@@ -534,7 +578,7 @@ namespace LibraryManagementTests
             var auctionUser2 = new AuctionUser { Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(1);
             var bidId = 1;
@@ -673,7 +717,7 @@ namespace LibraryManagementTests
             var auctionUser2 = new AuctionUser { Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(1);
             var bidId = 1;

@@ -411,7 +411,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUser2 = new AuctionUser { Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(auction.Id);
             var bid = new Bid
@@ -470,7 +470,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUser2 = new AuctionUser { FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(1);
             var bid = new Bid
@@ -516,7 +516,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUser2 = new AuctionUser { FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(auction.Id);
             var bid = new Bid
@@ -570,7 +570,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUser2 = new AuctionUser { FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(auction.Id);
             var bid = new Bid
@@ -619,7 +619,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUser2 = new AuctionUser { FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(auction.Id);
             var bid = new Bid
@@ -671,7 +671,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUser2 = new AuctionUser { FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(auction.Id);
             var bid = new Bid
@@ -721,7 +721,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUser2 = new AuctionUser { Id = 2, FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var result2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Id = 2, Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var auctionById = this.auctionService.GetAuctionById(1);
             var bidId = 1;

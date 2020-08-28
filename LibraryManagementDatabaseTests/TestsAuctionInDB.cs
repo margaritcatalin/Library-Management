@@ -298,7 +298,7 @@ namespace LibraryManagementDatabaseTests
             var resultAuctionUser2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var reviewUser = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ioana", "Pascu");
 
-            var bidPrice = new Price { Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var bid = new Bid { Auction = auction, BidUser = reviewUser, BidPrice = bidPrice, BidDate = DateTime.Now };
             var resultBid = this.bidService.AddBid(bid);
@@ -511,7 +511,7 @@ namespace LibraryManagementDatabaseTests
             var auctionUser2 = new AuctionUser { FirstName = "Ioana", LastName = "Pascu", Gender = "F" };
             var resultAuctionUser2 = this.auctionUserService.AddAuctionUser(auctionUser2, Role.Buyer);
             var userBuyer = this.auctionUserService.GetAuctionUserByFistNameAndLastName(auctionUser2.FirstName, auctionUser2.LastName);
-            var bidPrice = new Price { Currency = "Euro", Value = 108.5 };
+            var bidPrice = new Price { Currency = "Euro", Value = startPrice.Value + 1 };
             var bidPriceResult = this.priceService.AddPrice(bidPrice);
             var bid = new Bid { Auction = auction, BidUser = userBuyer, BidPrice = bidPrice, BidDate = DateTime.Now };
             var resultBid = this.bidService.AddBid(bid);

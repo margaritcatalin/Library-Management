@@ -137,9 +137,15 @@ namespace LibraryManagement.BusinessLayer
             var lastAuctionPrice = this.auctionService.GetAuctionLastPrice(bid.Auction);
             var bidPrice = bid.BidPrice;
             var valuePercent = 10 * lastAuctionPrice.Value / 100;
-            if (bidPrice.Value < lastAuctionPrice.Value + valuePercent)
+            if (bidPrice.Value < lastAuctionPrice.Value)
             {
-                LoggerUtil.LogInfo($"Bid is invalid.You need to add a price >10% by last price.", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogInfo($"Bid is invalid.You need to add a price > last price.", MethodBase.GetCurrentMethod());
+                return false;
+            }
+
+            if (bidPrice.Value > lastAuctionPrice.Value + valuePercent)
+            {
+                LoggerUtil.LogInfo($"Bid is invalid.You need to add a price <=10% by last price.", MethodBase.GetCurrentMethod());
                 return false;
             }
 
