@@ -272,7 +272,15 @@ namespace LibraryManagement.BusinessLayer
                 {
                     var blockUntil = lastAuction.EndDate.AddDays(blockDays);
                     return DateTime.Compare(lastAuction.EndDate, blockUntil) > 0;
+                } 
+                else 
+                {
+                    LoggerUtil.LogInfo("User doesn't have an auction.", MethodBase.GetCurrentMethod());
                 }
+            } 
+            else 
+            {
+                LoggerUtil.LogInfo("User is able to add an new auction.", MethodBase.GetCurrentMethod());
             }
 
             return true;

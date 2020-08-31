@@ -690,6 +690,40 @@ namespace LibraryManagementDatabaseTests
             auctionUserById = this.auctionService.GetAuctionById(auction.Id);
             Assert.IsTrue(auctionUserById.Product.Id == product2.Id);
         }
+        
+        /// <summary>
+        /// Test Update auction and auction is deleted.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionProductAndAuctionIsDeleted()
+        {
+            this.ClearDatabase();
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category { Name = "Legume" };
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            var product2 = new Product { Id = 3, Name = "Macaroane", Category = new[] { category } };
+            var productResult2 = this.productService.AddProduct(product2);
+            var deleteResult = this.auctionService.DeleteAuction(auction.Id);
+            auctionUserById.Product = product2;
+            var updateResult = this.auctionService.UpdateAuction(auctionUserById);
+            Assert.IsFalse(updateResult);
+        }
 
         /// <summary>
         /// Test Update auction bad product.
@@ -1327,6 +1361,86 @@ namespace LibraryManagementDatabaseTests
             Assert.IsTrue(lastPrice.Id == startPrice.Id);
         }
 
+        /// <summary>
+        /// Test add auction with a user how has more than min score (from reviews).
+        /// </summary>
+        [Test]
+        public void TestAddAuctionWithAnUserHowHasMoreThanMinScore()
+        {
+            this.ClearDatabase();
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category { Name = "Legume" };
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
+            var productResult = this.productService.AddProduct(product);
+            var maxNumberOfMonths = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_MONTHS"]);
+            var startDate = DateTime.Now;
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = startDate.AddDays(1),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var reviewUser = new AuctionUser { FirstName = "Anghel", LastName = "Pascu", Gender = "M" };
+            var resultReviewUser = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
+            var userReview = new UserReview
+            { ReviewByUser = reviewUser, ReviewForUser = auctionUser, Score = 7, Description = "This is a test." };
+            var reviewResult = this.userReviewService.AddUserReview(userReview);
+            var auction2 = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = startDate.AddDays(1),
+                Ended = false,
+            };
+            var auction2Result = this.auctionService.AddAuction(auction);
+            Assert.True(this.libraryContext.Auctions.Count() == 2);
+        }
+        
+        /// <summary>
+        /// Test add auction with a user how has less than min score and no auctions.
+        /// </summary>
+        [Test]
+        public void TestAddAuctionWithAnBlockedUserNoAuctions()
+        {
+            this.ClearDatabase();
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var reviewUser = new AuctionUser { FirstName = "Anghel", LastName = "Pascu", Gender = "M" };
+            var resultReviewUser = this.auctionUserService.AddAuctionUser(reviewUser, Role.Buyer);
+            var userReview = new UserReview
+                { ReviewByUser = reviewUser, ReviewForUser = auctionUser, Score = 2, Description = "This is a test." };
+            var reviewResult = this.userReviewService.AddUserReview(userReview);
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category { Name = "Legume" };
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
+            var productResult = this.productService.AddProduct(product);
+            var maxNumberOfMonths = int.Parse(ConfigurationManager.AppSettings["MAX_NUMBER_OF_MONTHS"]);
+            var startDate = DateTime.Now;
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = startDate,
+                EndDate = startDate.AddDays(1),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            Assert.True(this.libraryContext.Auctions.Count() == 1);
+        }
+        
         /// <summary>
         /// Test add auction with a user how has less than min score.
         /// </summary>
