@@ -752,7 +752,7 @@ namespace LibraryManagementDatabaseTests
             var auctionResult = this.auctionService.AddAuction(auction);
             var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
             auctionUserById.Product = null;
-            var updateResult= this.auctionService.UpdateAuction(auctionUserById);
+            var updateResult = this.auctionService.UpdateAuction(auctionUserById);
             Assert.IsFalse(updateResult);
         }
 

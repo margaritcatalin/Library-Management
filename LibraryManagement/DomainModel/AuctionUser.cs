@@ -56,7 +56,7 @@ namespace LibraryManagement.DomainModel
         public string Role { get; set; }
 
         /// <summary>
-        /// Gets or sets the products.
+        /// Gets the products.
         /// </summary>
         /// <value>
         /// The products.
@@ -80,7 +80,7 @@ namespace LibraryManagement.DomainModel
         public ICollection<Bid> Bids { get; set; }
 
         /// <summary>
-        /// Gets or sets AuctionUser reviews.
+        /// Gets AuctionUser reviews.
         /// </summary>
         /// <value>
         /// The reviews from database.
@@ -88,7 +88,7 @@ namespace LibraryManagement.DomainModel
         public ICollection<UserReview> Reviews { get; }
 
         /// <summary>
-        /// Gets or sets AuctionUser given reviews.
+        /// Gets AuctionUser given reviews.
         /// </summary>
         /// <value>
         /// The given reviews.
