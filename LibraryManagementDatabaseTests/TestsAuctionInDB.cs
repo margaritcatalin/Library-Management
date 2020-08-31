@@ -724,6 +724,37 @@ namespace LibraryManagementDatabaseTests
             auctionUserById = this.auctionService.GetAuctionById(auction.Id);
             Assert.IsFalse(auctionUserById.Auctioneer.Id == product2.Id);
         }
+        
+        /// <summary>
+        /// Test Update auction null product.
+        /// </summary>
+        [Test]
+        public void TestUpdateAuctionNullProduct()
+        {
+            this.ClearDatabase();
+            var auctionUser = new AuctionUser { FirstName = "Ionel", LastName = "Pascu", Gender = "M" };
+            var result2 = this.auctionUserService.AddAuctionUser(auctionUser, Role.Seller);
+            var startPrice = new Price { Currency = "Euro", Value = 88.5 };
+            var priceResult = this.priceService.AddPrice(startPrice);
+            var category = new Category { Name = "Legume" };
+            var categoryResult = this.categoryService.AddCategory(category);
+            var product = new Product { Name = "Fasole", Category = new[] { category } };
+            var productResult = this.productService.AddProduct(product);
+            var auction = new Auction
+            {
+                Auctioneer = auctionUser,
+                Product = product,
+                StartPrice = startPrice,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                Ended = false,
+            };
+            var auctionResult = this.auctionService.AddAuction(auction);
+            var auctionUserById = this.auctionService.GetAuctionById(auction.Id);
+            auctionUserById.Product = null;
+            var updateResult= this.auctionService.UpdateAuction(auctionUserById);
+            Assert.IsFalse(updateResult);
+        }
 
         /// <summary>
         /// Test Update auction with bad user.

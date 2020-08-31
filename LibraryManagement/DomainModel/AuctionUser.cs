@@ -61,7 +61,7 @@ namespace LibraryManagement.DomainModel
         /// <value>
         /// The products.
         /// </value>
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product> Products { get; }
 
         /// <summary>
         /// Gets or sets the auctions.
@@ -85,7 +85,7 @@ namespace LibraryManagement.DomainModel
         /// <value>
         /// The reviews from database.
         /// </value>
-        public ICollection<UserReview> Reviews { get; set; }
+        public ICollection<UserReview> Reviews { get; }
 
         /// <summary>
         /// Gets or sets AuctionUser given reviews.
@@ -93,6 +93,6 @@ namespace LibraryManagement.DomainModel
         /// <value>
         /// The given reviews.
         /// </value>
-        public ICollection<UserReview> GivenReviews { get; set; }
+        public ICollection<UserReview> GivenReviews { get; }
     }
 }
