@@ -84,10 +84,6 @@ namespace LibraryManagement.DataMapper
             {
                 LoggerUtil.LogInfo($"Product updated successfully : {product.Id},{product.Name}", MethodBase.GetCurrentMethod());
             }
-            else
-            {
-                LoggerUtil.LogError($"Product failed to update to database : {product.Id},{product.Name}", MethodBase.GetCurrentMethod());
-            }
 
             return successful;
         }
@@ -106,7 +102,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Product failed to delete from database. We don't found a product with id: {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogWarning($"Product failed to delete from database. We don't found a product with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 

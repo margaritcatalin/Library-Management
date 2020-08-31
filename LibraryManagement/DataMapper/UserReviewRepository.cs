@@ -84,10 +84,6 @@ namespace LibraryManagement.DataMapper
             {
                 LoggerUtil.LogInfo($"Price updated successfully : {userReview.Id}", MethodBase.GetCurrentMethod());
             }
-            else
-            {
-                LoggerUtil.LogError($"Price failed to update to database : {userReview.Id}", MethodBase.GetCurrentMethod());
-            }
 
             return successful;
         }
@@ -114,10 +110,6 @@ namespace LibraryManagement.DataMapper
             if (successful)
             {
                 LoggerUtil.LogInfo($"Price was deleted successfully : {id} ", MethodBase.GetCurrentMethod());
-            }
-            else
-            {
-                LoggerUtil.LogError($"Price failed to delete from database : {id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;

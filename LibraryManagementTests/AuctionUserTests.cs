@@ -484,7 +484,7 @@ namespace LibraryManagementTests
             var result = this.auctionUserService.AddAuctionUser(auctionUser, Role.Buyer);
             var user = this.auctionUserService.GetAuctionUserByFistNameAndLastName("Ionel", "Pascu");
             var deleteResult = this.auctionUserService.DeleteAuctionUser(user.Id);
-            Assert.True(!this.libraryContextMock.AuctionUsers.Any());
+            Assert.IsFalse(this.libraryContextMock.AuctionUsers.Any());
         }
 
         /// <summary>

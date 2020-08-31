@@ -84,10 +84,6 @@ namespace LibraryManagement.DataMapper
             {
                 LoggerUtil.LogInfo($"Bid updated successfully : {bid.Id}", MethodBase.GetCurrentMethod());
             }
-            else
-            {
-                LoggerUtil.LogError($"Bid failed to update to database : {bid.Id}", MethodBase.GetCurrentMethod());
-            }
 
             return successful;
         }
@@ -106,7 +102,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Bid failed to delete from database. We don't found a bid with id: {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogWarning($"Bid failed to delete from database. We don't found a bid with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 

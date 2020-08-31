@@ -96,10 +96,6 @@ namespace LibraryManagement.DataMapper
             {
                 LoggerUtil.LogInfo($"AuctionUser was updated successfully : {auctionUser.FirstName} ", MethodBase.GetCurrentMethod());
             }
-            else
-            {
-                LoggerUtil.LogError($"AuctionUser failed to update to database : {auctionUser.FirstName}", MethodBase.GetCurrentMethod());
-            }
 
             return successful;
         }
@@ -118,7 +114,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"AuctionUser failed to delete from database. We don't found an user with id: {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogWarning($"AuctionUser failed to delete from database. We don't found an user with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 

@@ -84,10 +84,6 @@ namespace LibraryManagement.DataMapper
             {
                 LoggerUtil.LogInfo($"Price updated successfully : {price.Value}{price.Currency}", MethodBase.GetCurrentMethod());
             }
-            else
-            {
-                LoggerUtil.LogError($"Price failed to update to database : {price.Value}{price.Currency}", MethodBase.GetCurrentMethod());
-            }
 
             return successful;
         }
@@ -106,7 +102,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Price failed to delete from database. We don't found a price with id: {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogWarning($"Price failed to delete from database. We don't found a price with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 

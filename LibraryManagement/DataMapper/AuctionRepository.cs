@@ -84,10 +84,6 @@ namespace LibraryManagement.DataMapper
             {
                 LoggerUtil.LogInfo($"Auction updated successfully ID: {auction.Id}", MethodBase.GetCurrentMethod());
             }
-            else
-            {
-                LoggerUtil.LogError($"Auction failed to update to database ID: {auction.Id}", MethodBase.GetCurrentMethod());
-            }
 
             return successful;
         }
@@ -106,7 +102,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Auction failed to delete from database. We don't found a auction with id: {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogWarning($"Auction failed to delete from database. We don't found a auction with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 
@@ -114,10 +110,6 @@ namespace LibraryManagement.DataMapper
             if (successful)
             {
                 LoggerUtil.LogInfo($"Auction was deleted successfully : {id} ", MethodBase.GetCurrentMethod());
-            }
-            else
-            {
-                LoggerUtil.LogError($"Auction failed to delete from database : {id}", MethodBase.GetCurrentMethod());
             }
 
             return successful;

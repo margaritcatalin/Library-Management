@@ -95,10 +95,6 @@ namespace LibraryManagement.DataMapper
             {
                 LoggerUtil.LogInfo($"Category updated successfully : {category.Name} ", MethodBase.GetCurrentMethod());
             }
-            else
-            {
-                LoggerUtil.LogError($"Category failed to update to database : {category.Name}", MethodBase.GetCurrentMethod());
-            }
 
             return successful;
         }
@@ -117,7 +113,7 @@ namespace LibraryManagement.DataMapper
             }
             else
             {
-                LoggerUtil.LogError($"Category failed to delete from database. We don't found a category with id: {id}", MethodBase.GetCurrentMethod());
+                LoggerUtil.LogWarning($"Category failed to delete from database. We don't found a category with id: {id}", MethodBase.GetCurrentMethod());
                 return false;
             }
 
