@@ -152,6 +152,7 @@ namespace LibraryManagementDatabaseTests
             var auctionResult = this.auctionService.AddAuction(auction);
             var auctionById = this.auctionService.GetAuctionById(auctionId);
             var isEnded = this.auctionService.EndAuctionByUser(auctionById, auctionUser);
+            Assert.IsTrue(isEnded);
             auctionById = this.auctionService.GetAuctionById(auctionId);
             var isEnded2 = this.auctionService.EndAuctionByUser(auctionById, auctionUser);
             Assert.IsFalse(isEnded2);
@@ -1483,6 +1484,7 @@ namespace LibraryManagementDatabaseTests
                 Ended = false,
             };
             var auction2Result = this.auctionService.AddAuction(auction);
+            Assert.IsFalse(auction2Result);
             Assert.True(this.libraryContext.Auctions.Count() == 1);
         }
 
