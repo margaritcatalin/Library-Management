@@ -1,3 +1,8 @@
+// <copyright file="AssemblyInfo.cs" company="Transilvania University of Brasov">
+// Margarit Marian Catalin
+// </copyright>
+// <summary>This is the Assembly Info class.</summary>
+
 using System.Reflection;
 using System.Runtime.InteropServices;
 
